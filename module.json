@@ -2,7 +2,7 @@
   "id": "sephrals-deep-tables",
   "title": "Sephral’s Deep Tables",
   "description": "Roll tables for every system with tables inside tables, quantities like 2d4+1, several draws with one click, one clear result card, and results that go straight to a character, a loot pile or the Loot Ledger.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": 13,
     "verified": "14.370"
@@ -21,6 +21,18 @@
         "type": "module",
         "manifest": "https://github.com/Sephral/sephrals-loot-ledger/releases/latest/download/module.json",
         "reason": "Takes rolled items and coins straight into the shared loot where your players claim them."
+      },
+      {
+        "id": "sephrals-saved-encounters",
+        "type": "module",
+        "manifest": "https://github.com/Sephral/sephrals-saved-encounters/releases/latest/download/module.json",
+        "reason": "A table result can place a saved group of monsters on the map with its ghost preview."
+      },
+      {
+        "id": "sephrals-roll-triggers",
+        "type": "module",
+        "manifest": "https://github.com/Sephral/sephrals-roll-triggers/releases/latest/download/module.json",
+        "reason": "A trigger such as a natural 20 can roll a table, for example the critical hit table, with the Deep Tables result card."
       }
     ]
   },
@@ -41,5 +53,6 @@
       "name": "Deutsch",
       "path": "lang/de.json"
     }
-  ]
+  ],
+  "socket": true
 }

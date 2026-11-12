@@ -48,22 +48,23 @@ export function problemText(problem) {
  * @returns {Promise<string>}
  */
 async function rowHtml(line) {
+  const mark = `data-sdt-key="${esc(line.key)}"`;
   const qty = (line.quantity > 1) ? `<span class="sdt-qty">× ${line.quantity}</span>` : "";
   if ( line.kind === "coins" ) {
-    return `<li class="sdt-row sdt-coins"><span class="sdt-thumb sdt-thumb-icon"><i class="fa-solid fa-coins" inert></i></span>`
+    return `<li class="sdt-row sdt-coins" ${mark}><span class="sdt-thumb sdt-thumb-icon"><i class="fa-solid fa-coins" inert></i></span>`
       + `<span class="sdt-name">${esc(coinsText(line.coins, coinLabel))}</span></li>`;
   }
   if ( (line.kind === "item") || (line.kind === "link") ) {
     const label = String(line.name).replace(/[\]}]/g, "");
     const link = await editor().enrichHTML(`@UUID[${line.uuid}]{${label}}`);
-    return `<li class="sdt-row sdt-${line.kind}"><img class="sdt-thumb" src="${esc(imageOr(line.img))}" alt="">`
+    return `<li class="sdt-row sdt-${line.kind}" ${mark}><img class="sdt-thumb" src="${esc(imageOr(line.img))}" alt="">`
       + `<span class="sdt-name">${link}</span>${qty}</li>`;
   }
   const body = line.html ? await editor().enrichHTML(line.html) : "";
   const title = line.name ? `<strong>${esc(line.name)}</strong>` : "";
   const content = (title || body) ? `${title}${title && body ? " " : ""}${body}` : esc(line.text ?? "");
   const qtyText = (line.quantity > 1) ? `<span class="sdt-qty">× ${line.quantity}</span>` : "";
-  return `<li class="sdt-row sdt-text"><span class="sdt-thumb sdt-thumb-icon"><i class="fa-solid fa-scroll" inert></i></span>`
+  return `<li class="sdt-row sdt-text" ${mark}><span class="sdt-thumb sdt-thumb-icon"><i class="fa-solid fa-scroll" inert></i></span>`
     + `<span class="sdt-name sdt-prose">${content}</span>${qtyText}</li>`;
 }
 
@@ -74,11 +75,14 @@ async function rowHtml(line) {
  * @param {import("./merge.mjs").CardLine[]} data.lines
  * @param {string[]} data.notes
  * @param {number} data.draws
+ * @param {string} [data.by]      The player the roll was made for
+ * @param {string} [data.note]    A line under the title, for example the trigger behind the roll
  * @returns {Promise<string>}
  */
-export async function cardHtml({table, lines, notes, draws}) {
+export async function cardHtml({table, lines, notes, draws, by = "", note = ""}) {
   const rows = (await Promise.all(lines.map(rowHtml))).join("");
-  const sub = (draws > 1) ? `<small>${esc(t("SDT.Card.draws", {count: draws}))}</small>` : "";
+  const subs = [(draws > 1) ? t("SDT.Card.draws", {count: draws}) : "", by ? t("SDT.Card.by", {name: by}) : "", note].filter(Boolean);
+  const sub = subs.length ? `<small>${esc(subs.join(" · "))}</small>` : "";
   const problems = notes.length ? `<ul class="sdt-notes">${notes.map(n => `<li><i class="fa-solid fa-triangle-exclamation" inert></i> ${esc(n)}</li>`).join("")}</ul>` : "";
   return `<div class="sdt-card"><header class="sdt-card-head"><img src="${esc(imageOr(table.img))}" alt="">`
     + `<div><strong>${esc(table.name)}</strong>${sub}</div></header><ul class="sdt-rows">${rows}</ul>${problems}</div>`;
@@ -93,24 +97,34 @@ export async function cardHtml({table, lines, notes, draws}) {
  * @param {{kind: string}[]} [data.problems]
  * @param {string} [data.mode]                          Visibility of the table
  * @param {number} [data.draws]
+ * @param {string} [data.userId]       The user the card is rolled for, defaults to the current user
+ * @param {string[]} [data.whisper]    Exact recipients instead of the visibility (they and the GMs see the card)
+ * @param {object} [data.flags]        More flags for the message (by module scope)
+ * @param {string} [data.note]         A line under the title of the card
  * @returns {Promise<ChatMessage|null>}
  */
-export async function postCard({table, lines, rolls = [], problems = [], mode = "foundry", draws = 1}) {
+export async function postCard({table, lines, rolls = [], problems = [], mode = "foundry", draws = 1, userId, whisper,
+  flags = {}, note = ""}) {
+  const owner = userId ?? game.user.id;
+  const by = (owner !== game.user.id) ? (game.users.get(owner)?.name ?? "") : "";
   const shown = lines.filter(line => line.include);
   const merged = mergeLines(shown);
   if ( !merged.length ) return null;
   const bags = new Set(shown.map(line => line.rolls));
   const all = [...rolls, ...[...bags].flat()].filter(Boolean).slice(0, MAX_ROLLS);
   const notes = [...new Set(problems.filter(p => !((p.kind === "empty") && (p.uuid === table.uuid))).map(problemText))];
-  const content = await cardHtml({table: {name: table.name, img: table.img}, lines: merged, notes, draws});
+  const content = await cardHtml({table: {name: table.name, img: table.img}, lines: merged, notes, draws, by, note});
   const visible = resolveMode(mode, chatSetting());
+  const gmIds = game.users.filter(u => u.isGM).map(u => u.id);
+  const own = {card: {v: 1, table: {uuid: table.uuid, name: table.name, img: table.img}, mode, draws,
+    lines: merged.map(({html, ...rest}) => rest), given: [], runs: [], ...(by ? {by} : {})}};
   const data = {
     content,
     rolls: all,
     speaker: ChatMessage.implementation.getSpeaker(),
-    flags: {[MODULE_ID]: {card: {v: 1, table: {uuid: table.uuid, name: table.name, img: table.img}, mode, draws,
-      lines: merged.map(({html, ...rest}) => rest), given: []}}},
-    ...visibility(visible, {userId: game.user.id, gmIds: game.users.filter(u => u.isGM).map(u => u.id)})
+    flags: foundry.utils.mergeObject(flags, {[MODULE_ID]: own}, {inplace: false}),
+    ...(whisper ? {whisper: [...new Set([...whisper, ...(whisper.length ? gmIds : [])])], blind: false}
+      : visibility(visible, {userId: owner, gmIds}))
   };
   if ( all.length ) data.sound = CONFIG.sounds?.dice ?? null;
   const message = await ChatMessage.implementation.create(data);

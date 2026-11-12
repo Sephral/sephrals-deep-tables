@@ -7,7 +7,8 @@
 import {MODULE_ID, TEMPLATES, addSettingsGear, imageOr, setting, t} from "./config.mjs";
 import {coinLabel} from "./coins.mjs";
 import {coinsText, summarize} from "./draw.mjs";
-import {offerReset, resolveTable, rerollLine, rollTable, settingsOf} from "./engine.mjs";
+import {countersOf, offerReset, putBack, resetTable, resolveTable, rerollLine, rollTable, settingsOf,
+  showsCounter} from "./engine.mjs";
 import {canRoll, postRoll} from "./flow.mjs";
 import {problemText} from "./card.mjs";
 import {MODES} from "./modes.mjs";
@@ -59,6 +60,8 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
       rerollAll: DeepRoll.#onRerollAll,
       rerollLine: DeepRoll.#onRerollLine,
       resetTable: DeepRoll.#onResetTable,
+      resetMemory: DeepRoll.#onResetMemory,
+      putBackOne: DeepRoll.#onPutBack,
       post: DeepRoll.#onPost
     }
   };
@@ -111,6 +114,7 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     context.modes = MODES.map(value => ({value, label: t(`SDT.Mode.${value}`), selected: value === this.inputs.mode}));
     context.problems = (this.state?.problems ?? []).filter(p => !((p.kind === "empty") && (lines.length === 0) && !p.uuid))
       .map(p => ({text: problemText(p)}));
+    context.counters = await this.#counters();
     context.resetName = (game.user.isGM && resetTable && !resetTable.pack) ? resetTable.name : "";
     context.empty = !lines.length;
     context.rows = lines.map(line => ({
@@ -135,6 +139,28 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     context.summary = parts.join(" · ");
     context.canPost = lines.some(l => l.include && ((l.kind !== "item") || (l.quantity > 0)));
     return context;
+  }
+
+  /**
+   * What the table and the tables inside it remember, for the window.
+   * @returns {Promise<object[]>}
+   */
+  async #counters() {
+    const all = await countersOf(this.table);
+    const out = [];
+    for ( const entry of all ) {
+      const doc = (entry.uuid === this.table.uuid) ? this.table : await fromUuid(entry.uuid).catch(() => null);
+      if ( !doc || doc.pack ) continue;
+      if ( (doc === this.table) && !showsCounter(doc) ) continue;
+      const names = entry.ids.map(id => {
+        const result = doc.results.get(id);
+        const text = result?.name || String(result?.description ?? "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+        return {id, name: text || "…"};
+      });
+      out.push({uuid: entry.uuid, name: entry.name, used: entry.used, text: t("SDT.Memory.counter", {used: entry.used,
+        total: entry.total}), usedResults: names, canEdit: game.user.isGM});
+    }
+    return out;
   }
 
   /** @override */
@@ -211,6 +237,25 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     if ( !empty ) return;
     await offerReset(empty.uuid);
     countFeature(MODULE_ID, "tableReset");
+    this.#readInputs();
+    await this.reroll();
+    this.render();
+  }
+
+  /** Bring back everything one table remembers. @this {DeepRoll} */
+  static async #onResetMemory(event, target) {
+    const doc = await fromUuid(target.dataset.uuid).catch(() => null);
+    if ( !doc || !await resetTable(doc) ) return;
+    countFeature(MODULE_ID, "tableReset");
+    this.#readInputs();
+    await this.reroll();
+    this.render();
+  }
+
+  /** Put one remembered result back. @this {DeepRoll} */
+  static async #onPutBack(event, target) {
+    const doc = await fromUuid(target.dataset.uuid).catch(() => null);
+    if ( !doc || !await putBack(doc, target.dataset.result) ) return;
     this.#readInputs();
     await this.reroll();
     this.render();

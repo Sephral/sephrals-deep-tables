@@ -5,9 +5,13 @@
  */
 
 import {MODULE_ID, esc, isActive, setting, t} from "./config.mjs";
+import {actionButton} from "./action-app.mjs";
+import {actionOf} from "./actions.mjs";
+import {counter} from "./memory.mjs";
+import {playersMayRoll} from "./players.mjs";
 import {chances, formatChance} from "./chances.mjs";
 import {openDeepRoll} from "./deep-app.mjs";
-import {settingsOf} from "./engine.mjs";
+import {countersOf, memoryOfTable, putBack, resetTable, settingsOf, showsCounter} from "./engine.mjs";
 import {canRoll, drawNow} from "./flow.mjs";
 import {MODES} from "./modes.mjs";
 import {openImport} from "./import-app.mjs";
@@ -150,8 +154,23 @@ function editFields(app, element, table) {
       + `<input type="checkbox" name="${FLAG}.distinct" ${saved.distinct ? "checked" : ""}></div>`
       + `<p class="hint">${esc(t("SDT.Sheet.distinctHint"))}</p></div>`
       + `<div class="form-group"><label>${esc(t("SDT.Sheet.mode"))}</label><div class="form-fields">`
-      + `<select name="${FLAG}.mode">${modes}</select></div><p class="hint">${esc(t("SDT.Sheet.modeHint"))}</p></div>`;
+      + `<select name="${FLAG}.mode">${modes}</select></div><p class="hint">${esc(t("SDT.Sheet.modeHint"))}</p></div>`
+      + `<div class="form-group"><label>${esc(t("SDT.Sheet.memory"))}</label><div class="form-fields">`
+      + `<input type="checkbox" name="${FLAG}.memory" ${memoryOfTable(table).memory ? "checked" : ""} ${table.pack ? "disabled" : ""}></div>`
+      + `<p class="hint">${esc(t(table.replacement ? "SDT.Sheet.memoryHint" : "SDT.Sheet.memoryHintNoReplacement"))}</p></div>`
+      + `<div class="form-group sdt-memory-line" data-sdt-counter></div>`
+      + `<div class="form-group"><label>${esc(t("SDT.Sheet.players"))}</label><div class="form-fields">`
+      + `<input type="checkbox" name="${FLAG}.players" ${playersMayRoll(path => foundry.utils.getProperty(table.flags ?? {}, path)) ? "checked" : ""} ${table.pack ? "disabled" : ""}></div>`
+      + `<p class="hint">${esc(t("SDT.Sheet.playersHint"))}</p></div>`;
     anchor.after(group);
+    fillCounter(group.querySelector("[data-sdt-counter]"), table);
+  }
+  // The action of every result
+  for ( const row of element.querySelectorAll("tr[data-result-id]") ) {
+    const details = row.querySelector("td.details");
+    const result = table.results.get(row.dataset.resultId);
+    if ( !details || !result || details.querySelector(".sdt-act-edit") ) continue;
+    details.append(actionButton(result));
   }
   // The Loot Ledger has the same field: one is enough
   if ( isActive("sephrals-loot-ledger") ) return;
@@ -212,8 +231,49 @@ function viewDetails(element, table) {
     note.innerHTML = `<i class="fa-solid fa-scroll" inert></i> × ${esc(value)}`;
     details.append(note);
   }
+  // The action of every result, and what the table remembers
+  for ( const row of rows ) {
+    const details = row.querySelector("td.details");
+    const result = table.results.get(row.dataset.resultId);
+    const action = result ? actionOf(path => foundry.utils.getProperty(result.flags ?? {}, path)) : null;
+    if ( !details || !action || details.querySelector(".sdt-act-note") ) continue;
+    const note = document.createElement("small");
+    note.className = "sdt-act-note";
+    note.dataset.tooltip = t(`SDT.Action.type.${action.type}`);
+    note.innerHTML = `<i class="fa-solid fa-bolt" inert></i> ${esc(t(`SDT.Action.type.${action.type}`))}`
+      + (action.auto ? ` · ${esc(t("SDT.Action.autoShort"))}` : "");
+    details.append(note);
+  }
+  if ( showsCounter(table) ) {
+    const used = counter([...table.results.contents].map(r => ({id: r.id, drawn: !!r.drawn})), memoryOfTable(table),
+      !!table.replacement).ids;
+    for ( const row of rows ) {
+      if ( !used.includes(row.dataset.resultId) ) continue;
+      row.classList.add("sdt-used");
+      const cell = row.querySelector("td.range");
+      if ( !game.user.isGM || table.pack || !cell || cell.querySelector(".sdt-putback") ) continue;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "sdt-putback";
+      button.dataset.tooltip = t("SDT.Memory.putBack");
+      button.innerHTML = `<i class="fa-solid fa-rotate-left" inert></i>`;
+      button.setAttribute("aria-label", t("SDT.Memory.putBack"));
+      button.addEventListener("click", async event => {
+        event.preventDefault();
+        event.stopPropagation();
+        await putBack(table, row.dataset.resultId);
+      });
+      cell.append(button);
+    }
+  }
   const header = element.querySelector(".sheet-header");
-  if ( header && !element.querySelector(".sdt-table-note") ) {
+  if ( header && !element.querySelector(".sdt-table-note") && showsCounter(table) ) {
+    const line = document.createElement("div");
+    line.className = "sdt-memory-line sdt-table-note";
+    header.after(line);
+    fillCounter(line, table);
+  }
+  if ( header && !element.querySelector(".sdt-table-note:not(.sdt-memory-line)") ) {
     const saved = settingsOf(table);
     const parts = [];
     if ( saved.draws !== "1" ) parts.push(t("SDT.Sheet.noteDraws", {draws: saved.draws}));
@@ -246,4 +306,53 @@ export function onRenderTableResultConfig(app, html) {
     + `<div class="form-fields"><input type="text" id="${esc(id)}" name="${FLAG}.quantity" value="${esc(value)}" placeholder="1"></div>`
     + `<p class="hint">${esc(t("SDT.Sheet.quantityHint"))}</p>`;
   weight.after(group);
+}
+
+/**
+ * Hook "renderTableResultConfig": the action button in the result's own window.
+ * @param {TableResultConfig} app
+ * @param {HTMLElement} html
+ */
+export function onRenderTableResultActions(app, html) {
+  if ( !game.user.isGM ) return;
+  const element = (html instanceof HTMLElement) ? html : html?.[0];
+  const weight = element?.querySelector("[name=weight]")?.closest(".form-group");
+  if ( !weight || element.querySelector(".sdt-act-group") ) return;
+  const group = document.createElement("div");
+  group.className = "form-group slim sdt-act-group";
+  group.innerHTML = `<label>${esc(t("SDT.Action.label"))}</label><div class="form-fields"></div>`
+    + `<p class="hint">${esc(t("SDT.Action.addHint"))}</p>`;
+  group.querySelector(".form-fields").append(actionButton(app.document));
+  (element.querySelector(".sdt-quantity-group") ?? weight).after(group);
+}
+
+/**
+ * Fill a line with the counter of a table and the reset button.
+ * @param {HTMLElement} line
+ * @param {RollTable} table
+ */
+async function fillCounter(line, table) {
+  if ( !line ) return;
+  if ( !showsCounter(table) ) {
+    line.textContent = t("SDT.Memory.off");
+    return;
+  }
+  const own = (await countersOf(table))[0];
+  if ( !own || !line.isConnected ) return;
+  const text = document.createElement("span");
+  text.className = "sdt-counter";
+  text.innerHTML = `<i class="fa-solid fa-brain" inert></i> ${esc(t("SDT.Memory.counter", {used: own.used, total: own.total}))}`;
+  line.replaceChildren(text);
+  if ( game.user.isGM && !table.pack && own.used ) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "sdt-reset-memory";
+    button.innerHTML = `<i class="fa-solid fa-rotate-left" inert></i> ${esc(t("SDT.Memory.reset"))}`;
+    button.addEventListener("click", async event => {
+      event.preventDefault();
+      event.stopPropagation();
+      await resetTable(table);
+    });
+    line.append(button);
+  }
 }

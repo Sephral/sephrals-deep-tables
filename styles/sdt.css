@@ -645,3 +645,205 @@ a.sdt-roll.sdt-disabled {
   height: 24px;
   object-fit: contain;
 }
+
+/* -------------------------------------------- */
+/*  Results that act, memory, tables for players */
+/* -------------------------------------------- */
+
+.sdt-row:has(.sdt-act) {
+  flex-wrap: wrap;
+}
+
+.sdt-card .sdt-act {
+  display: flex;
+  flex: 0 0 100%;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 0 0 2px 36px;
+  font-size: 11px;
+}
+
+.sdt-card .sdt-act button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  height: 22px;
+  margin: 0;
+  padding: 0 9px;
+  border: 1px solid var(--sdt-accent);
+  border-radius: 999px;
+  background: var(--sdt-accent-soft);
+  color: var(--sdt-ink);
+  font-size: 11px;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.sdt-card .sdt-act button:hover:not(:disabled) {
+  background: var(--sdt-accent);
+  color: var(--sdt-on-accent);
+}
+
+.sdt-card .sdt-act button.sdt-act-undo {
+  border-color: var(--sdt-line);
+  background: var(--sdt-field);
+}
+
+.sdt-act-done {
+  color: var(--sdt-muted);
+}
+
+.sdt-act-auto {
+  color: var(--sdt-muted);
+}
+
+/* Memory counter and the used results */
+.sdt-memory {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px 14px;
+  border-bottom: 1px solid var(--sdt-line);
+  font-size: 12px;
+}
+
+.sdt-counter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sdt-counter {
+  color: var(--sdt-muted);
+}
+
+.sdt-counter i {
+  color: var(--sdt-accent);
+}
+
+.sdt-used-list summary {
+  cursor: pointer;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+.sdt-used-list ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sdt-used-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 1px 0;
+}
+
+.sdt-app button.sdt-icon {
+  width: 26px;
+  padding: 0;
+}
+
+/* The roll table sheet */
+.roll-table-sheet .sdt-memory-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.roll-table-sheet .sdt-reset-memory,
+.roll-table-sheet .sdt-putback,
+.roll-table-sheet .sdt-act-edit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: auto;
+  height: 22px;
+  margin: 0;
+  padding: 0 7px;
+  line-height: 1;
+  font-size: 11px;
+}
+
+.roll-table-sheet .sdt-act-edit {
+  margin-top: 2px;
+  opacity: 0.85;
+}
+
+.roll-table-sheet .sdt-act-edit.sdt-act-set {
+  opacity: 1;
+  border-color: var(--color-warm-2, #9c3b22);
+}
+
+.roll-table-sheet .sdt-putback {
+  display: block;
+  margin: 2px auto 0;
+  padding: 0 5px;
+}
+
+.roll-table-sheet tr.sdt-used .details,
+.roll-table-sheet tr.sdt-used .range {
+  opacity: 0.6;
+}
+
+.roll-table-sheet .sdt-act-note {
+  display: block;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+/* The action window and the list for players */
+.sdt-action-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+}
+
+.sdt-action-body .sdt-block {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+
+.sdt-action-body .hint {
+  margin: 0;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+.sdt-action-body input[type="text"],
+.sdt-action-body select {
+  width: 100%;
+  height: 28px;
+}
+
+.sdt-row-inline {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.sdt-notes-line {
+  margin: 0;
+  color: var(--sdt-accent);
+  font-size: 11px;
+}
+
+.sdt-players-app .sdt-lines {
+  margin: 0;
+  padding: 8px 10px;
+}
+
+.sdt-chat-tables {
+  cursor: pointer;
+}

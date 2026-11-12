@@ -3,10 +3,12 @@
  * with its settings, marking results as drawn.
  */
 
-import {setting} from "./config.mjs";
+import {MODULE_ID, setting} from "./config.mjs";
+import {actionOf, isComplete} from "./actions.mjs";
 import {denominations, coinLabel} from "./coins.mjs";
 import {drawTable, drawnMarks, excludeFromLines, newState, parseCoinText, resolveQuantity} from "./draw.mjs";
 import {resultQuantity, tableSettings} from "./flags.mjs";
+import {addUsed, applyMemory, hasMemory, memoryMarks, memoryOf, nestedCounters, removeUsed} from "./memory.mjs";
 import {trace} from "./debug.mjs";
 
 /**
@@ -30,6 +32,27 @@ export function quantityOf(result) {
 }
 
 /**
+ * The action of a result, or null when it has none or does not know what to do.
+ * @param {TableResult} result
+ * @returns {object|null}
+ */
+export function actionOfResult(result) {
+  const flags = result.flags ?? {};
+  const action = actionOf(path => foundry.utils.getProperty(flags, path));
+  return isComplete(action, result.documentUuid ?? null) ? action : null;
+}
+
+/**
+ * What the table remembers: the option and the ids of the results.
+ * @param {RollTable} table
+ * @returns {{memory: boolean, used: string[]}}
+ */
+export function memoryOfTable(table) {
+  const flags = table.flags ?? {};
+  return memoryOf(path => foundry.utils.getProperty(flags, path));
+}
+
+/**
  * A plain copy of a table for the engine.
  * @param {RollTable} table
  * @param {object} [overrides]   Settings for this roll instead of the saved ones
@@ -38,27 +61,31 @@ export function quantityOf(result) {
 export function snapshotTable(table, overrides = {}) {
   const saved = settingsOf(table);
   const results = [...table.results.contents].sort((a, b) => (a.range?.[0] ?? 0) - (b.range?.[0] ?? 0));
+  const remembered = memoryOfTable(table);
+  const list = results.map(result => ({
+    id: result.id,
+    type: result.type === "text" ? "text" : "document",
+    name: result.name ?? "",
+    img: result.img ?? "",
+    description: result.description ?? "",
+    documentUuid: result.documentUuid ?? null,
+    range: [...(result.range ?? [1, 1])],
+    weight: result.weight ?? 1,
+    drawn: !!result.drawn,
+    quantity: quantityOf(result),
+    action: actionOfResult(result)
+  }));
   return {
     uuid: table.uuid,
     name: table.name,
     formula: table._source?.formula ?? "",
     replacement: !!table.replacement,
     pack: !!table.pack,
+    memory: remembered.memory && !table.pack,
     distinct: overrides.distinct ?? saved.distinct,
     draws: overrides.draws ?? saved.draws,
     mode: overrides.mode ?? saved.mode,
-    results: results.map(result => ({
-      id: result.id,
-      type: result.type === "text" ? "text" : "document",
-      name: result.name ?? "",
-      img: result.img ?? "",
-      description: result.description ?? "",
-      documentUuid: result.documentUuid ?? null,
-      range: [...(result.range ?? [1, 1])],
-      weight: result.weight ?? 1,
-      drawn: !!result.drawn,
-      quantity: quantityOf(result)
-    }))
+    results: applyMemory(list, remembered)
   };
 }
 
@@ -165,7 +192,8 @@ export async function rerollLine(line, others, state) {
 }
 
 /**
- * GM: mark the results behind the shown lines as drawn (tables without replacement, not in compendiums).
+ * GM: mark the results behind the shown lines as drawn (tables without replacement, not in compendiums) and
+ * remember them (tables with a memory).
  * @param {import("./draw.mjs").Line[]} lines
  * @returns {Promise<void>}
  */
@@ -177,6 +205,42 @@ export async function markDrawn(lines) {
     const updates = ids.filter(id => table.results.get(id) && !table.results.get(id).drawn).map(id => ({_id: id, drawn: true}));
     if ( updates.length ) await table.updateEmbeddedDocuments("TableResult", updates, {diff: false});
   }
+  for ( const [uuid, ids] of memoryMarks(lines) ) {
+    const table = await fromUuid(uuid).catch(() => null);
+    if ( !(table instanceof RollTable) || table.pack ) continue;
+    const state = memoryOfTable(table);
+    if ( !state.memory ) continue;
+    const used = addUsed(state.used, ids, table.results.map(r => r.id));
+    if ( used.length !== state.used.length ) await table.update({[`flags.${MODULE_ID}.used`]: used});
+  }
+}
+
+/**
+ * GM: bring all results of a table back, the marks of Foundry and the memory.
+ * @param {RollTable} table
+ * @returns {Promise<boolean>}
+ */
+export async function resetTable(table) {
+  if ( !(table instanceof RollTable) || !game.user.isGM || table.pack ) return false;
+  if ( table.results.some(result => result.drawn) ) await table.resetResults();
+  if ( memoryOfTable(table).used.length ) await table.update({[`flags.${MODULE_ID}.used`]: []});
+  return true;
+}
+
+/**
+ * GM: put one result back into the table, so it can be drawn again.
+ * @param {RollTable} table
+ * @param {string} resultId
+ * @returns {Promise<boolean>}
+ */
+export async function putBack(table, resultId) {
+  if ( !(table instanceof RollTable) || !game.user.isGM || table.pack ) return false;
+  const result = table.results.get(resultId);
+  if ( !result ) return false;
+  if ( result.drawn ) await table.updateEmbeddedDocuments("TableResult", [{_id: resultId, drawn: false}], {diff: false});
+  const state = memoryOfTable(table);
+  if ( state.used.includes(resultId) ) await table.update({[`flags.${MODULE_ID}.used`]: removeUsed(state.used, resultId)});
+  return true;
 }
 
 /**
@@ -186,7 +250,38 @@ export async function markDrawn(lines) {
  */
 export async function offerReset(uuid) {
   const table = await fromUuid(uuid).catch(() => null);
-  if ( !(table instanceof RollTable) || !game.user.isGM || table.pack ) return false;
-  await table.resetResults();
-  return true;
+  return resetTable(table);
+}
+
+/**
+ * The counters of a table and the tables inside it that have a memory or draw without replacement.
+ * @param {RollTable} table
+ * @returns {Promise<{uuid: string, name: string, used: number, total: number, ids: string[]}[]>}
+ */
+export async function countersOf(table) {
+  const load = async uuid => {
+    const doc = (uuid === table.uuid) ? table : await fromUuid(uuid).catch(() => null);
+    if ( !(doc instanceof RollTable) ) return null;
+    const state = memoryOfTable(doc);
+    return {
+      uuid: doc.uuid,
+      name: doc.name,
+      replacement: !!doc.replacement,
+      memory: state.memory && !doc.pack,
+      used: state.used,
+      results: doc.results.map(result => ({id: result.id, drawn: !!result.drawn})),
+      children: doc.results.filter(r => r.type !== "text" && r.documentUuid && /RollTable\./.test(r.documentUuid))
+        .map(r => r.documentUuid)
+    };
+  };
+  return nestedCounters(table.uuid, load);
+}
+
+/**
+ * Does a table show a counter?
+ * @param {RollTable} table
+ * @returns {boolean}
+ */
+export function showsCounter(table) {
+  return hasMemory(memoryOfTable(table), !!table.replacement) && !table.pack;
 }

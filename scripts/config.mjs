@@ -105,3 +105,14 @@ export function imageOr(src) {
 export function isActive(id) {
   return !!game.modules.get(id)?.active;
 }
+
+/**
+ * An update that removes one key of a document: Foundry 14 wants a ForcedDeletion operator, 13 the "-=" syntax.
+ * @param {string} parent   The path of the object holding the key
+ * @param {string} key
+ * @returns {object}
+ */
+export function removeKey(parent, key) {
+  const Forced = foundry.data?.operators?.ForcedDeletion;
+  return Forced ? {[`${parent}.${key}`]: new Forced()} : {[`${parent}.-=${key}`]: null};
+}

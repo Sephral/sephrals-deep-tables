@@ -1,11 +1,15 @@
 import {MODULE_ID, TESTED_VERSIONS, setting} from "./config.mjs";
 import {registerDebug} from "./debug.mjs";
 import {saveDebugFile} from "./debug-file.mjs";
+import {ActionEditor, openActionEditor} from "./action-app.mjs";
 import {DeepRoll, openDeepRoll} from "./deep-app.mjs";
 import {registerEnrichers} from "./enrichers.mjs";
-import {resolveTable, rollTable, snapshotTable} from "./engine.mjs";
+import {countersOf, putBack, resetTable, resolveTable, rollTable, snapshotTable} from "./engine.mjs";
+import {runRowAction, undoRowAction} from "./act.mjs";
 import {canRoll, drawNow, postRoll} from "./flow.mjs";
 import {registerHubModule} from "./hub.mjs";
+import {PlayerTablesApp, openPlayerTables, readyPlayerTables, refreshPlayerTables, rollListed,
+  syncPlayerTables} from "./player-tables.mjs";
 import {ImportApp, openImport} from "./import-app.mjs";
 import {applyModuleLanguage} from "./language.mjs";
 import {mergeLines} from "./merge.mjs";
@@ -13,7 +17,7 @@ import {parseTableText} from "./parse-text.mjs";
 import {noticeNewVersions, runSelfTest} from "./selftest.mjs";
 import {changeLanguage, registerSettings} from "./settings.mjs";
 import {onGetHeaderControls, onGetRollTableContextOptions, onRenderRollTableDirectory, onRenderRollTableSheet,
-  onRenderTableResultConfig} from "./sheet.mjs";
+  onRenderTableResultActions, onRenderTableResultConfig} from "./sheet.mjs";
 import {onRenderChatMessage} from "./toolbar.mjs";
 import {registerUsage} from "./usage.mjs";
 
@@ -21,7 +25,8 @@ import {registerUsage} from "./usage.mjs";
 function redraw() {
   for ( const app of foundry.applications.instances.values() ) {
     if ( !app.rendered ) continue;
-    if ( (app instanceof DeepRoll) || (app instanceof ImportApp) || (app.document instanceof RollTable) ) app.render();
+    if ( (app instanceof DeepRoll) || (app instanceof ImportApp) || (app instanceof ActionEditor)
+      || (app instanceof PlayerTablesApp) || (app.document instanceof RollTable) ) app.render();
   }
 }
 
@@ -52,13 +57,14 @@ Hooks.once("init", () => {
   registerHubModule({moduleId: MODULE_ID, tested: TESTED_VERSIONS});
   registerSettings({
     language: value => changeLanguage(value, redraw),
-    redraw
+    redraw,
+    players: refreshPlayerTables
   });
   // Counted only on the active GM's client, like every Sephral module
   registerUsage(MODULE_ID, {
     features: ["deepRoll", "drawNow", "cardPosted", "lineRerolled", "givenToActor", "pileCreated", "ledgerAdded",
-      "tableImported", "journalRoll", "tableReset"],
-    settings: ["theme", "showChances", "maxDepth"]
+      "tableImported", "journalRoll", "tableReset", "actionRun", "actionUndo", "playerRoll", "triggerRoll"],
+    settings: ["theme", "showChances", "maxDepth", "autoActions", "triggerTables"]
   });
   registerDebug();
   registerEnrichers();
@@ -66,6 +72,7 @@ Hooks.once("init", () => {
   Hooks.on("getHeaderControlsRollTableSheet", onGetHeaderControls);
   Hooks.on("renderRollTableSheet", onRenderRollTableSheet);
   Hooks.on("renderTableResultConfig", onRenderTableResultConfig);
+  Hooks.on("renderTableResultConfig", onRenderTableResultActions);
   Hooks.on("renderRollTableDirectory", onRenderRollTableDirectory);
   Hooks.on("renderChatMessageHTML", onRenderChatMessage);
   game.modules.get(MODULE_ID).api = {
@@ -86,6 +93,35 @@ Hooks.once("init", () => {
       const doc = await resolveTable(table);
       return doc ? snapshotTable(doc) : null;
     },
+    /** What a table and the tables inside it remember: [{uuid, name, used, total, ids}]. */
+    counters: async table => {
+      const doc = await resolveTable(table);
+      return doc ? countersOf(doc) : [];
+    },
+    /** GM: bring everything a table remembers back (the marks of Foundry and the memory). */
+    resetMemory: async table => {
+      const doc = await resolveTable(table);
+      return doc ? resetTable(doc) : false;
+    },
+    /** GM: put one result back into a table so it can come up again. */
+    putBack: async (table, resultId) => {
+      const doc = await resolveTable(table);
+      return doc ? putBack(doc, resultId) : false;
+    },
+    /** GM: run the action of a result row on a card, or take it back. */
+    runAction: (message, key) => {
+      const card = message?.flags?.[MODULE_ID]?.card;
+      const row = card?.lines?.find(line => line.key === key);
+      return row ? runRowAction(message, row) : false;
+    },
+    undoAction: (message, key) => undoRowAction(message, key),
+    /** GM: open the action window of a table result. */
+    editAction: openActionEditor,
+    /** Open the list of tables players may roll, and roll one of them (a GM rolls at once, a player asks the GM). */
+    openPlayerTables,
+    rollListed,
+    /** GM: write the list of tables players may roll again. */
+    syncPlayerTables,
     /** Check the module (GM). */
     runSelfTest,
     /** Save the debug file of Sephral's modules (GM). */
@@ -102,5 +138,6 @@ Hooks.once("i18nInit", () => {
 
 Hooks.once("ready", async () => {
   await languageReady;
+  readyPlayerTables();
   noticeNewVersions();
 });

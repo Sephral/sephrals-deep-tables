@@ -1,0 +1,18 @@
+<div class="sdt-shell">
+  {{#if tables.length}}
+  <ul class="sdt-lines">
+    {{#each tables}}
+    <li class="sdt-line">
+      <img class="sdt-thumb" src="{{img}}" alt="">
+      <div class="sdt-line-main">
+        <div class="sdt-line-name">{{name}}</div>
+        <div class="sdt-line-path">{{localize "SDT.Players.shownTo"}}: {{shown}}</div>
+      </div>
+      <button type="button" class="sdt-primary" data-action="roll" data-uuid="{{uuid}}"><i class="fa-solid fa-dice-d20" inert></i> {{localize "SDT.Players.roll"}}</button>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  <p class="sdt-empty"><i class="fa-solid fa-dice-d20" inert></i> {{localize "SDT.Players.none"}}</p>
+  {{/if}}
+</div>

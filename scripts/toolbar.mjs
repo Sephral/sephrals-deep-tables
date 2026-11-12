@@ -4,6 +4,8 @@
  */
 
 import {MODULE_ID, esc, setting, t} from "./config.mjs";
+import {ACTION_META} from "./actions.mjs";
+import {runRowAction, runsOf, undoRowAction} from "./act.mjs";
 import {addToLedger, ledgerApi, pilesApi, placePile} from "./bridges.mjs";
 import {cardOf} from "./card.mjs";
 import {coinLabel} from "./coins.mjs";
@@ -42,12 +44,70 @@ export function onRenderChatMessage(message, html) {
       run(message, button.dataset.sdtAction, button);
     });
   }
+  addActionButtons(message, root, card);
   const given = card.given ?? [];
   if ( given.length ) {
     const list = document.createElement("ul");
     list.className = "sdt-given";
     list.innerHTML = given.map(g => `<li><i class="fa-solid fa-check" inert></i> ${esc(g.text)}</li>`).join("");
     root.append(list);
+  }
+}
+
+/**
+ * The buttons of the results that act: one beside the row, or what it did with a button to take it back.
+ * @param {ChatMessage} message
+ * @param {HTMLElement} root
+ * @param {object} card
+ */
+function addActionButtons(message, root, card) {
+  const runs = runsOf(message);
+  for ( const li of root.querySelectorAll("li[data-sdt-key]") ) {
+    const row = card.lines.find(line => line.key === li.dataset.sdtKey);
+    if ( !row?.act || li.querySelector(".sdt-act") ) continue;
+    const meta = ACTION_META[row.act.type];
+    if ( !meta ) continue;
+    const run = runs.find(entry => entry.k === row.key);
+    const box = document.createElement("span");
+    box.className = "sdt-act";
+    if ( run ) {
+      const undoable = !!((run.undo?.tokens?.length) || (run.undo?.effects?.length));
+      box.innerHTML = `<span class="sdt-act-done"><i class="fa-solid fa-check" inert></i> ${esc(run.text)}</span>`
+        + (undoable ? `<button type="button" class="sdt-act-undo" data-tooltip="${esc(t("SDT.Action.undoHint"))}">`
+        + `<i class="fa-solid fa-rotate-left" inert></i><span>${esc(t("SDT.Action.undo"))}</span></button>` : "");
+    }
+    else {
+      const label = t(meta.button);
+      box.innerHTML = `<button type="button" class="sdt-act-run" data-tooltip="${esc(t(`SDT.Action.type.${row.act.type}`))}">`
+        + `<i class="fa-solid ${meta.icon}" inert></i><span>${esc(label)}</span></button>`
+        + (row.act.auto ? `<small class="sdt-act-auto">${esc(t("SDT.Action.autoShort"))}</small>` : "");
+    }
+    li.append(box);
+    box.querySelector(".sdt-act-run")?.addEventListener("click", event => runActionButton(event, message, row));
+    box.querySelector(".sdt-act-undo")?.addEventListener("click", event => runActionButton(event, message, row, true));
+  }
+}
+
+/**
+ * A click on the button of a result that acts.
+ * @param {Event} event
+ * @param {ChatMessage} message
+ * @param {object} row
+ * @param {boolean} [undo]
+ */
+async function runActionButton(event, message, row, undo = false) {
+  event.preventDefault();
+  event.stopPropagation();
+  const button = event.currentTarget;
+  button.disabled = true;
+  try {
+    if ( undo ) await undoRowAction(message, row.key);
+    else await runRowAction(message, row);
+  } catch(err) {
+    console.error(`${MODULE_ID} |`, err);
+    ui.notifications.error(t("SDT.Error.action"));
+  } finally {
+    button.disabled = false;
   }
 }
 

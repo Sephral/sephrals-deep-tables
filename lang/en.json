@@ -23,6 +23,14 @@
       "maxDepth": {
         "name": "Depth of tables inside tables",
         "hint": "How many levels of tables inside tables are followed. Circles are always stopped."
+      },
+      "autoActions": {
+        "name": "Results may act on their own",
+        "hint": "Actions of results that are set to run when the card is shown. Turn this off and every action waits for its button."
+      },
+      "triggerTables": {
+        "name": "Roll tables of Roll Triggers with Deep Tables",
+        "hint": "A trigger that rolls a table, for example a natural 20 on the critical hit table, shows the Deep Tables card with quantities, nested tables and actions."
       }
     },
     "gear": "Settings",
@@ -60,7 +68,8 @@
       "give": "Give to character",
       "pile": "Leave as loot pile",
       "ledger": "Add to loot",
-      "again": "Roll again"
+      "again": "Roll again",
+      "by": "for {name}"
     },
     "Problem": {
       "cycle": "Stopped at a circle: {table} leads back to itself.",
@@ -120,7 +129,12 @@
       "chance": "Chance of this row",
       "noteDraws": "Draws: {draws}",
       "noteDistinct": "No duplicates",
-      "noteMode": "Shown to: {mode}"
+      "noteMode": "Shown to: {mode}",
+      "memory": "Remember what was drawn",
+      "memoryHint": "Results that came up are not drawn again until you reset the table, even after a restart. Only rolls of Deep Tables count.",
+      "memoryHintNoReplacement": "This table draws without replacement, so Foundry already marks what came up. Remembering adds nothing here, the counter and the reset work anyway.",
+      "players": "Players may roll",
+      "playersHint": "The table shows up in the list of tables players can roll, with the visibility set above. The GM rolls it for them, so players need no permission on the table."
     },
     "Import": {
       "button": "Table from text",
@@ -178,7 +192,12 @@
       "Engine": "A test draw failed.",
       "Coins": "The coins of the game system could not be read.",
       "Piles": "The module for loot piles does not offer what this module needs.",
-      "Ledger": "The Loot Ledger does not offer what the module needs."
+      "Ledger": "The Loot Ledger does not offer what the module needs.",
+      "Memory": "The memory of tables does not work as expected.",
+      "Actions": "The actions of results do not work as expected.",
+      "Players": "The list of tables for players or the module socket is missing.",
+      "Placing": "Foundry's tokens, statuses or audio work differently than expected.",
+      "Encounters": "Saved Encounters does not offer what the module needs."
     },
     "DEBUG": {
       "Title": "Debug file",
@@ -186,6 +205,120 @@
       "Hint": "Saves one file for bug reports about all of Sephral’s modules in this world: versions, settings and what the modules recorded, such as the latest chat messages they read. It contains chat text and whispers, check it before you share it.",
       "Entry": "Save Debug File (Sephral’s Modules)",
       "Saved": "Debug file {file} saved. It contains chat text and whispers, check it before you share it."
+    },
+    "Memory": {
+      "counter": "{used} of {total} used",
+      "reset": "Reset",
+      "putBack": "Put this result back",
+      "usedList": "Used results",
+      "off": "The table does not remember what was drawn."
+    },
+    "Action": {
+      "label": "Action",
+      "title": "Action: {name}",
+      "add": "Action",
+      "addHint": "Let this result do something when it comes up: place tokens, play a sound, show a journal and more.",
+      "edit": "Edit the action",
+      "save": "Save",
+      "remove": "Remove action",
+      "incomplete": "The action does not know what to work with yet.",
+      "undo": "Undo",
+      "undoHint": "Remove what this action placed or applied",
+      "autoShort": "runs by itself",
+      "auto": "Run on its own when the card is shown",
+      "autoHint": "Only the GM runs actions. The setting for results acting on their own in the module settings can switch this off for all.",
+      "linkedHint": "This result links to a document, an empty field below uses that document.",
+      "ownLink": "The document of the result",
+      "encounter": "Saved encounter",
+      "combat": "Start a fight with the placed tokens",
+      "actor": "Actor",
+      "actorPlaceholder": "Name or UUID, drop an actor here",
+      "count": "How many",
+      "hidden": "Place hidden",
+      "soundRef": "Playlist or sound",
+      "soundFile": "Or an audio file",
+      "browse": "Browse",
+      "volume": "Volume",
+      "journalRef": "Journal or page",
+      "showHow": "What happens",
+      "status": "Status",
+      "noStatus": "None, use an effect below",
+      "effectRef": "Or an active effect (UUID)",
+      "targetLabel": "Applies to",
+      "macro": "Macro",
+      "noScene": "Open a scene first.",
+      "noActor": "The actor was not found.",
+      "nothingToPlace": "Nothing to place for {name}.",
+      "noEncounters": "Saved Encounters is needed to place a saved encounter.",
+      "noEncounter": "The saved encounter was not found.",
+      "noSound": "The playlist or sound was not found.",
+      "noJournal": "The journal was not found.",
+      "noTargets": "Target a token first.",
+      "noSelection": "Select a token first.",
+      "noEffect": "The effect was not found.",
+      "noMacro": "The macro was not found.",
+      "gone": "The result no longer has this action.",
+      "type": {
+        "label": "What it does",
+        "none": "Nothing",
+        "encounter": "Place a saved encounter",
+        "tokens": "Place tokens",
+        "sound": "Play a sound",
+        "journal": "Show a journal",
+        "effect": "Apply a status or effect",
+        "macro": "Run a macro"
+      },
+      "button": {
+        "encounter": "Place",
+        "tokens": "Place",
+        "sound": "Play",
+        "journal": "Show",
+        "effect": "Apply",
+        "macro": "Run"
+      },
+      "hint": {
+        "none": "Choose what this result does when it comes up.",
+        "encounter": "Opens the placing of Saved Encounters with its ghost preview. A quantity on the result places the group that many times.",
+        "tokens": "You click a spot on the map and the tokens stand around it. The number can be a formula like 1d4+1, empty uses the quantity of the result.",
+        "sound": "Plays a sound or a playlist for everyone, or an audio file you pick.",
+        "journal": "Shows a journal to the players or only opens it for you. A page is opened at its place for you and shown as its journal to the players.",
+        "effect": "Gives a status or effect to the tokens you have selected or targeted when you click.",
+        "macro": "Runs a macro of the world. It gets the table, the result and the quantity as the first argument."
+      },
+      "show": {
+        "show": "Show to the players",
+        "open": "Only open for me"
+      },
+      "target": {
+        "selected": "Selected tokens",
+        "targeted": "Targeted tokens"
+      },
+      "done": {
+        "tokens": "{count} tokens of {name} placed",
+        "encounter": "{name} placed with {count} tokens",
+        "sound": "Playing {name}",
+        "shown": "{name} shown to the players",
+        "opened": "{name} opened",
+        "effect": "{name} applied to {count} tokens",
+        "macro": "Macro {name} ran"
+      }
+    },
+    "Players": {
+      "title": "Tables to roll",
+      "open": "Tables you can roll",
+      "roll": "Roll",
+      "none": "The GM has not released any table for you yet.",
+      "shownTo": "Shown to",
+      "noGM": "No GM is online to roll for you.",
+      "triggerNote": "Trigger: {name}",
+      "status": {
+        "ok": "Rolled.",
+        "empty": "Nothing is left on this table.",
+        "nothing": "The table gave nothing.",
+        "denied": "You may not roll this table.",
+        "missing": "The table was not found.",
+        "invalid": "That roll did not work."
+      }
     }
   }
 }

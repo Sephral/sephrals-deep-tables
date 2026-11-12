@@ -23,6 +23,14 @@
       "maxDepth": {
         "name": "Tiefe von Tabellen in Tabellen",
         "hint": "Wie viele Ebenen von Tabellen in Tabellen verfolgt werden. Kreise werden immer gestoppt."
+      },
+      "autoActions": {
+        "name": "Ergebnisse dürfen von selbst handeln",
+        "hint": "Aktionen von Ergebnissen, die beim Zeigen der Karte loslaufen sollen. Schalte das aus, dann wartet jede Aktion auf ihren Knopf."
+      },
+      "triggerTables": {
+        "name": "Tabellen der Roll Triggers mit Deep Tables würfeln",
+        "hint": "Ein Trigger, der eine Tabelle würfelt, zum Beispiel eine natürliche 20 auf der Tabelle für kritische Treffer, zeigt die Deep Tables Karte mit Mengen, Tabellen in Tabellen und Aktionen."
       }
     },
     "gear": "Einstellungen",
@@ -60,7 +68,8 @@
       "give": "An Figur geben",
       "pile": "Als Beutehaufen ablegen",
       "ledger": "In die Beute",
-      "again": "Neu würfeln"
+      "again": "Neu würfeln",
+      "by": "für {name}"
     },
     "Problem": {
       "cycle": "Am Kreis gestoppt: {table} führt zu sich selbst zurück.",
@@ -120,7 +129,12 @@
       "chance": "Chance dieser Zeile",
       "noteDraws": "Würfe: {draws}",
       "noteDistinct": "Ohne Doppelte",
-      "noteMode": "Sichtbar für: {mode}"
+      "noteMode": "Sichtbar für: {mode}",
+      "memory": "Gewürfeltes merken",
+      "memoryHint": "Was gewürfelt wurde, kommt nicht wieder, bis du die Tabelle zurücksetzt, auch nach einem Neustart. Es zählen nur Würfe von Deep Tables.",
+      "memoryHintNoReplacement": "Diese Tabelle würfelt ohne Zurücklegen, Foundry markiert also schon, was gekommen ist. Das Merken ändert hier nichts, Zähler und Zurücksetzen funktionieren trotzdem.",
+      "players": "Spieler dürfen würfeln",
+      "playersHint": "Die Tabelle erscheint in der Liste, aus der Spieler würfeln können, mit der oben gewählten Sichtbarkeit. Der Spielleiter würfelt für sie, die Spieler brauchen also kein Recht an der Tabelle."
     },
     "Import": {
       "button": "Tabelle aus Text",
@@ -178,7 +192,12 @@
       "Engine": "Ein Probewurf ist fehlgeschlagen.",
       "Coins": "Die Münzen des Spielsystems ließen sich nicht lesen.",
       "Piles": "Das Modul für Beutehaufen bietet nicht, was dieses Modul braucht.",
-      "Ledger": "Der Loot Ledger bietet nicht, was das Modul braucht."
+      "Ledger": "Der Loot Ledger bietet nicht, was das Modul braucht.",
+      "Memory": "Das Merken der Tabellen funktioniert nicht wie erwartet.",
+      "Actions": "Die Aktionen der Ergebnisse funktionieren nicht wie erwartet.",
+      "Players": "Die Liste der Tabellen für Spieler oder der Modul Socket fehlt.",
+      "Placing": "Foundrys Spielfiguren, Zustände oder Audio funktionieren anders als erwartet.",
+      "Encounters": "Saved Encounters bietet nicht, was das Modul braucht."
     },
     "DEBUG": {
       "Title": "Debug-Datei",
@@ -186,6 +205,120 @@
       "Hint": "Speichert eine Datei für Fehlerberichte über alle Module von Sephral in dieser Welt: Versionen, Einstellungen und was die Module aufgezeichnet haben, etwa die letzten Chatnachrichten, die sie gelesen haben. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen.",
       "Entry": "Debug-Datei speichern (Sephral’s Module)",
       "Saved": "Debug-Datei {file} gespeichert. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen."
+    },
+    "Memory": {
+      "counter": "{used} von {total} benutzt",
+      "reset": "Zurücksetzen",
+      "putBack": "Dieses Ergebnis zurücklegen",
+      "usedList": "Benutzte Ergebnisse",
+      "off": "Die Tabelle merkt sich nicht, was gewürfelt wurde."
+    },
+    "Action": {
+      "label": "Aktion",
+      "title": "Aktion: {name}",
+      "add": "Aktion",
+      "addHint": "Lass dieses Ergebnis etwas tun, wenn es kommt: Spielfiguren aufstellen, einen Klang spielen, ein Journal zeigen und mehr.",
+      "edit": "Aktion bearbeiten",
+      "save": "Speichern",
+      "remove": "Aktion entfernen",
+      "incomplete": "Die Aktion weiß noch nicht, womit sie arbeiten soll.",
+      "undo": "Zurücknehmen",
+      "undoHint": "Entfernt, was diese Aktion aufgestellt oder angewendet hat",
+      "autoShort": "läuft von selbst",
+      "auto": "Von selbst ausführen, wenn die Karte gezeigt wird",
+      "autoHint": "Nur der Spielleiter führt Aktionen aus. Die Moduleinstellung für Ergebnisse, die von selbst handeln, kann das für alle abschalten.",
+      "linkedHint": "Dieses Ergebnis verweist auf ein Dokument, ein leeres Feld unten nimmt dieses Dokument.",
+      "ownLink": "Das Dokument des Ergebnisses",
+      "encounter": "Gespeicherte Begegnung",
+      "combat": "Mit den aufgestellten Figuren einen Kampf starten",
+      "actor": "Akteur",
+      "actorPlaceholder": "Name oder UUID, zieh einen Akteur hierher",
+      "count": "Wie viele",
+      "hidden": "Versteckt aufstellen",
+      "soundRef": "Playlist oder Klang",
+      "soundFile": "Oder eine Audiodatei",
+      "browse": "Durchsuchen",
+      "volume": "Lautstärke",
+      "journalRef": "Journal oder Seite",
+      "showHow": "Was passiert",
+      "status": "Zustand",
+      "noStatus": "Keiner, nimm unten einen Effekt",
+      "effectRef": "Oder ein aktiver Effekt (UUID)",
+      "targetLabel": "Gilt für",
+      "macro": "Makro",
+      "noScene": "Öffne zuerst eine Szene.",
+      "noActor": "Den Akteur gibt es nicht.",
+      "nothingToPlace": "Für {name} gibt es nichts aufzustellen.",
+      "noEncounters": "Zum Aufstellen einer gespeicherten Begegnung braucht es Saved Encounters.",
+      "noEncounter": "Die gespeicherte Begegnung gibt es nicht.",
+      "noSound": "Die Playlist oder der Klang wurde nicht gefunden.",
+      "noJournal": "Das Journal wurde nicht gefunden.",
+      "noTargets": "Nimm zuerst eine Figur ins Ziel.",
+      "noSelection": "Wähle zuerst eine Figur aus.",
+      "noEffect": "Den Effekt gibt es nicht.",
+      "noMacro": "Das Makro gibt es nicht.",
+      "gone": "Das Ergebnis hat diese Aktion nicht mehr.",
+      "type": {
+        "label": "Was es tut",
+        "none": "Nichts",
+        "encounter": "Gespeicherte Begegnung aufstellen",
+        "tokens": "Spielfiguren aufstellen",
+        "sound": "Klang spielen",
+        "journal": "Journal zeigen",
+        "effect": "Zustand oder Effekt anwenden",
+        "macro": "Makro ausführen"
+      },
+      "button": {
+        "encounter": "Aufstellen",
+        "tokens": "Aufstellen",
+        "sound": "Abspielen",
+        "journal": "Zeigen",
+        "effect": "Anwenden",
+        "macro": "Ausführen"
+      },
+      "hint": {
+        "none": "Wähle, was dieses Ergebnis tut, wenn es kommt.",
+        "encounter": "Öffnet das Aufstellen von Saved Encounters mit der Geistervorschau. Eine Menge am Ergebnis stellt die Gruppe entsprechend oft auf.",
+        "tokens": "Du klickst auf die Karte und die Figuren stehen darum herum. Die Zahl darf eine Formel wie 1d4+1 sein, leer nimmt die Menge des Ergebnisses.",
+        "sound": "Spielt für alle einen Klang oder eine Playlist, oder eine Audiodatei, die du wählst.",
+        "journal": "Zeigt den Spielern ein Journal oder öffnet es nur für dich. Eine Seite öffnet sich bei dir an ihrer Stelle und kommt bei den Spielern als ihr Journal.",
+        "effect": "Gibt den Figuren, die du beim Klick ausgewählt oder im Ziel hast, einen Zustand oder Effekt.",
+        "macro": "Führt ein Makro der Welt aus. Es bekommt Tabelle, Ergebnis und Menge als erstes Argument."
+      },
+      "show": {
+        "show": "Den Spielern zeigen",
+        "open": "Nur bei mir öffnen"
+      },
+      "target": {
+        "selected": "Ausgewählte Figuren",
+        "targeted": "Anvisierte Figuren"
+      },
+      "done": {
+        "tokens": "{count} Figuren von {name} aufgestellt",
+        "encounter": "{name} mit {count} Figuren aufgestellt",
+        "sound": "{name} wird gespielt",
+        "shown": "{name} den Spielern gezeigt",
+        "opened": "{name} geöffnet",
+        "effect": "{name} auf {count} Figuren angewendet",
+        "macro": "Makro {name} ausgeführt"
+      }
+    },
+    "Players": {
+      "title": "Tabellen zum Würfeln",
+      "open": "Tabellen, die du würfeln kannst",
+      "roll": "Würfeln",
+      "none": "Der Spielleiter hat noch keine Tabelle für dich freigegeben.",
+      "shownTo": "Sichtbar für",
+      "noGM": "Kein Spielleiter ist online, der für dich würfeln kann.",
+      "triggerNote": "Trigger: {name}",
+      "status": {
+        "ok": "Gewürfelt.",
+        "empty": "Auf dieser Tabelle ist nichts mehr übrig.",
+        "nothing": "Die Tabelle hat nichts ergeben.",
+        "denied": "Diese Tabelle darfst du nicht würfeln.",
+        "missing": "Die Tabelle gibt es nicht.",
+        "invalid": "Dieser Wurf hat nicht geklappt."
+      }
     }
   }
 }

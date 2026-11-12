@@ -13,6 +13,7 @@
  * @property {Record<string, number>} coins
  * @property {string} [html]
  * @property {string} [text]
+ * @property {{type: string, auto: boolean, t: string, r: string}|null} [act]   The action of the result
  */
 
 /**
@@ -30,10 +31,12 @@ export function mergeLines(lines) {
     if ( line.kind === "coins" ) key = "coins";
     else if ( line.kind === "text" ) key = `text:${line.text}`;
     else key = `${line.kind}:${line.uuid}:${line.name}`;
+    // Results with an action stay apart from equal ones without, and from other results' actions
+    if ( line.act && (line.kind !== "coins") ) key += `|act:${line.act.t}:${line.act.r}`;
     let row = merged.get(key);
     if ( !row ) {
       row = {key, kind: line.kind, name: line.name, img: line.img ?? "", uuid: line.uuid, quantity: 0, coins: {},
-        html: line.html, text: line.text};
+        html: line.html, text: line.text, act: (line.kind === "coins") ? null : (line.act ?? null)};
       merged.set(key, row);
     }
     if ( line.kind === "coins" ) {

@@ -10,25 +10,27 @@
 
 ## Highlights
 
-* **Deep roll:** look at the result before anybody sees it. Untick rows, change a quantity, draw one row again or everything again, then show it in chat.
-* **Draw now:** one click on any table gives the card at once, with the settings of the table.
-* **Tables inside tables:** a result that points to another table is rolled on, as often as its quantity says. Circles and runaway depth are stopped.
-* **Quantities and several draws:** every result can carry a formula like 2d4+1, every table a number of draws like 1d4+1, with an option for no duplicates.
-* **Living texts:** `[[1d6]]` in a result becomes a number, `@Table[Names]` draws a name from another table into the sentence. Texts like 3d6 gp become coins.
-* **One clear card:** a single chat message with pictures, item links you can drag, equal results added up and the dice attached.
-* **Where it goes:** with one click the GM gives the result to a character, leaves it as a loot pile on the map or adds it to the Loot Ledger.
-* **Table from text:** paste a list from a PDF or a forum and get a roll table, with ranges, weights and items found by name.
-* **Your tables keep working:** quantities and draws stored by older table modules are read, those modules do not have to be active.
+* **Results that act:** a result can place a saved group of monsters with its ghost preview, put tokens on the map, play a sound, show a handout, give a condition or run a macro. A button on the card, or automatic. Placed tokens go away again with one click.
+* **Tables with a memory:** a table remembers what it gave, even after a restart. A counter shows 3 of 12 used, one click puts a result back or resets the table.
+* **Tables for your players:** release a table and your players roll it from a small list in their chat.
+* **A natural 20 that rolls a table:** with Roll Triggers by Sephral the critical hit table rolls by itself and shows one clear card.
+* **Deep roll:** look at the result before anybody sees it. Untick rows, change a quantity, draw one row again, then show it in chat.
+* **Tables inside tables:** a result that points to another table is rolled on, as often as its quantity says.
+* **Quantities and several draws:** results carry formulas like 2d4+1, tables a number of draws, with an option for no duplicates.
+* **Living texts:** `[[1d6]]` becomes a number, `@Table[Names]` draws a name into the sentence.
+* **One clear card:** a single chat message, and a click gives the result to a character, leaves it as a loot pile or adds it to the Loot Ledger.
+* **Table from text:** paste a list and get a roll table, with ranges, weights and items found by name.
+* **Your tables keep working:** settings of older table modules are read.
 
 ## How it works
 
-1. Right click a roll table in the sidebar or a compendium and choose *Deep roll* or *Draw now*. The table window has both as well.
-2. In the deep roll window change what you like, then click *Show in chat*.
-3. On the card the GM clicks *Give to character*, *Leave as loot pile* or *Add to loot*.
+1. Right click a roll table and choose *Deep roll* or *Draw now*.
+2. Change what you like, then click *Show in chat*.
+3. On the card click *Place*, *Give to character* or whatever the result offers.
 
 ## Good to know
 
-Players can roll every table they can see. Marking results as drawn, giving and the other buttons are for the GM.
+Saved Encounters and Roll Triggers by Sephral add the encounter placing and the triggers. Everything else works without them. Only the GM runs actions.
 
 ## Install
 

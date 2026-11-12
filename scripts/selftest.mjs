@@ -6,6 +6,9 @@ import {MODULE_ID, TEMPLATES, TESTED_VERSIONS, esc, isActive, t} from "./config.
 import {coinLabel, denominations, purseKind} from "./coins.mjs";
 import {drawTable, parseCoinText} from "./draw.mjs";
 import {makeDeps} from "./engine.mjs";
+import {ACTION_TYPES, isComplete, normalizeAction, spreadCells} from "./actions.mjs";
+import {applyMemory, counter} from "./memory.mjs";
+import {checkRequest} from "./players.mjs";
 
 /**
  * Run all checks.
@@ -27,7 +30,7 @@ async function checkAll() {
   check(typeof ChatMessage.implementation?.create === "function" && typeof Roll === "function", "SDT.SELFTEST.Chat");
   let templates = true;
   try {
-    await Promise.all(["deep-roll", "import"].map(name => foundry.applications.handlebars.getTemplate(`${TEMPLATES}/${name}.hbs`)));
+    await Promise.all(["deep-roll", "import", "action", "players"].map(name => foundry.applications.handlebars.getTemplate(`${TEMPLATES}/${name}.hbs`)));
   } catch {
     templates = false;
   }
@@ -43,6 +46,21 @@ async function checkAll() {
     engine = false;
   }
   check(engine, "SDT.SELFTEST.Engine");
+  // The new parts: memory, actions, the list for players
+  const remembered = applyMemory([{id: "a", drawn: false}, {id: "b", drawn: false}], {memory: true, used: ["a"]});
+  check(remembered[0].drawn && !remembered[1].drawn && (counter(remembered, {memory: true, used: ["a"]}, true).used === 1),
+    "SDT.SELFTEST.Memory");
+  const action = normalizeAction({type: "tokens", ref: "Goblin", count: "1d4"});
+  check(!!action && isComplete(action) && (spreadCells(3).length === 3) && (ACTION_TYPES.length === 6), "SDT.SELFTEST.Actions");
+  check(checkRequest({uuid: "x"}, {players: true, pack: false, mode: "gm"}).mode === "gm"
+    && !!game.socket && (typeof game.socket.emit === "function") && Array.isArray(game.settings.get(MODULE_ID, "playerTables")),
+    "SDT.SELFTEST.Players");
+  check((typeof Actor.prototype.getTokenDocument === "function") && (typeof Actor.prototype.toggleStatusEffect === "function")
+    && (typeof foundry.audio?.AudioHelper?.play === "function"), "SDT.SELFTEST.Placing");
+  if ( isActive("sephrals-saved-encounters") ) {
+    const api = game.modules.get("sephrals-saved-encounters").api;
+    check((typeof api?.place === "function") && (typeof api?.encounters === "function"), "SDT.SELFTEST.Encounters");
+  }
   if ( purseKind() ) {
     check(denominations().length > 0 && !!parseCoinText(`1 ${coinLabel(denominations()[0].key)}`, denominations()), "SDT.SELFTEST.Coins");
   }
@@ -54,7 +72,8 @@ async function checkAll() {
     const api = game.modules.get("sephrals-loot-ledger").api;
     check((typeof api?.request === "function") && (typeof api?.adapter === "function"), "SDT.SELFTEST.Ledger");
   }
-  const keys = ["SDT.gear", "SDT.SELFTEST.Title", "SDT.Deep.post", "SDT.Card.give", "SDT.Import.create"];
+  const keys = ["SDT.gear", "SDT.SELFTEST.Title", "SDT.Deep.post", "SDT.Card.give", "SDT.Import.create", "SDT.Action.save",
+    "SDT.Memory.counter", "SDT.Players.title"];
   const missing = keys.filter(key => !game.i18n.has(key));
   check(!missing.length, "SDT.SELFTEST.Texts", {keys: missing.join(", ")});
   return {problems, checks};

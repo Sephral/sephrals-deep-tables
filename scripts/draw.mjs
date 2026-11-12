@@ -8,6 +8,8 @@
  * ([[1d6]]) and draws from other tables (@Table[Name]).
  */
 
+import {lineAction} from "./actions.mjs";
+
 /** The default depth nested tables are followed. */
 export const MAX_DEPTH = 5;
 
@@ -28,10 +30,11 @@ const MAX_TRIES = 500;
  * @property {boolean} replacement
  * @property {boolean} pack          The table is in a compendium (nothing is marked as drawn there)
  * @property {boolean} distinct      No result twice in one roll
+ * @property {boolean} [memory]      The table remembers what was drawn (the results it remembers come as drawn)
  * @property {string} draws          Formula of the number of draws
  * @property {string} mode           Visibility, "foundry" follows the chat setting
  * @property {{id: string, type: string, name: string, img: string, description: string, documentUuid: string|null,
- *   range: number[], weight: number, drawn: boolean, quantity: string}[]} results
+ *   range: number[], weight: number, drawn: boolean, quantity: string, action?: object|null}[]} results
  */
 
 /**
@@ -52,8 +55,9 @@ const MAX_TRIES = 500;
  * @property {string} resultId
  * @property {number} depth
  * @property {string[]} path          Names of the tables from the top one to this one
- * @property {{t: string, r: string, x: boolean, m: boolean}[]} picks   Every pick on the way: table, result,
- *   exclusive (no repeat in this roll), mark as drawn
+ * @property {{t: string, r: string, x: boolean, m: boolean, k: boolean}[]} picks   Every pick on the way: table,
+ *   result, exclusive (no repeat in this roll), mark as drawn, remember (tables with a memory)
+ * @property {{type: string, auto: boolean, t: string, r: string}|null} act   The action of the result, see actions.mjs
  * @property {object[]} rolls         The dice rolls behind the line (opaque to the engine)
  * @property {boolean} include
  */
@@ -306,10 +310,11 @@ async function drawOnce(table, deps, ctx, lines) {
     return true;
   }
   if ( roll ) ctx.bag.push(roll);
-  const exclusive = !!(table.distinct || !table.replacement);
+  const exclusive = !!(table.distinct || !table.replacement || table.memory);
   for ( const result of results ) {
     if ( exclusive ) exclude.add(result.id);
-    const picks = [...ctx.picks, {t: table.uuid, r: result.id, x: exclusive, m: !table.replacement && !table.pack}];
+    const picks = [...ctx.picks, {t: table.uuid, r: result.id, x: exclusive, m: !table.replacement && !table.pack,
+      k: !!table.memory && !table.pack}];
     lines.push(...await linesFor(result, table, deps, {...ctx, picks}));
   }
   return false;
@@ -336,7 +341,7 @@ async function linesFor(result, table, deps, ctx) {
   const path = [...ctx.path, table.name];
   const base = () => ({id: newId(), tableUuid: table.uuid, tableName: table.name, resultId: result.id,
     depth: ctx.depth, path, picks: ctx.picks, formula, invalid: quantity === null, coins: {}, quantity: 0, include: true,
-    img: result.img ?? "", rolls: bag});
+    img: result.img ?? "", rolls: bag, act: lineAction(result.action, table.uuid, result.id)});
   if ( state.count >= MAX_LINES ) return [];
   const here = [...ctx.chain, table.uuid];
 

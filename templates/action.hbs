@@ -1,0 +1,113 @@
+<div class="sdt-shell">
+  <div class="sdt-action-body">
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.type.label"}}</span>
+      <select name="type">
+        {{#each types}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    <p class="hint">{{hint}}</p>
+    {{#if linkedHint}}<p class="hint">{{linkedHint}}</p>{{/if}}
+
+    {{#if is.encounter}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.encounter"}}</span>
+      <select name="ref">
+        {{#each encounters}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{#unless encountersOn}}<p class="sdt-notes-line"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize "SDT.Action.noEncounters"}}</p>{{/unless}}
+    <label class="sdt-field sdt-check">
+      <input type="checkbox" name="combat" {{#if combat}}checked{{/if}}>
+      <span>{{localize "SDT.Action.combat"}}</span>
+    </label>
+    {{/if}}
+
+    {{#if is.tokens}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.actor"}}</span>
+      <input type="text" name="ref" value="{{ref}}" list="sdt-actors" data-drop autocomplete="off" placeholder="{{localize 'SDT.Action.actorPlaceholder'}}">
+      <datalist id="sdt-actors">{{#each actorNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.count"}}</span>
+      <input type="text" name="count" value="{{count}}" placeholder="1" autocomplete="off">
+    </label>
+    <label class="sdt-field sdt-check">
+      <input type="checkbox" name="hidden" {{#if hidden}}checked{{/if}}>
+      <span>{{localize "SDT.Action.hidden"}}</span>
+    </label>
+    {{/if}}
+
+    {{#if is.sound}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.soundRef"}}</span>
+      <input type="text" name="ref" value="{{ref}}" data-drop autocomplete="off" placeholder="Playlist.… / PlaylistSound.…">
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.soundFile"}}</span>
+      <span class="sdt-row-inline">
+        <input type="text" name="src" value="{{src}}" autocomplete="off">
+        <button type="button" data-action="pickFile"><i class="fa-solid fa-folder-open" inert></i> {{localize "SDT.Action.browse"}}</button>
+      </span>
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.volume"}}</span>
+      <input type="range" name="volume" min="0" max="1" step="0.05" value="{{volume}}">
+    </label>
+    {{/if}}
+
+    {{#if is.journal}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.journalRef"}}</span>
+      <input type="text" name="ref" value="{{ref}}" data-drop autocomplete="off" placeholder="JournalEntry.… / JournalEntryPage.…">
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.showHow"}}</span>
+      <select name="show">
+        {{#each shows}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{/if}}
+
+    {{#if is.effect}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.status"}}</span>
+      <select name="status">
+        {{#each statuses}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.effectRef"}}</span>
+      <input type="text" name="ref" value="{{ref}}" data-drop autocomplete="off" placeholder="…ActiveEffect.…">
+    </label>
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.targetLabel"}}</span>
+      <select name="target">
+        {{#each targets}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{/if}}
+
+    {{#if is.macro}}
+    <label class="sdt-field sdt-block">
+      <span>{{localize "SDT.Action.macro"}}</span>
+      <select name="ref">
+        {{#each macros}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    {{/if}}
+
+    {{#if type}}
+    <label class="sdt-field sdt-check">
+      <input type="checkbox" name="auto" {{#if auto}}checked{{/if}}>
+      <span>{{localize "SDT.Action.auto"}}</span>
+    </label>
+    <p class="hint">{{localize "SDT.Action.autoHint"}}</p>
+    {{/if}}
+  </div>
+  <footer class="sdt-foot">
+    {{#if canRemove}}<button type="button" data-action="remove"><i class="fa-solid fa-trash" inert></i> {{localize "SDT.Action.remove"}}</button>{{else}}<span></span>{{/if}}
+    <button type="button" class="sdt-primary" data-action="save"><i class="fa-solid fa-check" inert></i> {{localize "SDT.Action.save"}}</button>
+  </footer>
+</div>

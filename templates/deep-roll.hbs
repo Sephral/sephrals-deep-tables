@@ -31,6 +31,27 @@
   </ul>
   {{/if}}
 
+  {{#if counters.length}}
+  <div class="sdt-memory">
+    {{#each counters}}
+    <div class="sdt-counter-row">
+      <span class="sdt-counter"><i class="fa-solid fa-brain" inert></i> {{name}}: {{text}}</span>
+      {{#if canEdit}}{{#if used}}<button type="button" data-action="resetMemory" data-uuid="{{uuid}}"><i class="fa-solid fa-rotate-left" inert></i> {{localize "SDT.Memory.reset"}}</button>{{/if}}{{/if}}
+    </div>
+    {{#if usedResults.length}}
+    <details class="sdt-used-list">
+      <summary>{{localize "SDT.Memory.usedList"}}</summary>
+      <ul>
+        {{#each usedResults}}
+        <li><span>{{name}}</span>{{#if ../canEdit}}<button type="button" class="sdt-icon" data-action="putBackOne" data-uuid="{{../uuid}}" data-result="{{id}}" data-tooltip="{{localize 'SDT.Memory.putBack'}}" aria-label="{{localize 'SDT.Memory.putBack'}}"><i class="fa-solid fa-rotate-left" inert></i></button>{{/if}}</li>
+        {{/each}}
+      </ul>
+    </details>
+    {{/if}}
+    {{/each}}
+  </div>
+  {{/if}}
+
   {{#if resetName}}
   <div class="sdt-reset">
     <button type="button" data-action="resetTable"><i class="fa-solid fa-rotate-left" inert></i> {{localize "SDT.Deep.reset"}} ({{resetName}})</button>

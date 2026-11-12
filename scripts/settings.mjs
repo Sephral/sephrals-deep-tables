@@ -17,12 +17,15 @@ export const SETTINGS = {
   theme: {type: String, default: "signature", scope: "client", onChange: "redraw", choices: {
     signature: "SDT.SETTINGS.theme.signature", foundry: "SDT.SETTINGS.theme.foundry"}},
   showChances: {type: Boolean, default: true, scope: "client", onChange: "redraw"},
-  maxDepth: {type: Number, default: 5, scope: "world", range: {min: 1, max: 10, step: 1}}
+  maxDepth: {type: Number, default: 5, scope: "world", range: {min: 1, max: 10, step: 1}},
+  autoActions: {type: Boolean, default: true, scope: "world"},
+  // Only offered while Roll Triggers is active
+  triggerTables: {type: Boolean, default: true, scope: "world", needs: "sephrals-roll-triggers"}
 };
 
 /**
  * Register all settings of the module and its menus.
- * @param {{language: Function, redraw: Function}} handlers
+ * @param {{language: Function, redraw: Function, players?: Function}} handlers
  */
 export function registerSettings(handlers) {
   for ( const [key, def] of Object.entries(SETTINGS) ) {
@@ -30,7 +33,7 @@ export function registerSettings(handlers) {
       name: `SDT.SETTINGS.${key}.name`,
       hint: `SDT.SETTINGS.${key}.hint`,
       scope: def.scope ?? "world",
-      config: true,
+      config: def.needs ? !!game.modules.get(def.needs)?.active : true,
       type: def.type,
       choices: def.choices,
       range: def.range,
@@ -38,6 +41,9 @@ export function registerSettings(handlers) {
       onChange: def.onChange ? value => handlers[def.onChange]?.(value) : undefined
     });
   }
+  // The list of tables players may roll, kept by the GM
+  game.settings.register(MODULE_ID, "playerTables", {scope: "world", config: false, type: Array, default: [],
+    onChange: () => handlers.players?.()});
   game.settings.register(MODULE_ID, "acknowledgedVersions", {scope: "client", config: false, type: String, default: ""});
   game.settings.registerMenu(MODULE_ID, "selfTest", {
     name: "SDT.SELFTEST.Title",
