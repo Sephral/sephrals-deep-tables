@@ -1,0 +1,191 @@
+{
+  "SDT": {
+    "LANGUAGE": {
+      "default": "Wie Foundry",
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "SETTINGS": {
+      "uiLanguage": {
+        "name": "Modulsprache",
+        "hint": "Sprache von Deep Tables auf diesem Gerät. \"Wie Foundry\" folgt der Sprache von Foundry."
+      },
+      "theme": {
+        "name": "Aussehen",
+        "hint": "Signature zeigt die Fenster auf warmem Papier, Foundry lässt sie dunkel wie den Rest von Foundry.",
+        "signature": "Signature (Papier)",
+        "foundry": "Foundry (dunkel)"
+      },
+      "showChances": {
+        "name": "Chancen in Tabellen zeigen",
+        "hint": "Zeigt beim Ansehen einer Tabelle die Chance jeder Zeile neben ihrem Bereich."
+      },
+      "maxDepth": {
+        "name": "Tiefe von Tabellen in Tabellen",
+        "hint": "Wie viele Ebenen von Tabellen in Tabellen verfolgt werden. Kreise werden immer gestoppt."
+      }
+    },
+    "gear": "Einstellungen",
+    "Mode": {
+      "foundry": "Wie in Foundry",
+      "public": "Alle",
+      "gm": "Nur SL",
+      "blind": "Blind (nur SL, vor dir verborgen)",
+      "self": "Nur ich"
+    },
+    "Menu": {
+      "deep": "Mit Vorschau würfeln",
+      "now": "Sofort würfeln"
+    },
+    "Deep": {
+      "title": "Vorschau: {name}",
+      "draws": "Würfe",
+      "drawsHint": "Wie oft auf die Tabelle gewürfelt wird. Eine Zahl oder eine Formel wie 1d4+1.",
+      "distinct": "Ohne Doppelte",
+      "visibility": "Sichtbar für",
+      "rerollAll": "Alles neu würfeln",
+      "rerollLine": "Diese Zeile neu würfeln",
+      "reset": "Alle Ergebnisse zurücklegen",
+      "empty": "Der Wurf hat nichts ergeben.",
+      "include": "Im Chat zeigen",
+      "quantity": "Menge",
+      "noOther": "Für diese Zeile ist kein anderes Ergebnis übrig.",
+      "invalidDraws": "Die Zahl der Würfe ließ sich nicht auswerten, es wird einmal gewürfelt.",
+      "invalidQuantity": "Die Menge ließ sich nicht auswerten, es gilt 1",
+      "summary": "Items: {items}, Zeilen: {lines}",
+      "post": "Im Chat zeigen"
+    },
+    "Card": {
+      "draws": "{count} Würfe",
+      "give": "An Figur geben",
+      "pile": "Als Beutehaufen ablegen",
+      "ledger": "In die Beute",
+      "again": "Neu würfeln"
+    },
+    "Problem": {
+      "cycle": "Am Kreis gestoppt: {table} führt zu sich selbst zurück.",
+      "depth": "{table} liegt zu tief verschachtelt und wurde ausgelassen.",
+      "missing": "Nicht gefunden: {ref}",
+      "empty": "{table} hat keine Ergebnisse mehr.",
+      "impossible": "{table} hat kein Ergebnis für ihre Formel.",
+      "invalid": "Die Formel von {table} lässt sich nicht auswerten.",
+      "ranOut": "{table} war leer, bevor alle Würfe gemacht waren."
+    },
+    "Draw": {
+      "empty": "Alle Ergebnisse von {name} sind gezogen.",
+      "emptyTitle": "Tabelle ist leer",
+      "emptyAsk": "Alle Ergebnisse von {name} sind gezogen. Alle zurücklegen?",
+      "reset": "{name} ist wieder voll.",
+      "nothing": "{name} hat nichts ergeben."
+    },
+    "Give": {
+      "title": "An Figur geben",
+      "to": "Geben an",
+      "ok": "Geben",
+      "selected": "Ausgewählte Tokens",
+      "heroes": "Spielerfiguren",
+      "others": "Andere Akteure",
+      "nothing": "Es gibt keine Items oder Münzen zum Weitergeben.",
+      "noActors": "Es gibt keine Akteure, an die man geben könnte.",
+      "noPurse": "Dieses Spielsystem hat keinen Münzbeutel, den das Modul füllen kann. Münzen bleiben Text.",
+      "items": "Items: {count}",
+      "done": "{name} hat bekommen: {what}",
+      "coinsSkipped": "Diese Münzen haben im Beutel keinen Platz: {coins}",
+      "failed": "Konnte nicht geben: {names}"
+    },
+    "Pile": {
+      "pick": "Klicke auf die Karte, wo der Haufen hin soll. Escape bricht ab.",
+      "noScene": "Öffne zuerst eine Szene.",
+      "failed": "Der Beutehaufen konnte nicht angelegt werden.",
+      "done": "Beutehaufen mit {count} Gegenständen angelegt.",
+      "note": "Als Beutehaufen abgelegt"
+    },
+    "Ledger": {
+      "note": "In die Beute gelegt"
+    },
+    "Error": {
+      "action": "Das hat nicht geklappt. Einzelheiten stehen in der Konsole."
+    },
+    "Sheet": {
+      "legend": "Deep Tables",
+      "draws": "Würfe",
+      "drawsHint": "Wie oft auf einmal auf die Tabelle gewürfelt wird, eine Zahl oder eine Formel wie 1d4+1. Leer heißt einmal.",
+      "distinct": "Ohne Doppelte",
+      "distinctHint": "Ein Ergebnis kommt in einem Wurf nur einmal vor.",
+      "mode": "Sichtbar für",
+      "modeHint": "Wer die Ergebniskarte sieht. \"Wie in Foundry\" folgt der Chateinstellung dessen, der würfelt.",
+      "quantity": "Menge",
+      "quantityShort": "Menge",
+      "quantityHint": "Wie viele: ein Item kommt so oft, auf eine Tabelle wird so oft gewürfelt, ein Text wiederholt sich. Eine Zahl oder eine Formel wie 2d4+1.",
+      "chance": "Chance dieser Zeile",
+      "noteDraws": "Würfe: {draws}",
+      "noteDistinct": "Ohne Doppelte",
+      "noteMode": "Sichtbar für: {mode}"
+    },
+    "Import": {
+      "button": "Tabelle aus Text",
+      "buttonHint": "Eine Liste einfügen und daraus eine Tabelle machen",
+      "title": "Tabelle aus Text",
+      "text": "Liste",
+      "placeholder": "d20 Begegnungen\n1-4 Goblin\n5-10 Wolf\n11-20 Nichts",
+      "hint": "Bereiche (1-4 Goblin), Zahlen (5: Wolf), Gewichte (Goblin | 3) oder ein Eintrag pro Zeile. Eine erste Zeile wie d20 Begegnungen gibt Name und Formel.",
+      "name": "Name",
+      "defaultName": "Importierte Tabelle",
+      "formula": "Formel",
+      "items": "Items suchen",
+      "itemMode": {
+        "off": "Nein",
+        "world": "In der Welt",
+        "all": "In der Welt und in Kompendien"
+      },
+      "itemFound": "Passt zu einem Item",
+      "searching": "Suche nach Items",
+      "range": "Wurf",
+      "result": "Ergebnis",
+      "nothing": "Noch nichts erkannt. Füge oben eine Liste ein.",
+      "summary": "Zeilen: {count}, Formel: {formula}, Items gefunden: {items}",
+      "create": "Tabelle erstellen",
+      "created": "Tabelle {name} erstellt.",
+      "problem": {
+        "empty": "Der Text enthält keine Zeilen.",
+        "beyond": "Einige Zeilen liegen über dem höchsten Wurf von {formula}.",
+        "formula": "Die Formel {formula} passt nicht zu den {total} Gewichten, sie wurde angepasst.",
+        "gaps": "Würfe ohne Zeile: {list}",
+        "overlaps": "Würfe in mehr als einer Zeile: {list}",
+        "backwards": "Der Bereich {from} bis {to} wurde umgedreht.",
+        "ignored": "Ignoriert: {line}"
+      }
+    },
+    "Journal": {
+      "tooltip": "Auf die Tabelle würfeln. Mit Shift öffnet sich die Vorschau.",
+      "unavailable": "Auf diese Tabelle kannst du nicht würfeln."
+    },
+    "SELFTEST": {
+      "Title": "Selbsttest",
+      "Run": "Selbsttest starten",
+      "Hint": "Prüft nach einem Update, ob alles da ist, worauf das Modul baut.",
+      "Passed": "Selbsttest bestanden: {checks} Prüfungen.",
+      "Problems": "Selbsttest: {problems} Probleme bei {checks} Prüfungen.",
+      "Version": "Foundry {current}, geprüft mit {tested}.",
+      "NewVersions": "Foundry ist neuer als die geprüfte Version ({versions}). Starte den Selbsttest, wenn etwas nicht mehr passt.",
+      "Dialog": "Foundrys Dialoge fehlen.",
+      "Texts": "Texte fehlen: {keys}",
+      "Tables": "Foundrys Rolltabellen arbeiten anders als erwartet.",
+      "Sheet": "Foundrys Tabellenbogen fehlt.",
+      "Enrichers": "Foundrys Text Enricher fehlen.",
+      "Chat": "Foundrys Chat oder seine Nachrichteneinstellung fehlt.",
+      "Templates": "Eine Fenstervorlage des Moduls ließ sich nicht laden.",
+      "Engine": "Ein Probewurf ist fehlgeschlagen.",
+      "Coins": "Die Münzen des Spielsystems ließen sich nicht lesen.",
+      "Piles": "Das Modul für Beutehaufen bietet nicht, was dieses Modul braucht.",
+      "Ledger": "Der Loot Ledger bietet nicht, was das Modul braucht."
+    },
+    "DEBUG": {
+      "Title": "Debug-Datei",
+      "Save": "Debug-Datei speichern",
+      "Hint": "Speichert eine Datei für Fehlerberichte über alle Module von Sephral in dieser Welt: Versionen, Einstellungen und was die Module aufgezeichnet haben, etwa die letzten Chatnachrichten, die sie gelesen haben. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen.",
+      "Entry": "Debug-Datei speichern (Sephral’s Module)",
+      "Saved": "Debug-Datei {file} gespeichert. Sie enthält Chattext und Flüsternachrichten, prüfe sie vor dem Teilen."
+    }
+  }
+}

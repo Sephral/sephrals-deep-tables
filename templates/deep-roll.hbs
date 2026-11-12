@@ -1,0 +1,70 @@
+<div class="sdt-shell">
+  <header class="sdt-head">
+    <img src="{{img}}" alt="">
+    <div class="sdt-head-text">
+      <strong>{{name}}</strong>
+      <small>{{formulaText}}</small>
+    </div>
+  </header>
+
+  <div class="sdt-options">
+    <label class="sdt-field" data-tooltip="{{localize 'SDT.Deep.drawsHint'}}">
+      <span>{{localize "SDT.Deep.draws"}}</span>
+      <input type="text" name="draws" value="{{draws}}" placeholder="1" autocomplete="off">
+    </label>
+    <label class="sdt-field sdt-check">
+      <input type="checkbox" name="distinct" {{#if distinct}}checked{{/if}}>
+      <span>{{localize "SDT.Deep.distinct"}}</span>
+    </label>
+    <label class="sdt-field">
+      <span>{{localize "SDT.Deep.visibility"}}</span>
+      <select name="mode">
+        {{#each modes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    <button type="button" data-action="rerollAll"><i class="fa-solid fa-dice" inert></i> {{localize "SDT.Deep.rerollAll"}}</button>
+  </div>
+
+  {{#if problems.length}}
+  <ul class="sdt-notes">
+    {{#each problems}}<li><i class="fa-solid fa-triangle-exclamation" inert></i> {{text}}</li>{{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if resetName}}
+  <div class="sdt-reset">
+    <button type="button" data-action="resetTable"><i class="fa-solid fa-rotate-left" inert></i> {{localize "SDT.Deep.reset"}} ({{resetName}})</button>
+  </div>
+  {{/if}}
+
+  {{#if empty}}
+  <p class="sdt-empty"><i class="fa-solid fa-dice-d20" inert></i> {{localize "SDT.Deep.empty"}}</p>
+  {{else}}
+  <ul class="sdt-lines">
+    {{#each rows}}
+    <li class="sdt-line {{#unless include}}sdt-off{{/unless}}" data-line-id="{{id}}">
+      <input type="checkbox" name="include" {{#if include}}checked{{/if}} aria-label="{{localize 'SDT.Deep.include'}}">
+      {{#if img}}<img class="sdt-thumb" src="{{img}}" alt="">{{else}}<span class="sdt-thumb sdt-thumb-icon"><i class="fa-solid {{icon}}" inert></i></span>{{/if}}
+      <div class="sdt-line-main">
+        <div class="sdt-line-name">{{name}}</div>
+        {{#if path}}<div class="sdt-line-path">{{path}}</div>{{/if}}
+        {{#if invalid}}<div class="sdt-line-warn"><i class="fa-solid fa-triangle-exclamation" inert></i> {{../invalidText}} ({{formula}})</div>{{/if}}
+      </div>
+      {{#if editable}}
+      <label class="sdt-qty-edit" data-tooltip="{{../quantityText}}">×
+        <input type="number" name="quantity" min="0" step="1" value="{{quantity}}">
+      </label>
+      {{else if countText}}<span class="sdt-qty">{{countText}}</span>{{/if}}
+      <button type="button" class="sdt-icon" data-action="rerollLine" data-tooltip="{{../rerollText}}" aria-label="{{../rerollText}}"
+        {{#unless canReroll}}disabled{{/unless}}><i class="fa-solid fa-rotate" inert></i></button>
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  <footer class="sdt-foot">
+    <span class="sdt-summary">{{summary}}</span>
+    <button type="button" class="sdt-primary" data-action="post" {{#unless canPost}}disabled{{/unless}}>
+      <i class="fa-solid fa-comment-dots" inert></i> {{localize "SDT.Deep.post"}}</button>
+  </footer>
+</div>

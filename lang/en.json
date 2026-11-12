@@ -1,0 +1,191 @@
+{
+  "SDT": {
+    "LANGUAGE": {
+      "default": "Like Foundry",
+      "de": "Deutsch",
+      "en": "English"
+    },
+    "SETTINGS": {
+      "uiLanguage": {
+        "name": "Module language",
+        "hint": "Language of Deep Tables on this device. \"Like Foundry\" follows Foundry's language."
+      },
+      "theme": {
+        "name": "Look",
+        "hint": "Signature shows the windows on warm paper, Foundry keeps them dark like the rest of Foundry.",
+        "signature": "Signature (paper)",
+        "foundry": "Foundry (dark)"
+      },
+      "showChances": {
+        "name": "Show chances in tables",
+        "hint": "Shows the chance of every row next to its range when you look at a table."
+      },
+      "maxDepth": {
+        "name": "Depth of tables inside tables",
+        "hint": "How many levels of tables inside tables are followed. Circles are always stopped."
+      }
+    },
+    "gear": "Settings",
+    "Mode": {
+      "foundry": "Like in Foundry",
+      "public": "Everyone",
+      "gm": "GM only",
+      "blind": "Blind (GM only, hidden from you)",
+      "self": "Only me"
+    },
+    "Menu": {
+      "deep": "Deep roll",
+      "now": "Draw now"
+    },
+    "Deep": {
+      "title": "Deep roll: {name}",
+      "draws": "Draws",
+      "drawsHint": "How many times the table is drawn. A number or a formula like 1d4+1.",
+      "distinct": "No duplicates",
+      "visibility": "Shown to",
+      "rerollAll": "Draw all again",
+      "rerollLine": "Draw this one again",
+      "reset": "Bring all results back",
+      "empty": "Nothing was drawn.",
+      "include": "Show in chat",
+      "quantity": "Quantity",
+      "noOther": "No other result is left for this line.",
+      "invalidDraws": "The number of draws could not be rolled, one draw is used.",
+      "invalidQuantity": "Quantity could not be rolled, 1 is used",
+      "summary": "Items: {items}, lines: {lines}",
+      "post": "Show in chat"
+    },
+    "Card": {
+      "draws": "{count} draws",
+      "give": "Give to character",
+      "pile": "Leave as loot pile",
+      "ledger": "Add to loot",
+      "again": "Roll again"
+    },
+    "Problem": {
+      "cycle": "Stopped at a circle: {table} leads back to itself.",
+      "depth": "{table} is nested too deep and was left out.",
+      "missing": "Not found: {ref}",
+      "empty": "{table} has no results left.",
+      "impossible": "{table} has no result for its formula.",
+      "invalid": "The formula of {table} cannot be rolled.",
+      "ranOut": "{table} ran out before all draws were made."
+    },
+    "Draw": {
+      "empty": "All results of {name} are drawn.",
+      "emptyTitle": "Table is empty",
+      "emptyAsk": "All results of {name} are drawn. Bring them all back?",
+      "reset": "{name} is full again.",
+      "nothing": "{name} gave nothing."
+    },
+    "Give": {
+      "title": "Give to character",
+      "to": "Give to",
+      "ok": "Give",
+      "selected": "Selected tokens",
+      "heroes": "Player characters",
+      "others": "Other actors",
+      "nothing": "There are no items or coins to give.",
+      "noActors": "There are no actors to give to.",
+      "noPurse": "This game system has no purse the module can fill. Coins stay as text.",
+      "items": "Items: {count}",
+      "done": "{name} received: {what}",
+      "coinsSkipped": "These coins have no place in the purse: {coins}",
+      "failed": "Could not give: {names}"
+    },
+    "Pile": {
+      "pick": "Click on the map where the pile goes. Escape cancels.",
+      "noScene": "Open a scene first.",
+      "failed": "The loot pile could not be created.",
+      "done": "Loot pile created with {count} items.",
+      "note": "Left as a loot pile"
+    },
+    "Ledger": {
+      "note": "Added to the loot"
+    },
+    "Error": {
+      "action": "That did not work. Details are in the console."
+    },
+    "Sheet": {
+      "legend": "Deep Tables",
+      "draws": "Draws",
+      "drawsHint": "How often the table is drawn at once, a number or a formula like 1d4+1. Empty means once.",
+      "distinct": "No duplicates",
+      "distinctHint": "A result comes up only once in one roll.",
+      "mode": "Shown to",
+      "modeHint": "Who sees the result card. \"Like in Foundry\" follows the chat setting of whoever rolls.",
+      "quantity": "Quantity",
+      "quantityShort": "Qty",
+      "quantityHint": "How many: an item comes as many times, a table is drawn that often, a text repeats. A number or a formula like 2d4+1.",
+      "chance": "Chance of this row",
+      "noteDraws": "Draws: {draws}",
+      "noteDistinct": "No duplicates",
+      "noteMode": "Shown to: {mode}"
+    },
+    "Import": {
+      "button": "Table from text",
+      "buttonHint": "Paste a list and make a roll table from it",
+      "title": "Table from text",
+      "text": "List",
+      "placeholder": "d20 Encounters\n1-4 Goblin\n5-10 Wolf\n11-20 Nothing",
+      "hint": "Ranges (1-4 Goblin), numbers (5: Wolf), weights (Goblin | 3) or one entry per line. A first line like d20 Encounters gives the name and the formula.",
+      "name": "Name",
+      "defaultName": "Imported table",
+      "formula": "Formula",
+      "items": "Find items",
+      "itemMode": {
+        "off": "No",
+        "world": "In the world",
+        "all": "In the world and compendiums"
+      },
+      "itemFound": "Matches an item",
+      "searching": "Searching for items",
+      "range": "Roll",
+      "result": "Result",
+      "nothing": "Nothing recognized yet. Paste a list above.",
+      "summary": "Rows: {count}, formula: {formula}, items found: {items}",
+      "create": "Create table",
+      "created": "Table {name} created.",
+      "problem": {
+        "empty": "The text has no rows.",
+        "beyond": "Some rows are above the highest roll of {formula}.",
+        "formula": "The formula {formula} does not match the {total} weights, the formula was changed to fit.",
+        "gaps": "Rolls without a row: {list}",
+        "overlaps": "Rolls in more than one row: {list}",
+        "backwards": "The range {from} to {to} was turned around.",
+        "ignored": "Ignored: {line}"
+      }
+    },
+    "Journal": {
+      "tooltip": "Draw from the table. Shift opens the deep roll.",
+      "unavailable": "You cannot roll this table."
+    },
+    "SELFTEST": {
+      "Title": "Self test",
+      "Run": "Run self test",
+      "Hint": "Checks after an update that everything the module relies on is there.",
+      "Passed": "Self test passed: {checks} checks.",
+      "Problems": "Self test: {problems} problems in {checks} checks.",
+      "Version": "Foundry {current}, verified with {tested}.",
+      "NewVersions": "Foundry is newer than the verified version ({versions}). Run the self test if something looks wrong.",
+      "Dialog": "Foundry's dialogs are missing.",
+      "Texts": "Missing texts: {keys}",
+      "Tables": "Foundry's roll tables work differently than expected.",
+      "Sheet": "Foundry's roll table sheet is missing.",
+      "Enrichers": "Foundry's text enrichers are missing.",
+      "Chat": "Foundry's chat or its message setting is missing.",
+      "Templates": "A window template of the module could not be loaded.",
+      "Engine": "A test draw failed.",
+      "Coins": "The coins of the game system could not be read.",
+      "Piles": "The module for loot piles does not offer what this module needs.",
+      "Ledger": "The Loot Ledger does not offer what the module needs."
+    },
+    "DEBUG": {
+      "Title": "Debug file",
+      "Save": "Save debug file",
+      "Hint": "Saves one file for bug reports about all of Sephral’s modules in this world: versions, settings and what the modules recorded, such as the latest chat messages they read. It contains chat text and whispers, check it before you share it.",
+      "Entry": "Save Debug File (Sephral’s Modules)",
+      "Saved": "Debug file {file} saved. It contains chat text and whispers, check it before you share it."
+    }
+  }
+}

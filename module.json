@@ -1,0 +1,45 @@
+{
+  "id": "sephrals-deep-tables",
+  "title": "Sephral’s Deep Tables",
+  "description": "Roll tables for every system with tables inside tables, quantities like 2d4+1, several draws with one click, one clear result card, and results that go straight to a character, a loot pile or the Loot Ledger.",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": 13,
+    "verified": "14.370"
+  },
+  "authors": [
+    {
+      "name": "Sephral",
+      "url": "https://github.com/Sephral"
+    }
+  ],
+  "url": "https://github.com/Sephral/sephrals-deep-tables.git",
+  "relationships": {
+    "recommends": [
+      {
+        "id": "sephrals-loot-ledger",
+        "type": "module",
+        "manifest": "https://github.com/Sephral/sephrals-loot-ledger/releases/latest/download/module.json",
+        "reason": "Takes rolled items and coins straight into the shared loot where your players claim them."
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/sdt.mjs"
+  ],
+  "styles": [
+    "styles/sdt.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    }
+  ]
+}

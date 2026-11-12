@@ -1,0 +1,647 @@
+/* Sephral’s Deep Tables */
+
+/* Colors: the warm signature look by default, the dark Foundry look per user */
+.sdt-app,
+.sdt-card {
+  --sdt-paper: #fbf6ea;
+  --sdt-paper-2: #f3ecde;
+  --sdt-card: rgb(255 250 240 / 0.92);
+  --sdt-ink: #1f1a17;
+  --sdt-muted: #6f655d;
+  --sdt-line: rgb(73 49 32 / 0.14);
+  --sdt-soft: rgb(73 49 32 / 0.07);
+  --sdt-field: #fffdf7;
+  --sdt-accent: #9c3b22;
+  --sdt-accent-soft: rgb(156 59 34 / 0.12);
+  --sdt-on-accent: #fffaf0;
+  --sdt-radius: 12px;
+  --sdt-thumb: #3b332d;
+}
+
+.sdt-app[data-sdt-theme="foundry"],
+.sdt-card[data-sdt-theme="foundry"] {
+  --sdt-paper: #24211e;
+  --sdt-paper-2: #1c1a18;
+  --sdt-card: rgb(255 255 255 / 0.05);
+  --sdt-ink: #ece5d8;
+  --sdt-muted: #aba191;
+  --sdt-line: rgb(255 255 255 / 0.12);
+  --sdt-soft: rgb(255 255 255 / 0.06);
+  --sdt-field: rgb(0 0 0 / 0.25);
+  --sdt-accent: #d8784e;
+  --sdt-accent-soft: rgb(216 120 78 / 0.18);
+  --sdt-on-accent: #1c1a18;
+  --sdt-radius: 6px;
+  --sdt-thumb: #111;
+}
+
+.sdt-app .window-content {
+  padding: 0;
+  background: linear-gradient(180deg, var(--sdt-paper) 0%, var(--sdt-paper-2) 100%);
+  color: var(--sdt-ink);
+}
+
+.sdt-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Buttons and fields */
+.sdt-app button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: auto;
+  height: 28px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid var(--sdt-line);
+  border-radius: 999px;
+  background: var(--sdt-field);
+  color: var(--sdt-ink);
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.sdt-app button:hover:not(:disabled) {
+  border-color: var(--sdt-accent);
+  background: var(--sdt-accent-soft);
+}
+
+.sdt-app button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.sdt-app button.sdt-primary {
+  border-color: var(--sdt-accent);
+  background: var(--sdt-accent);
+  color: var(--sdt-on-accent);
+  font-weight: 700;
+}
+
+.sdt-app button.sdt-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  background: var(--sdt-accent);
+}
+
+.sdt-app button.sdt-icon {
+  width: 28px;
+  padding: 0;
+  border-color: transparent;
+  background: none;
+  color: var(--sdt-muted);
+}
+
+.sdt-app button.sdt-icon:hover:not(:disabled) {
+  color: var(--sdt-accent);
+  background: var(--sdt-accent-soft);
+}
+
+.sdt-app input[type="text"],
+.sdt-app input[type="number"],
+.sdt-app select,
+.sdt-app textarea {
+  border: 1px solid var(--sdt-line);
+  border-radius: 8px;
+  background: var(--sdt-field);
+  color: var(--sdt-ink);
+  box-shadow: none;
+}
+
+.sdt-app input[type="text"],
+.sdt-app input[type="number"],
+.sdt-app select {
+  height: 28px;
+  padding: 0 8px;
+}
+
+.sdt-app textarea {
+  width: 100%;
+  padding: 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  resize: vertical;
+}
+
+.sdt-app input[type="checkbox"] {
+  margin: 0;
+}
+
+.sdt-app .hint {
+  margin: 2px 0 0;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+/* -------------------------------------------- */
+/*  Deep roll window                            */
+/* -------------------------------------------- */
+
+.sdt-head {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px 6px;
+}
+
+.sdt-head img {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--sdt-line);
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--sdt-thumb);
+}
+
+.sdt-head-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sdt-head-text strong {
+  font-size: 15px;
+}
+
+.sdt-head-text small {
+  color: var(--sdt-muted);
+}
+
+.sdt-options {
+  flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px 14px;
+  padding: 4px 14px 10px;
+  border-bottom: 1px solid var(--sdt-line);
+}
+
+.sdt-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+.sdt-field.sdt-check {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  font-size: 12px;
+  color: var(--sdt-ink);
+  cursor: pointer;
+}
+
+.sdt-field input[type="text"] {
+  width: 90px;
+}
+
+.sdt-field.sdt-narrow input[type="text"] {
+  width: 80px;
+}
+
+.sdt-field select {
+  min-width: 140px;
+}
+
+.sdt-notes {
+  flex: none;
+  margin: 0;
+  padding: 6px 14px;
+  list-style: none;
+  color: var(--sdt-accent);
+  font-size: 12px;
+}
+
+.sdt-notes li {
+  margin: 2px 0;
+}
+
+.sdt-reset {
+  flex: none;
+  padding: 4px 14px 6px;
+}
+
+.sdt-lines {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 8px 12px;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.sdt-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  padding: 6px 8px;
+  border: 1px solid var(--sdt-line);
+  border-radius: var(--sdt-radius);
+  background: var(--sdt-card);
+}
+
+.sdt-line.sdt-off {
+  opacity: 0.5;
+}
+
+.sdt-thumb {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--sdt-line);
+  border-radius: 6px;
+  object-fit: contain;
+  background: var(--sdt-thumb);
+}
+
+.sdt-thumb-icon {
+  display: grid;
+  place-items: center;
+  background: var(--sdt-soft);
+  color: var(--sdt-muted);
+}
+
+.sdt-line-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sdt-line-name {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sdt-line-path {
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+.sdt-line-warn {
+  color: var(--sdt-accent);
+  font-size: 11px;
+}
+
+.sdt-qty,
+.sdt-qty-edit {
+  flex: none;
+  color: var(--sdt-muted);
+  font-size: 12px;
+}
+
+.sdt-qty-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.sdt-qty-edit input {
+  width: 56px;
+}
+
+.sdt-empty {
+  margin: 0;
+  padding: 24px 14px;
+  color: var(--sdt-muted);
+  text-align: center;
+}
+
+.sdt-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 14px;
+  border-top: 1px solid var(--sdt-line);
+}
+
+.sdt-summary {
+  color: var(--sdt-muted);
+  font-size: 12px;
+}
+
+/* -------------------------------------------- */
+/*  Table from text                             */
+/* -------------------------------------------- */
+
+.sdt-import-body {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  overflow-y: auto;
+}
+
+.sdt-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+.sdt-import-body .sdt-options {
+  padding: 8px 0;
+  border: 0;
+}
+
+.sdt-preview {
+  min-height: 80px;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--sdt-line);
+  border-radius: var(--sdt-radius);
+  background: var(--sdt-card);
+}
+
+.sdt-preview .sdt-notes {
+  padding: 6px 10px 0;
+}
+
+.sdt-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.sdt-app .sdt-table,
+.sdt-app .sdt-table thead,
+.sdt-app .sdt-table tbody,
+.sdt-app .sdt-table tr,
+.sdt-app .sdt-table th,
+.sdt-app .sdt-table td {
+  background: transparent;
+  color: var(--sdt-ink);
+}
+
+.sdt-table th,
+.sdt-table td {
+  padding: 3px 10px;
+  border-bottom: 1px solid var(--sdt-line);
+  text-align: left;
+}
+
+.sdt-app .sdt-table th {
+  color: var(--sdt-muted);
+  font-weight: 600;
+}
+
+.sdt-table .sdt-r {
+  width: 70px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* -------------------------------------------- */
+/*  The result card in chat                     */
+/* -------------------------------------------- */
+
+.sdt-card {
+  margin: 2px 0;
+  padding: 8px 10px;
+  border: 1px solid var(--sdt-line);
+  border-radius: var(--sdt-radius);
+  background: var(--sdt-paper);
+  color: var(--sdt-ink);
+  font-size: 13px;
+}
+
+.sdt-card a.content-link {
+  color: var(--sdt-accent);
+  background: none;
+  border: 0;
+  padding: 0;
+  font-weight: 600;
+}
+
+.sdt-card a.content-link i,
+.sdt-card a.content-link::before {
+  color: inherit;
+}
+
+.sdt-card-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sdt-card-head img {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--sdt-line);
+  border-radius: 6px;
+  object-fit: cover;
+  background: var(--sdt-thumb);
+}
+
+.sdt-card-head div {
+  display: flex;
+  flex-direction: column;
+}
+
+.sdt-card-head small {
+  color: var(--sdt-muted);
+}
+
+.sdt-rows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sdt-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 3px 0;
+  border-top: 1px solid var(--sdt-line);
+}
+
+.sdt-row .sdt-thumb {
+  width: 28px;
+  height: 28px;
+}
+
+.sdt-row .sdt-name {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.sdt-row .sdt-prose p {
+  display: inline;
+  margin: 0;
+}
+
+.sdt-row .sdt-qty {
+  font-weight: 700;
+  color: var(--sdt-accent);
+}
+
+.sdt-card .sdt-notes {
+  padding: 4px 0 0;
+  font-size: 11px;
+}
+
+.sdt-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 6px;
+  padding-top: 6px;
+  border-top: 1px solid var(--sdt-line);
+}
+
+.sdt-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: auto;
+  height: 24px;
+  margin: 0;
+  padding: 0 9px;
+  border: 1px solid var(--sdt-line);
+  border-radius: 999px;
+  background: var(--sdt-field);
+  color: var(--sdt-ink);
+  font-size: 11px;
+  line-height: 1;
+  box-shadow: none;
+}
+
+.sdt-toolbar button:hover:not(:disabled) {
+  border-color: var(--sdt-accent);
+  background: var(--sdt-accent-soft);
+}
+
+.sdt-given {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--sdt-muted);
+  font-size: 11px;
+}
+
+/* -------------------------------------------- */
+/*  Table sheet, directory, journals            */
+/* -------------------------------------------- */
+
+.sdt-table-fields {
+  margin: 8px 0;
+  border: 1px solid var(--color-border-light-tertiary, rgb(128 128 128 / 0.4));
+  border-radius: 6px;
+}
+
+.sdt-table-fields legend {
+  padding: 0 6px;
+  font-weight: 700;
+}
+
+.roll-table-sheet .sdt-quantity {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+.roll-table-sheet label.sdt-quantity input {
+  width: 70px;
+  height: 22px;
+}
+
+.roll-table-sheet .sdt-chance {
+  display: block;
+  opacity: 0.7;
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.roll-table-sheet .sdt-table-note {
+  margin: 0 0 6px;
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.sdt-import {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+a.sdt-roll {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--color-border-light-tertiary, rgb(128 128 128 / 0.5));
+  border-radius: 4px;
+  background: rgb(128 128 128 / 0.12);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+a.sdt-roll:hover {
+  border-color: var(--color-warm-2, #c60);
+  background: rgb(200 100 0 / 0.14);
+}
+
+a.sdt-roll.sdt-disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sdt-pick-banner {
+  position: fixed;
+  top: 14px;
+  left: 50%;
+  z-index: 100000;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border: 1px solid #9c3b22;
+  border-radius: 999px;
+  background: #fbf6ea;
+  color: #1f1a17;
+  font-size: 13px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.4);
+  pointer-events: none;
+}
+
+.sdt-give .sdt-give-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0 0;
+}
+
+.sdt-give .sdt-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sdt-give .sdt-check img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}

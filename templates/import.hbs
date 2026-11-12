@@ -1,0 +1,32 @@
+<div class="sdt-shell">
+  <div class="sdt-import-body">
+    <label class="sdt-block">
+      <span>{{localize "SDT.Import.text"}}</span>
+      <textarea name="text" rows="9" placeholder="{{localize 'SDT.Import.placeholder'}}" spellcheck="false">{{text}}</textarea>
+    </label>
+    <p class="hint">{{localize "SDT.Import.hint"}}</p>
+
+    <div class="sdt-options">
+      <label class="sdt-field">
+        <span>{{localize "SDT.Import.name"}}</span>
+        <input type="text" name="name" value="{{name}}" placeholder="{{localize 'SDT.Import.defaultName'}}" autocomplete="off">
+      </label>
+      <label class="sdt-field sdt-narrow">
+        <span>{{localize "SDT.Import.formula"}}</span>
+        <input type="text" name="formula" value="{{formula}}" placeholder="1d20" autocomplete="off">
+      </label>
+      <label class="sdt-field">
+        <span>{{localize "SDT.Import.items"}}</span>
+        <select name="items">
+          {{#each itemModes}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+        </select>
+      </label>
+    </div>
+
+    <div class="sdt-preview" data-preview></div>
+  </div>
+  <footer class="sdt-foot">
+    <span class="sdt-summary" data-summary></span>
+    <button type="button" class="sdt-primary" data-action="create"><i class="fa-solid fa-table-list" inert></i> {{localize "SDT.Import.create"}}</button>
+  </footer>
+</div>
