@@ -131,6 +131,6 @@ With the GM’s consent only the active GM’s browser counts, and it sends at m
 * on how many of the last 30 days the module was used
 * how often a deep roll is opened, a table is drawn now, a card is posted, a single row is drawn again, a result is given to a character, left as a loot pile or added to the loot, a table is made from text, a journal button is used and a table is brought back
 * the settings *Look*, *Show chances in tables* and *Depth of tables inside tables* (only the chosen option)
-* where errors occur in the module code: file, line and error type, never the error message
+* where errors occur in the module code: file, line, error type and whether the error arose in the module itself, in Foundry, in the game system or in another module, never the error message or the name of another module
 
 No names, notes, pictures or other content of the world are sent.
