@@ -1,0 +1,45 @@
+{
+  "group": "rumors",
+  "title": "Gerüchte",
+  "summary": "Gerüchte für die Schenke, manche wahr und manche nicht. Einige kommen nur vor, wenn ein Ereignis oder die Tageszeit passt.",
+  "tags": [
+    {"id": "war", "name": "Der Krieg hat begonnen"},
+    {"id": "festival", "name": "Ein Fest findet statt"}
+  ],
+  "tables": [
+    {
+      "key": "rumors-tavern",
+      "name": "Gerücht",
+      "description": "Manche Zeilen erscheinen nur, wenn ein Ereignis aktiv ist (Krieg, Fest) oder nachts. Die Ereignisse schaltest du in der Liste der Ereignisse.",
+      "rows": [
+        "Der Müller sagt, seine Mehlsäcke werden jeden Morgen leichter, und er gibt den Eulen die Schuld.",
+        "Letzte Woche wurde eine Truhe am Flussufer angespült. Der Vogt hat sie mitgenommen, und seitdem hat sie niemand gesehen.",
+        "Die alte Brücke singt, wenn der Wind aus dem Osten kommt. Manche halten das für eine Warnung.",
+        "Ein Fremder kauft jede Laterne auf dem Markt auf und zahlt den doppelten Preis.",
+        "Die Witwe am Rand der Stadt spricht nachts mit jemandem, aber sie wohnt allein.",
+        "Der jüngste Sohn des Barons ist grußlos verschwunden und hat das gute Pferd mitgenommen.",
+        "Wölfe wurden am helllichten Tag gesehen, in einer Reihe, als führe sie jemand an.",
+        "Der Heiler im Nachbardorf nimmt kein Geld mehr. Die Leute trauen sich nicht, nach dem Grund zu fragen.",
+        "Der Salzpreis hat sich in einem Monat verdoppelt. Irgendwer muss auf einem Haufen davon sitzen.",
+        "Der Brunnen auf dem Platz schmeckt seit dem letzten Sturm nach Kupfer.",
+        "Eine fahrende Truppe wurde am Tor abgewiesen, und einer von ihnen weinte.",
+        "Der Fährmann setzt nach Einbruch der Dunkelheit nicht mehr über. Er sagt, das andere Ufer sei näher als früher.",
+        "Jemand legt kleine Steinhaufen an der alten Straße ab, jeden Tag einen mehr.",
+        "Der Priester hat hinter der Kapelle einen Stapel Papiere verbrannt und ist dann zwei Tage im Bett geblieben.",
+        "Ein Bauer fand eine Goldmünze auf seinem Feld, dann noch eine, und jetzt gräbt er den ganzen Tag.",
+        "Die Jäger sagen, der Wald sei auf eine Art still, die ihnen nicht gefällt.",
+        {"text": "Auf dem Hügel wurden nach Mitternacht seltsame Lichter gesehen, die sich langsam im Kreis bewegen.", "conditions": {"times": ["night"]}},
+        {"text": "Auf der Nordstraße sieht man Soldaten, jeden Tag mehr, und sie halten nicht für den Zoll an.", "conditions": {"tags": {"war": true}}},
+        {"text": "Der Schmied sagt, er habe seit einem Monat keine Pflugschar mehr gemacht, nur noch Klingen und Nägel.", "conditions": {"tags": {"war": true}}},
+        {"text": "Die Straßen sind ruhig und die Händler gut gelaunt. Komisch, dass sich niemand beschwert.", "conditions": {"tags": {"war": false}}},
+        {"text": "Der Bäcker hat in diesem Jahr irgendwo im Festbrot eine Überraschung versteckt, und niemand weiß, wer sie findet.", "conditions": {"tags": {"festival": true}}}
+      ]
+    },
+    {
+      "key": "rumor-told",
+      "name": "Gerücht mit Erzähler",
+      "description": "Ein Gerücht und wer es erzählt, gezogen aus der Tabelle der Berufe.",
+      "rows": ["{{rumors-tavern}} Erzählt von: {{npc-profession}}."]
+    }
+  ]
+}

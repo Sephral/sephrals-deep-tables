@@ -1,0 +1,92 @@
+{
+  "group": "people",
+  "title": "People",
+  "summary": "Occupations, looks, quirks and wishes for the people the party meets, and one table that rolls them all into a sentence.",
+  "tables": [
+    {
+      "key": "npc-quick",
+      "name": "Person in one roll",
+      "description": "Name, work, looks, a quirk and a wish, drawn from the other tables into one line.",
+      "rows": ["{{name-any}}, {{npc-profession}}. {{npc-appearance}} {{npc-quirk}} Wants {{npc-motive}}."]
+    },
+    {
+      "key": "npc-profession",
+      "name": "Occupation",
+      "rows": [
+        "a baker", "a ferryman", "a candle maker", "a night watchman", "a shepherd", "a tanner", "a scribe",
+        "a stable hand", "a cook", "a well digger", "a beekeeper", "a rat catcher", "a minstrel", "a retired soldier",
+        "a pottery seller", "a fishmonger", "a tinker", "a gravedigger", "a herb gatherer", "a customs clerk"
+      ]
+    },
+    {
+      "key": "npc-appearance",
+      "name": "Looks",
+      "rows": [
+        "Tall and thin, with a stoop from ducking under low doors.",
+        "Short and sturdy, with hands like shovels.",
+        "A face that is always sunburned, and a hat that never is.",
+        "Carries a very long scarf, even in summer.",
+        "Missing a front tooth and proud of the whistle it makes.",
+        "Impeccably neat, with ink on one finger.",
+        "A great gray beard with crumbs in it.",
+        "Bright, restless eyes that never stop checking the room.",
+        "A scar over one eyebrow that gives a permanent look of surprise.",
+        "Clothes patched many times with a different color each time.",
+        "A heavy cloak that smells of woodsmoke and rain.",
+        "A cheerful round face and a very quiet voice.",
+        "A limp, a walking stick and a surprisingly quick stride.",
+        "Rings on every finger, all of them cheap.",
+        "Hair tied back with a piece of fishing line.",
+        "Freckles, a wide grin and dirt under every nail.",
+        "A tall hat with a feather that has seen better days.",
+        "Dressed all in gray, from hat to boots.",
+        "Smells strongly of onions and tries to hide it.",
+        "A face that is hard to remember, and the person knows it."
+      ]
+    },
+    {
+      "key": "npc-quirk",
+      "name": "Quirk",
+      "rows": [
+        "Hums the same three notes, constantly.",
+        "Never answers a question directly, always with a story.",
+        "Counts everything: steps, windows, people.",
+        "Talks to animals, and waits politely for the answer.",
+        "Laughs at the wrong moment.",
+        "Collects odd buttons and asks every stranger for one.",
+        "Taps the table twice before saying anything important.",
+        "Always eats while talking, and talks louder because of it.",
+        "Refuses to step over a threshold left foot first.",
+        "Adds a polite apology to every sentence, even insults.",
+        "Gives everyone a nickname within a minute.",
+        "Whispers when excited and shouts when bored.",
+        "Never sits with the back to the door.",
+        "Keeps a tiny notebook and writes down every promise.",
+        "Calls everybody cousin.",
+        "Tells the same joke every time and is delighted anew.",
+        "Cannot stop polishing something small.",
+        "Believes every dream is a prophecy and shares them freely.",
+        "Pauses a long time before every answer, then answers shortly.",
+        "Wears one glove at all times and will not say why."
+      ]
+    },
+    {
+      "key": "npc-motive",
+      "name": "Wish",
+      "rows": [
+        "to pay off an old debt before the next full moon",
+        "to find a lost brother who left for the city",
+        "to be taken seriously for once",
+        "to see the sea before it is too late",
+        "to keep a secret that is getting heavy",
+        "to win the festival cooking contest at last",
+        "to find out who has been moving the boundary stones",
+        "to leave town and never come back",
+        "to be left alone, completely and permanently",
+        "to protect a child who is not their own",
+        "to make a very large amount of money with very little work",
+        "to get revenge on a former friend, but gently"
+      ]
+    }
+  ]
+}

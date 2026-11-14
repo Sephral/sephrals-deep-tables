@@ -13,6 +13,7 @@ import {canRoll, postRoll} from "./flow.mjs";
 import {problemText} from "./card.mjs";
 import {MODES} from "./modes.mjs";
 import {trace} from "./debug.mjs";
+import {reasonText, situationText} from "./situation.mjs";
 import {countFeature} from "./usage.mjs";
 
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
@@ -114,6 +115,10 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     context.modes = MODES.map(value => ({value, label: t(`SDT.Mode.${value}`), selected: value === this.inputs.mode}));
     context.problems = (this.state?.problems ?? []).filter(p => !((p.kind === "empty") && (lines.length === 0) && !p.uuid))
       .map(p => ({text: problemText(p)}));
+    context.left = (this.state?.left ?? []).map(entry => ({name: entry.name,
+      table: (entry.tableUuid === this.table.uuid) ? "" : entry.tableName,
+      reasons: entry.reasons.map(reasonText).join(" · ")}));
+    context.situation = (context.left.length && this.state?.situation) ? situationText(this.state.situation) : "";
     context.counters = await this.#counters();
     context.resetName = (game.user.isGM && resetTable && !resetTable.pack) ? resetTable.name : "";
     context.empty = !lines.length;

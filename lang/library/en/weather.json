@@ -1,0 +1,79 @@
+{
+  "group": "weather",
+  "title": "Weather",
+  "summary": "The weather of the day for each of the four seasons, with a temperature that rolls itself. Some rows only fit the day or the night.",
+  "tables": [
+    {
+      "key": "weather-spring",
+      "name": "Weather: spring",
+      "rows": [
+        "Mild and bright, around [[1d6+10]] degrees, with a light breeze that smells of wet earth.",
+        "Gentle rain all day, around [[1d4+7]] degrees. The roads turn to mud.",
+        "Cool and cloudy, around [[1d6+5]] degrees, and the clouds keep promising rain they do not deliver.",
+        "A sudden hailstorm for a quarter of an hour, then a clear sky. Around [[1d6+6]] degrees.",
+        "Fog over the fields until midmorning, then warm sun. Around [[1d6+8]] degrees.",
+        "Strong winds from the west, around [[1d6+8]] degrees. Everything not tied down is on the move.",
+        "A warm, windless day, around [[1d6+12]] degrees. Bees everywhere.",
+        "Showers on and off, with a rainbow every hour or so. Around [[1d6+8]] degrees.",
+        "Cold morning frost that melts by noon. Around [[1d4+3]] degrees at dawn, [[1d6+10]] at midday.",
+        "Thunder rolls in from the hills in the afternoon. Around [[1d6+9]] degrees, and then a heavy downpour.",
+        {"text": "A clear night with a thin moon and a sky full of stars. Around [[1d4+2]] degrees.", "conditions": {"times": ["night"]}},
+        {"text": "Bright sun and a deep blue sky. Around [[1d6+13]] degrees at midday.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "weather-summer",
+      "name": "Weather: summer",
+      "rows": [
+        "Hot and dry, around [[1d6+25]] degrees. Shade is worth gold.",
+        "Warm and bright, around [[1d6+20]] degrees, with a soft breeze that only comes in the evening.",
+        "Heavy and humid, around [[1d6+23]] degrees. Everyone is sticky and short tempered.",
+        "A storm in the afternoon with thunder you can feel in your chest. Around [[1d6+18]] degrees before, [[1d6+12]] after.",
+        "A dust haze hangs over the roads, around [[1d6+24]] degrees. The sun is a red disc.",
+        "A light, refreshing rain at dawn, then a warm clear day. Around [[1d6+19]] degrees.",
+        "Mild and pleasant, around [[1d6+17]] degrees. Perfect weather for a long walk.",
+        "Smoke on the horizon from a distant fire, around [[1d6+22]] degrees. The light turns amber.",
+        "Thick fog in the valleys until noon, clear and warm above. Around [[1d6+18]] degrees.",
+        "Wind from the coast brings relief and the smell of salt. Around [[1d6+19]] degrees.",
+        {"text": "A warm night with fireflies in the long grass. Around [[1d6+14]] degrees.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "The sun stands high and the shadows are short, around [[1d6+26]] degrees. Nobody wants to move before the evening.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "weather-autumn",
+      "name": "Weather: autumn",
+      "rows": [
+        "Crisp and clear, around [[1d6+8]] degrees. The leaves are red and gold and the light is soft.",
+        "Steady drizzle all day, around [[1d4+6]] degrees. Everything smells of wet wood.",
+        "Strong wind with gusts that tear leaves from the trees, around [[1d6+6]] degrees.",
+        "Cold and gray, around [[1d4+4]] degrees, with low clouds that never quite rain.",
+        "Heavy fog until noon, around [[1d4+5]] degrees. Sounds carry strangely.",
+        "A warm day out of season, around [[1d6+14]] degrees. People forget the cold is coming.",
+        "A cold rain with sleet at the end of the day. Around [[1d4+2]] degrees.",
+        "A clear, still day with a sharp chill in the shadows. Around [[1d6+7]] degrees.",
+        "Flocks of birds fly south in long lines, around [[1d6+8]] degrees. The sky is full of them.",
+        "A storm rolls in from the sea with rain that falls sideways. Around [[1d6+7]] degrees.",
+        {"text": "A moonlit night with a cold edge and a ring around the moon. Around [[1d4+1]] degrees.", "conditions": {"times": ["night"]}},
+        {"text": "A bright, golden afternoon that makes everyone stop and look. Around [[1d6+10]] degrees.", "conditions": {"times": ["day", "dusk"]}}
+      ]
+    },
+    {
+      "key": "weather-winter",
+      "name": "Weather: winter",
+      "rows": [
+        "Bitterly cold and clear, around minus [[1d6+3]] degrees. Breath hangs in the air.",
+        "Heavy snowfall all day, around minus [[1d4]] degrees. The world goes quiet and white.",
+        "A thin freezing rain, around [[1d3-1]] degrees. Every step is a risk.",
+        "A blizzard with wind that cuts through cloaks, around minus [[1d6+5]] degrees. Travel is nearly impossible.",
+        "Gray and raw, around [[1d4]] degrees, with a fine drizzle that soaks into everything.",
+        "A pale sun on a crust of snow, around minus [[1d4]] degrees. Glare hurts the eyes.",
+        "A hard frost after a clear night, around minus [[1d6+2]] degrees. Ponds are covered with ice.",
+        "Light flurries that never settle, around [[1d3]] degrees. The sky is the color of pewter.",
+        "A thaw, around [[1d4+2]] degrees. The snow turns to slush and the roads to soup.",
+        "Cold fog that freezes onto every twig and makes the whole forest sparkle. Around minus [[1d4]] degrees.",
+        {"text": "A clear, bitter night full of stars, around minus [[1d6+6]] degrees. Somewhere far off a wolf howls.", "conditions": {"times": ["night"]}},
+        {"text": "A short bright day with sunlight on the snow, around minus [[1d3]] degrees. The sun is gone by the afternoon.", "conditions": {"times": ["day"]}}
+      ]
+    }
+  ]
+}

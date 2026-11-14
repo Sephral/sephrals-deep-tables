@@ -3,7 +3,7 @@
  * saved in the flags of the result.
  */
 
-import {MODULE_ID, TEMPLATES, addSettingsGear, esc, removeKey, setting, t} from "./config.mjs";
+import {MODULE_ID, TEMPLATES, addSettingsGear, esc, removeKey, replaceKey, setting, t} from "./config.mjs";
 import {ACTION_TYPES, isComplete, normalizeAction} from "./actions.mjs";
 import {encountersApi} from "./act.mjs";
 
@@ -160,7 +160,7 @@ export class ActionEditor extends HandlebarsApplicationMixin(ApplicationV2) {
       ui.notifications.warn(t("SDT.Action.incomplete"));
       return;
     }
-    await this.result.update({[`flags.${MODULE_ID}.action`]: action});
+    await this.result.update(replaceKey(`flags.${MODULE_ID}`, "action", action), {diff: false});
     await this.close();
   }
 

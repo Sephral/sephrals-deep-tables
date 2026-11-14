@@ -1,0 +1,109 @@
+{
+  "group": "names",
+  "title": "Namen",
+  "summary": "Vornamen und Familiennamen für fünf Völker, jeweils mit einer Tabelle für den ganzen Namen, und eine Tabelle, die das Volk für dich auswählt.",
+  "tables": [
+    {
+      "key": "name-any",
+      "name": "Name: beliebiges Volk",
+      "description": "Wählt eines der fünf Völker und zieht daraus einen vollständigen Namen.",
+      "rows": [
+        {"table": "name-northern"},
+        {"table": "name-southern"},
+        {"table": "name-imperial"},
+        {"table": "name-silvan"},
+        {"table": "name-deep"}
+      ]
+    },
+    {
+      "key": "name-northern",
+      "name": "Name: Nordvolk",
+      "description": "Ein Vorname und ein Familienname von der kalten Küste und aus den Fjorden.",
+      "rows": ["{{name-northern-first}} {{name-northern-family}}"]
+    },
+    {
+      "key": "name-northern-first",
+      "name": "Vornamen des Nordvolks",
+      "part": true,
+      "rows": ["Astrid", "Bjarn", "Sigrun", "Torvald", "Ingrid", "Haldor", "Runa", "Eirik", "Solveig", "Gunnar", "Ragna", "Leif"]
+    },
+    {
+      "key": "name-northern-family",
+      "name": "Familiennamen des Nordvolks",
+      "part": true,
+      "rows": ["Sturmhand", "Eichenbrecher", "Kaltwasser", "Rotfjord", "Eisental", "Langschild", "Frostmähne", "Aschenfurt", "Gezeitenruf", "Wolfsgesang"]
+    },
+    {
+      "key": "name-southern",
+      "name": "Name: Sonnenländer",
+      "description": "Ein Vorname und ein Familienname aus den trockenen Ländern und von den Karawanenstraßen.",
+      "rows": ["{{name-southern-first}} {{name-southern-family}}"]
+    },
+    {
+      "key": "name-southern-first",
+      "name": "Vornamen der Sonnenländer",
+      "part": true,
+      "rows": ["Zahir", "Amira", "Tariq", "Samira", "Idris", "Layla", "Karim", "Nadira", "Farid", "Soraya", "Malik", "Yasmin"]
+    },
+    {
+      "key": "name-southern-family",
+      "name": "Familiennamen der Sonnenländer",
+      "part": true,
+      "rows": ["Rashani", "Tessim", "Almaren", "Dhurah", "Qaris", "Vessari", "Hadran", "Nuraq", "Sahlen", "Yorrim"]
+    },
+    {
+      "key": "name-imperial",
+      "name": "Name: Kaiserliche",
+      "description": "Ein Vorname und ein Familienname der alten Städte mit ihrem Marmor und ihrem Papierkram.",
+      "rows": ["{{name-imperial-first}} {{name-imperial-family}}"]
+    },
+    {
+      "key": "name-imperial-first",
+      "name": "Vornamen der Kaiserlichen",
+      "part": true,
+      "rows": ["Aurelio", "Cassia", "Lucan", "Valeria", "Tiberon", "Livia", "Cornelan", "Maxima", "Decian", "Flavia", "Severin", "Octavia"]
+    },
+    {
+      "key": "name-imperial-family",
+      "name": "Familiennamen der Kaiserlichen",
+      "part": true,
+      "rows": ["Valerran", "Corvinus", "Aurelian", "Tarquin", "Marcellan", "Lucretian", "Pomponi", "Vitellar", "Sabinus", "Caldoran"]
+    },
+    {
+      "key": "name-silvan",
+      "name": "Name: Waldvolk",
+      "description": "Ein Vorname und ein Hausname des Volks aus den Wäldern.",
+      "rows": ["{{name-silvan-first}} {{name-silvan-family}}"]
+    },
+    {
+      "key": "name-silvan-first",
+      "name": "Vornamen des Waldvolks",
+      "part": true,
+      "rows": ["Ilvaren", "Mirelle", "Caelith", "Sylvaen", "Orianth", "Eluvia", "Faelan", "Naerith", "Taeriel", "Veyrin", "Quillara", "Sorelle"]
+    },
+    {
+      "key": "name-silvan-family",
+      "name": "Hausnamen des Waldvolks",
+      "part": true,
+      "rows": ["Mondflüstern", "Sternenast", "Taufall", "Silberblatt", "Nachtblüte", "Dornensänger", "Nebelwanderer", "Klarwasser", "Windlichtung", "Bernsteinwurzel"]
+    },
+    {
+      "key": "name-deep",
+      "name": "Name: Tiefenvolk",
+      "description": "Ein Vorname und ein Sippenname des Volks unter den Bergen.",
+      "rows": ["{{name-deep-first}} {{name-deep-family}}"]
+    },
+    {
+      "key": "name-deep-first",
+      "name": "Vornamen des Tiefenvolks",
+      "part": true,
+      "rows": ["Durgan", "Brunhild", "Gorm", "Magda", "Balgrim", "Hargild", "Orsik", "Dagna", "Korgrim", "Vella", "Thorgil", "Yrsa"]
+    },
+    {
+      "key": "name-deep-family",
+      "name": "Sippennamen des Tiefenvolks",
+      "part": true,
+      "rows": ["Eisenbraue", "Tiefenschürfer", "Ambossgeboren", "Steinbart", "Kohlenherz", "Edelsteinhammer", "Granitfaust", "Schmiedegeboren", "Rubinader", "Stollenweise"]
+    }
+  ]
+}

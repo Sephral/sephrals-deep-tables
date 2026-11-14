@@ -1,0 +1,81 @@
+{
+  "group": "loot",
+  "title": "Trinkets and small finds",
+  "summary": "Pocket trinkets, small purses written as coin texts, and the little finds a search turns up. Coin rows roll their own amounts.",
+  "tables": [
+    {
+      "key": "trinkets",
+      "name": "Trinket",
+      "description": "Small things with a story, for pockets and for the bottom of old chests.",
+      "rows": [
+        "A brass button stamped with a crown, with a bit of red thread still attached.",
+        "A tooth on a leather cord, too big to belong to anything local.",
+        "A tiny glass bottle with a cork, empty, smelling faintly of lavender.",
+        "A folded map of a harbor, with one dock circled twice.",
+        "A wooden spoon carved with the initials of three different people.",
+        "A die made of bone with a six on every side.",
+        "A silver thimble engraved with a very small bird.",
+        "A key with no lock, polished by years in somebody's pocket.",
+        "A handful of dried flowers pressed in a scrap of velvet.",
+        "A candle stub in a tin that says Never Light Alone.",
+        "A letter in a language nobody in the party reads, signed with a small drawing of a fish.",
+        "A pocket mirror with a crack that runs exactly through the middle of the reflection.",
+        "A little carved fox that is always slightly warmer than the hand holding it.",
+        "A ribbon with six knots, tied by someone who clearly meant something.",
+        "A coin from a country nobody can place, with a hole in the middle.",
+        "A whistle that makes no sound that people can hear, but dogs get restless.",
+        "A fish hook made of bone, wrapped in a note that says Lucky.",
+        "A pebble with a perfect hole in it, smooth from being worn.",
+        "A painted wooden bead with a face on it, that looks a little different every time.",
+        "A small leather pouch of colored sand, each color in its own knotted twist."
+      ]
+    },
+    {
+      "key": "coins-small",
+      "name": "Small purse",
+      "description": "Coin texts: the amounts roll themselves and end up as coins on the card.",
+      "part": true,
+      "rows": [
+        {"text": "3d6 cp", "weight": 2},
+        {"text": "2d6 sp", "weight": 2},
+        "1d6 gp",
+        "4d6 cp, 1d4 sp",
+        "2d4 sp, 1d4 cp",
+        "1d4 gp, 2d6 sp",
+        "5d6 sp",
+        "1d8 gp"
+      ]
+    },
+    {
+      "key": "finds-small",
+      "name": "Small find",
+      "description": "What a quick search turns up. Tables inside tables with quantities: sometimes more than one purse.",
+      "rows": [
+        {"table": "coins-small", "weight": 3},
+        {"table": "coins-small", "quantity": "1d2+1", "weight": 2},
+        {"table": "trinkets", "weight": 2},
+        {"text": "A purse and something odd: {{coins-small}} and {{trinkets}}", "weight": 2},
+        "Nothing but lint, a bent nail and a bad smell."
+      ]
+    },
+    {
+      "key": "hiding-places",
+      "name": "Where is it hidden",
+      "description": "A hiding place for a small treasure or a message.",
+      "rows": [
+        "Under a loose floorboard beneath the bed, with a rug carefully placed on top.",
+        "Inside a hollow book on a shelf, between two thick volumes of tax law.",
+        "In a false bottom of a barrel that smells of old pickles.",
+        "Behind a loose stone in the chimney, wrapped in oilcloth.",
+        "Buried under the third apple tree from the gate.",
+        "Sewn into the hem of an old cloak that hangs by the door.",
+        "In a flowerpot with a plant that has not been watered in years.",
+        "Taped under the seat of the most uncomfortable chair in the house.",
+        "In the hollow handle of a broom that nobody ever uses.",
+        "Under the stones of the well, in a box on a hook.",
+        "In a sealed jar at the bottom of a sack of flour.",
+        "Hanging inside the bell of the little chapel, on a hook, wrapped in a rag."
+      ]
+    }
+  ]
+}

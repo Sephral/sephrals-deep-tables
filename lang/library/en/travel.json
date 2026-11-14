@@ -1,0 +1,98 @@
+{
+  "group": "travel",
+  "title": "Travel events",
+  "summary": "Small things that happen on the way, for the road, the forest, the mountains and the sea. Some rows only fit the day or the night.",
+  "tables": [
+    {
+      "key": "travel-any",
+      "name": "Travel event: any terrain",
+      "description": "Picks a terrain and draws an event from it. The road comes up most often.",
+      "rows": [
+        {"table": "travel-road", "weight": 3},
+        {"table": "travel-forest", "weight": 2},
+        {"table": "travel-mountains", "weight": 2},
+        {"table": "travel-sea", "weight": 1}
+      ]
+    },
+    {
+      "key": "travel-road",
+      "name": "Travel event: road",
+      "rows": [
+        "A toll booth stands where there was none last year. The keeper has a new hat and a bad temper.",
+        "A farmer's cart has lost a wheel. He offers a meal and a night in the barn to anyone who helps.",
+        "A line of pilgrims walks barefoot on the verge and sings out of tune.",
+        "A milestone has been turned around, and the distances on it are now wrong in a helpful way.",
+        "A traveling peddler wants to trade stories for news. His last story was about a very large pig.",
+        "The road is blocked by a herd of sheep and one very confident dog.",
+        "A patrol rides past, looks long at the party and does not stop.",
+        "A signpost has been repainted with fresh, cheerful lies.",
+        "Someone left a small bundle by a milestone: [[1d4+1]] days of food and a note that says thank you.",
+        "A wedding party on its way to the next village invites everyone along, and means it.",
+        "A hooded rider asks for the way and thanks everyone too much.",
+        "The road forks at an old oak. Someone has carved a very detailed argument into the bark.",
+        {"text": "Campfires glow far off the road in the dark. They go out one at a time as the party comes closer.", "conditions": {"times": ["night"]}},
+        {"text": "A farmer is out in the field at dawn and waves. He seems to be talking to his scarecrow.", "conditions": {"times": ["dawn"]}}
+      ]
+    },
+    {
+      "key": "travel-forest",
+      "name": "Travel event: forest",
+      "rows": [
+        "The path ends at a fallen tree as wide as a house. Going around takes an hour.",
+        "A stream has flooded a stretch of the trail, ankle deep and very cold.",
+        "A hunter's snare lies across the path, set to catch something much smaller than a person.",
+        "Every bird falls silent at once and starts up again a moment later.",
+        "Half buried by the path lies something small: {{trinkets}}",
+        "A colony of mushrooms in a perfect ring glows faintly. Nobody wants to step inside.",
+        "A woodcutter's camp, empty, with the fire still warm and an axe stuck in a stump.",
+        "A fox follows the party for an hour at a polite distance.",
+        "An old shrine to a forgotten spirit has fresh flowers on it.",
+        "A swarm of harmless but extremely loud insects drowns out all talk for a while.",
+        "Rain starts, but under the thick canopy only a few drops arrive, one at a time and very cold.",
+        "A rope bridge over a ravine looks old but holds. Somebody has recently repaired it.",
+        {"text": "Pale eyes shine from the dark between the trees and keep pace with the party until the light returns.", "conditions": {"times": ["night"]}},
+        {"text": "Sunbeams fall through the branches in long golden bars. The forest feels almost kind.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "travel-mountains",
+      "name": "Travel event: mountains",
+      "rows": [
+        "A rockslide has covered the path. Climbing over takes [[1d3]] hours and a lot of patience.",
+        "A narrow ledge needs a rope and steady nerves. A goat watches and looks unimpressed.",
+        "The wind picks up and carries the smell of snow, although the sky is clear.",
+        "An abandoned shepherd's hut offers shelter, with a stack of dry wood by the door.",
+        "A pass is marked with a cairn of stones, each one with a name scratched into it.",
+        "A thin waterfall falls over the path. Behind it is a dry ledge that would hold a camp.",
+        "An eagle circles over the party for a long while and then flies off to the north.",
+        "A tunnel bored through the rock saves a day of travel but smells strongly of old smoke.",
+        "A bridge of ice has formed overnight over a gully and will not last long in the sun.",
+        "The echo of the party's voices comes back changed, as if someone were answering from far away.",
+        "A lone traveler comes down the pass the other way and warns of mist higher up.",
+        "A hot spring steams in a hollow. The water is just right and the view is very good.",
+        {"text": "A thin mist rolls down into the valley after dusk and makes it hard to tell where the path ends.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "The sunrise lights the highest peaks gold and pink. For a moment everyone stops walking.", "conditions": {"times": ["dawn"]}}
+      ]
+    },
+    {
+      "key": "travel-sea",
+      "name": "Travel event: sea",
+      "rows": [
+        "The wind drops and the sails hang limp. The crew starts to sing and tells everyone to be patient.",
+        "A school of silver fish leaps alongside the ship for an hour. The cook is delighted.",
+        "A floating crate bobs in the swell. It contains nothing but wet straw and a very angry crab.",
+        "A fog bank closes in and the lookout starts to talk to himself.",
+        "A ship passes in the far distance and does not answer the signal flags.",
+        "A storm builds on the horizon, black and far away, and the captain steers around it with a frown.",
+        "A seabird lands on the rail and refuses to leave, however many times it is asked.",
+        "The ship's cat has had kittens in somebody's bunk. Nobody dares move them.",
+        "A shoal appears on no chart and the helmsman swears it was not there yesterday.",
+        "A whale breaches off the starboard side and everyone on deck says nothing at all for a minute.",
+        "The water turns a strange green for a mile and then clears again.",
+        "A tired messenger bird lands on deck with a message tube for a different ship.",
+        {"text": "The sea glows with a pale blue light around the hull, and the wake looks like a trail of stars.", "conditions": {"times": ["night"]}},
+        {"text": "A bright morning with perfect wind. Spirits on board are high and the crew is generous.", "conditions": {"times": ["dawn", "day"]}}
+      ]
+    }
+  ]
+}

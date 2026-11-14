@@ -31,6 +31,18 @@
   </ul>
   {{/if}}
 
+  {{#if left.length}}
+  <details class="sdt-left">
+    <summary><i class="fa-solid fa-filter" inert></i> {{localize "SDT.Deep.left"}} ({{left.length}})</summary>
+    <ul>
+      {{#each left}}
+      <li><span class="sdt-left-name">{{name}}{{#if table}} <small>({{table}})</small>{{/if}}</span> <small class="sdt-left-why">{{reasons}}</small></li>
+      {{/each}}
+    </ul>
+    <p class="hint">{{localize "SDT.Deep.leftNow"}} {{situation}}</p>
+  </details>
+  {{/if}}
+
   {{#if counters.length}}
   <div class="sdt-memory">
     {{#each counters}}

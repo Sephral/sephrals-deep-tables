@@ -89,6 +89,7 @@ export async function drawNow(ref, options = {}) {
     const forOther = !!options.userId && (options.userId !== game.user.id);
     if ( forOther ) return {message: null, lines: roll.lines, problems: roll.state.problems};
     if ( roll.state.problems.some(p => p.kind === "empty") ) await emptyTable(table);
+    else if ( roll.state.problems.some(p => p.kind === "conditions") ) ui.notifications.info(t("SDT.Draw.conditions", {name: table.name}));
     else ui.notifications.info(t("SDT.Draw.nothing", {name: table.name}));
     return {message: null, lines: roll.lines, problems: roll.state.problems};
   }

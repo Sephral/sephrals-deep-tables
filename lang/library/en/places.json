@@ -1,0 +1,126 @@
+{
+  "group": "places",
+  "title": "Taverns and shops",
+  "summary": "Names for inns, what makes them special, who sits at the bar, and small shops with an odd thing for sale.",
+  "tables": [
+    {
+      "key": "inn-name",
+      "name": "Inn name",
+      "description": "Builds a name from a describing word and a sign, or picks a plain one.",
+      "rows": [
+        {"text": "The {{inn-adjective}} {{inn-sign}}", "weight": 4},
+        {"text": "The {{inn-sign}} and {{inn-sign}}", "weight": 2},
+        "The Warm Hearth",
+        "The Final Mile",
+        "Mother Brindle's Table"
+      ]
+    },
+    {
+      "key": "inn-adjective",
+      "name": "Inn sign: describing word",
+      "part": true,
+      "rows": ["Crooked", "Golden", "Sleepy", "Laughing", "Rusty", "Drunken", "Silver", "Merry", "Broken", "Wandering", "Blushing", "Hungry"]
+    },
+    {
+      "key": "inn-sign",
+      "name": "Inn sign: picture",
+      "part": true,
+      "rows": ["Lantern", "Crown", "Anvil", "Pony", "Goose", "Barrel", "Compass", "Kettle", "Heron", "Wheel", "Candle", "Boar"]
+    },
+    {
+      "key": "inn-feature",
+      "name": "Inn: what stands out",
+      "description": "One thing guests remember about the place.",
+      "rows": [
+        "A huge hearth takes up the whole back wall and the innkeeper is proud of it.",
+        "Every table wobbles. The regulars put folded notes under the legs and never agree who should fix it.",
+        "The ceiling is hung with hundreds of old boots, one for every guest who ever left without paying.",
+        "The soup is the same every day, and it is so good that nobody asks what is in it.",
+        "A caged raven watches the room and calls out the name of whoever walks in, usually wrong.",
+        "The cellar door is locked with three padlocks and the innkeeper changes the subject when asked.",
+        "A long table is always kept free in the corner. Nobody will say for whom.",
+        "The walls are covered with chalk drawings by travelers, some of them very old maps.",
+        "The beer comes from a brewery two valleys away and costs double, but it is worth it.",
+        "A retired sergeant runs the door. Fights are over before they begin.",
+        "There is a well in the middle of the common room, covered with a heavy wooden lid.",
+        "The upstairs rooms are rented by the hour and the owner insists it is for sleeping."
+      ]
+    },
+    {
+      "key": "tavern-patron",
+      "name": "Tavern guest",
+      "part": true,
+      "rows": [
+        "A merchant counting coins twice and still not happy with the sum.",
+        "Two farmhands arguing about whose turn it is to buy the next round.",
+        "A bard tuning a lute with one string missing.",
+        "A tired courier with mud up to the knees who eats without looking up.",
+        "An old woman knitting in the corner who hears everything.",
+        "A young noble in plain clothes who is not very good at being plain.",
+        "A dwarf telling the same story about a bridge for the third time tonight.",
+        "A pair of guards off duty, pretending not to watch the door.",
+        "A pilgrim sharing bread with a stray dog.",
+        "A card player who is winning too much to be lucky.",
+        "A traveling healer selling cures to anyone who coughs.",
+        "A shy student surrounded by books, a candle and a cold supper.",
+        "A scarred mercenary asking quietly who is hiring.",
+        "A drunk sailor swearing the sea is following him inland.",
+        "A tinker with a cart full of pots, hinges and one surprising sword.",
+        "A hooded stranger who paid for a room and has not touched the drink.",
+        "A cheerful cook from the next village who came to steal the soup recipe.",
+        "A child sweeping the floor for a bowl of stew.",
+        "A poacher trying to sell a very large hare to the very tired innkeeper.",
+        "A town clerk with a bundle of notices he cannot find a nail for."
+      ]
+    },
+    {
+      "key": "tavern-crowd",
+      "name": "Tavern: who is here tonight",
+      "description": "A table inside a table: how busy the room is decides how many guests are drawn.",
+      "rows": [
+        {"table": "tavern-patron", "quantity": "1d2"},
+        {"table": "tavern-patron", "quantity": "1d4+1", "weight": 2},
+        {"table": "tavern-patron", "quantity": "2d4", "weight": 2},
+        {"table": "tavern-patron", "quantity": "2d6+2"}
+      ]
+    },
+    {
+      "key": "shop-type",
+      "name": "Shop",
+      "description": "A kind of shop and who runs it. The owner is drawn from the names of any people.",
+      "rows": [
+        "Chandler: candles, lamp oil and tinder, run by {{name-any}}.",
+        "Herbalist: dried bundles, tinctures and honest advice, run by {{name-any}}.",
+        "Cobbler: boots, buckles and a bench full of unfinished repairs, run by {{name-any}}.",
+        "Bookbinder: ledgers, journals and a few books nobody has asked about, run by {{name-any}}.",
+        "Baker: bread before dawn and gossip after, run by {{name-any}}.",
+        "Fletcher: arrows by the dozen and bows by appointment, run by {{name-any}}.",
+        "Rope maker: cord, nets and knots for every occasion, run by {{name-any}}.",
+        "Pawnbroker: a little of everything and no questions, run by {{name-any}}.",
+        "Tailor: cloth, thread and an eye for who can pay, run by {{name-any}}.",
+        "Smith: tools, nails and horseshoes, run by {{name-any}}.",
+        "Apothecary: powders, salves and a locked cabinet, run by {{name-any}}.",
+        "Curio shop: shelves of strange things with handwritten labels, run by {{name-any}}."
+      ]
+    },
+    {
+      "key": "shop-oddity",
+      "name": "Shop: an odd thing for sale",
+      "description": "One unusual item in the window. Prices roll themselves.",
+      "rows": [
+        "A lantern that burns without oil. It gives off a little less light every night. [[2d6+5]] gp.",
+        "A walking stick that always points slightly to the left. [[1d6]] gp.",
+        "A jar of honey from bees that only feed on night flowers. [[1d4]] gp.",
+        "A mirror that shows the room as it was an hour ago. [[3d6]] gp.",
+        "A pair of boots that are always dry. [[2d6]] gp.",
+        "A bell that rings once whenever a lie is told near it. [[4d6]] gp.",
+        "A cloak with a hood that is always a little too big. [[1d6+1]] gp.",
+        "A small box that cannot be opened but sounds like it contains coins. [[2d4]] gp.",
+        "A candle that smells of the owner's grandmother's kitchen. [[1d8]] sp.",
+        "A map of a town that no one has ever heard of. [[2d6+3]] gp.",
+        "A flute that only plays one tune, but plays it perfectly. [[1d10]] gp.",
+        "A sack of seeds that sprout in a single night, then wilt by morning. [[1d4+2]] gp."
+      ]
+    }
+  ]
+}

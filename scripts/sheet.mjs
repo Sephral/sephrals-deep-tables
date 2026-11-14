@@ -7,6 +7,11 @@
 import {MODULE_ID, esc, isActive, setting, t} from "./config.mjs";
 import {actionButton} from "./action-app.mjs";
 import {actionOf} from "./actions.mjs";
+import {conditionsButton} from "./conditions-app.mjs";
+import {ON_EMPTY, check, normalizeConditions, onEmptyOf} from "./conditions.mjs";
+import {conditionsSummary, currentSituation, reasonText} from "./situation.mjs";
+import {openStoryTags} from "./tags-app.mjs";
+import {openLibrary} from "./library-app.mjs";
 import {counter} from "./memory.mjs";
 import {playersMayRoll} from "./players.mjs";
 import {chances, formatChance} from "./chances.mjs";
@@ -101,17 +106,23 @@ export function onRenderRollTableDirectory(app, html) {
   if ( !game.user.isGM ) return;
   const element = (html instanceof HTMLElement) ? html : html?.[0];
   const actions = element?.querySelector(".header-actions");
-  if ( !actions || actions.querySelector(".sdt-import") ) return;
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "sdt-import";
-  button.innerHTML = `<i class="fa-solid fa-file-import" inert></i> <span>${esc(t("SDT.Import.button"))}</span>`;
-  button.dataset.tooltip = t("SDT.Import.buttonHint");
-  button.addEventListener("click", event => {
-    event.preventDefault();
-    openImport();
-  });
-  actions.append(button);
+  if ( !actions ) return;
+  const add = (cls, icon, label, hint, run) => {
+    if ( actions.querySelector(`.${cls}`) ) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = cls;
+    button.innerHTML = `<i class="${icon}" inert></i> <span>${esc(t(label))}</span>`;
+    button.dataset.tooltip = t(hint);
+    button.addEventListener("click", event => {
+      event.preventDefault();
+      run();
+    });
+    actions.append(button);
+  };
+  add("sdt-import", "fa-solid fa-file-import", "SDT.Import.button", "SDT.Import.buttonHint", () => openImport());
+  add("sdt-library", "fa-solid fa-book-atlas", "SDT.Library.button", "SDT.Library.buttonHint", () => openLibrary());
+  add("sdt-tags", "fa-solid fa-tags", "SDT.Tags.button", "SDT.Tags.buttonHint", () => openStoryTags());
 }
 
 /* -------------------------------------------- */
@@ -159,6 +170,9 @@ function editFields(app, element, table) {
       + `<input type="checkbox" name="${FLAG}.memory" ${memoryOfTable(table).memory ? "checked" : ""} ${table.pack ? "disabled" : ""}></div>`
       + `<p class="hint">${esc(t(table.replacement ? "SDT.Sheet.memoryHint" : "SDT.Sheet.memoryHintNoReplacement"))}</p></div>`
       + `<div class="form-group sdt-memory-line" data-sdt-counter></div>`
+      + `<div class="form-group"><label>${esc(t("SDT.Sheet.onEmpty"))}</label><div class="form-fields">`
+      + `<select name="${FLAG}.onEmpty">${ON_EMPTY.map(value => `<option value="${value}" ${(onEmptyOf(own.onEmpty) === value) ? "selected" : ""}>${esc(t(`SDT.Sheet.onEmpty_${value}`))}</option>`).join("")}</select></div>`
+      + `<p class="hint">${esc(t("SDT.Sheet.onEmptyHint"))}</p></div>`
       + `<div class="form-group"><label>${esc(t("SDT.Sheet.players"))}</label><div class="form-fields">`
       + `<input type="checkbox" name="${FLAG}.players" ${playersMayRoll(path => foundry.utils.getProperty(table.flags ?? {}, path)) ? "checked" : ""} ${table.pack ? "disabled" : ""}></div>`
       + `<p class="hint">${esc(t("SDT.Sheet.playersHint"))}</p></div>`;
@@ -171,6 +185,7 @@ function editFields(app, element, table) {
     const result = table.results.get(row.dataset.resultId);
     if ( !details || !result || details.querySelector(".sdt-act-edit") ) continue;
     details.append(actionButton(result));
+    details.append(conditionsButton(result));
   }
   // The Loot Ledger has the same field: one is enough
   if ( isActive("sephrals-loot-ledger") ) return;
@@ -242,6 +257,23 @@ function viewDetails(element, table) {
     note.dataset.tooltip = t(`SDT.Action.type.${action.type}`);
     note.innerHTML = `<i class="fa-solid fa-bolt" inert></i> ${esc(t(`SDT.Action.type.${action.type}`))}`
       + (action.auto ? ` · ${esc(t("SDT.Action.autoShort"))}` : "");
+    details.append(note);
+  }
+  const situation = currentSituation();
+  for ( const row of rows ) {
+    const details = row.querySelector("td.details");
+    const result = table.results.get(row.dataset.resultId);
+    const conditions = result ? normalizeConditions(foundry.utils.getProperty(result.flags ?? {}, `${MODULE_ID}.conditions`)) : null;
+    if ( !details || !conditions || details.querySelector(".sdt-cond-note") ) continue;
+    const verdict = check(conditions, situation);
+    const note = document.createElement("small");
+    note.className = "sdt-cond-note";
+    if ( !verdict.ok ) {
+      note.classList.add("sdt-cond-off");
+      row.classList.add("sdt-cond-left");
+    }
+    note.dataset.tooltip = verdict.ok ? t("SDT.Cond.holds") : `${t("SDT.Cond.leftOut")}: ${verdict.reasons.map(reasonText).join(", ")}`;
+    note.innerHTML = `<i class="fa-solid fa-filter" inert></i> ${esc(conditionsSummary(conditions))}`;
     details.append(note);
   }
   if ( showsCounter(table) ) {
@@ -324,6 +356,12 @@ export function onRenderTableResultActions(app, html) {
     + `<p class="hint">${esc(t("SDT.Action.addHint"))}</p>`;
   group.querySelector(".form-fields").append(actionButton(app.document));
   (element.querySelector(".sdt-quantity-group") ?? weight).after(group);
+  const cond = document.createElement("div");
+  cond.className = "form-group slim sdt-cond-group-field";
+  cond.innerHTML = `<label>${esc(t("SDT.Cond.label"))}</label><div class="form-fields"></div>`
+    + `<p class="hint">${esc(t("SDT.Cond.addHint"))}</p>`;
+  cond.querySelector(".form-fields").append(conditionsButton(app.document));
+  group.after(cond);
 }
 
 /**

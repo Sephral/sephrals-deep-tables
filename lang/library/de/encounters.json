@@ -1,0 +1,115 @@
+{
+  "group": "encounters",
+  "title": "Begegnungen nach Gelände",
+  "summary": "Zufallsbegegnungen als kurzer Text für sechs Geländearten, mit Zahlen, die sich selbst würfeln. Manche gibt es nur nachts.",
+  "tables": [
+    {
+      "key": "enc-plains",
+      "name": "Begegnung: Ebene und Straße",
+      "rows": [
+        "[[1d4+1]] Banditen mit einem Seil quer über der Straße, die auf einen schnellen Wegzoll hoffen.",
+        "Eine Handelskarawane aus [[1d3+1]] Wagen, bewacht und nervös, froh über Gesellschaft.",
+        "Ein einzelner Ritter auf einem müden Pferd, der jemanden zum Duell oder jemanden zum Helfen sucht.",
+        "[[2d6]] wilde Hunde, die der Gruppe folgen und langsam näher kommen.",
+        "Ein Steuereintreiber mit zwei Wachen, einem Hauptbuch und ohne jeden Humor.",
+        "Eine Herde Wildpferde kreuzt die Straße und hinterlässt eine Staubwolke.",
+        "[[1d6+2]] Bauern mit Heugabeln, die etwas im Maisfeld jagen.",
+        "Eine gelangweilte Streife aus [[1d4+2]] Soldaten, die alles zweimal prüfen.",
+        "Ein fahrender Heiler mit einem Karren voller Flaschen und einem schlimmen Husten.",
+        "Ein ausgebrannter Wagen am Straßenrand, noch warm, mit frischen Spuren, die davon wegführen.",
+        {"text": "[[1d4+2]] Reiter ohne Banner warten im Dunkeln an der Straße, stumm und ohne Feuer.", "conditions": {"times": ["night"]}},
+        {"text": "Ein heller Morgen, und eine Gruppe von [[1d6+2]] Pilgern bittet darum, bis zur nächsten Stadt begleitet zu werden.", "conditions": {"times": ["dawn", "day"]}}
+      ]
+    },
+    {
+      "key": "enc-forest",
+      "name": "Begegnung: Wald",
+      "rows": [
+        "Ein Rudel von [[1d4+2]] Wölfen, mager und wachsam, beobachtet die Gruppe zwischen den Bäumen.",
+        "Ein Keiler mit einem Groll und sehr kurzer Geduld, zwischen der Gruppe und dem Pfad.",
+        "[[1d3+1]] Wilderer mit einem Netz, einem Karren und der Geschichte, sie hätten sich verirrt.",
+        "Ein Einsiedler, der Tee anbietet und davor warnt, weiter nach Norden zu gehen.",
+        "Ein Gewirr riesiger Spinnweben quer über dem Pfad und etwas, das sich im Laub darüber regt.",
+        "Ein Druide mit [[1d3]] tierischen Gefährten, der die Gruppe mustert, bevor er entscheidet, was er sagt.",
+        "Ein Holzfällertrupp von [[2d4]] mit einem umgestürzten Wagen und einem eingeklemmten Ochsen.",
+        "Ein scheues Feenwesen, das ein Geschäft anbietet, das zu gut klingt.",
+        "Ein junger Bär allein auf dem Pfad und keine Spur von der Mutter. Noch nicht.",
+        "Eine verbrannte Lichtung mit einem Steinkreis und frischen Fußspuren, die hinausführen.",
+        {"text": "[[1d4+1]] Goblins mit Fackeln und schlechten Plänen schleichen am Rand des Pfades entlang.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "Im Dunkeln bewegt sich etwas sehr Großes langsam durch die Bäume und bleibt dann lauschend stehen.", "conditions": {"times": ["night"]}}
+      ]
+    },
+    {
+      "key": "enc-mountains",
+      "name": "Begegnung: Hügel und Gebirge",
+      "rows": [
+        "Eine Ziegenherde und ein Hirte, der sehr lange über das Wetter reden will.",
+        "[[1d4+1]] Hügelräuber, die ihre Hinterhalte mögen und jeden Felsvorsprung kennen.",
+        "Ein einzelner Riesenadler auf einem Felsen, der die Gruppe studiert.",
+        "Ein Höhleneingang, aus dem warme Luft kommt und in den Bärenspuren hineinführen.",
+        "Ein Trupp von [[1d6+1]] Bergleuten mit einem festgefahrenen Karren und einer Geschichte darüber, was weiter unten liegt.",
+        "Ein Steinschlag aus losem Geröll, hinter dem sich etwas bewegt.",
+        "[[1d3]] Oger, die über ein gestohlenes Schaf streiten und die Gruppe noch nicht bemerkt haben.",
+        "Ein wandernder Mönch, der anbietet, die Gruppe für ein kleines Geschenk über einen schwierigen Pass zu führen.",
+        "Eine dünne Rauchfahne aus einem verborgenen Tal und das leise Geräusch eines Hammers.",
+        "Ein fahrender Händler mit einem Maultier, überladen mit Waren und außer Atem.",
+        {"text": "Ein Augenpaar spiegelt das Licht des Feuers von oben, von einem Felsvorsprung, und rührt sich nicht.", "conditions": {"times": ["night"]}},
+        {"text": "Ein kalter Wind bringt das Heulen von etwas Großem, weit oben. Es klingt nicht nach Wind.", "conditions": {"times": ["dusk", "night"]}}
+      ]
+    },
+    {
+      "key": "enc-swamp",
+      "name": "Begegnung: Sumpf",
+      "rows": [
+        "Eine Bande von [[1d4+2]] Moorräubern, die flache Boote durch das Schilf staken.",
+        "Ein Riesenegel von der Größe eines Hundes in einem Tümpel, den die Gruppe durchqueren muss.",
+        "Eine Hexenhütte auf Stelzen mit einer Laterne im Fenster und einem Topf auf dem Feuer.",
+        "Ein Jäger auf einem Floß, der anbietet, die Gruppe für einen fairen Preis zu führen, und es ehrlich meint.",
+        "Ein Rudel von [[2d4]] großen Ratten auf einem treibenden Stamm, das in dieselbe Richtung zieht.",
+        "Ein Irrlicht, das vorausschwebt und immer knapp neben dem Pfad bleibt.",
+        "Ein versunkener Wagen, halb im Schlamm, mit etwas Glänzendem darunter.",
+        "Eine Herde Sumpfhirsche, von etwas flussaufwärts in die Flucht geschreckt.",
+        "Ein einzelner Frosch von der Größe eines Fasses, der die Gruppe anstarrt und dann untertaucht.",
+        "Ein Nebel, der nach Fäulnis riecht und dicht genug ist, um einen Gefährten darin zu verlieren.",
+        {"text": "Blasse Lichter treiben zwischen den Bäumen und rufen mit einer Stimme, die wie die eines Freundes klingt.", "conditions": {"times": ["night"]}},
+        {"text": "Die Luft ist schwer von Insekten, die stechen und nicht aufhören, und die Gruppe muss bald rasten.", "conditions": {"times": ["day", "dusk"]}}
+      ]
+    },
+    {
+      "key": "enc-coast",
+      "name": "Begegnung: Küste",
+      "rows": [
+        "Das Boot von Schmugglern liegt an einem versteckten Strand, mit [[1d4+1]] Mann Besatzung und vielen Kisten.",
+        "Ein Schiffswrack auf den Felsen, mit einer Handvoll Überlebender, die vom Ufer winken.",
+        "Ein Fischerdorf, das Fremde nicht willkommen heißt, mit lauter geschlossenen Türen.",
+        "Ein Gezeitentümpel, der von etwas überfüllt ist, das zu groß dafür ist.",
+        "Ein einsamer Leuchtturmwärter, der seit Monaten keinen anderen Menschen gesehen hat und nicht aufhören kann zu reden.",
+        "Ein Piratenspäher in einem kleinen Boot, der so tut, als wäre er Fischer.",
+        "Eine bei Ebbe freigelegte Meereshöhle mit etwas Glitzerndem ganz hinten.",
+        "Eine Gruppe Delfine, die im Flachwasser spielt, gefolgt von einem sehr großen Schatten.",
+        "Ein Strandgutsammler mit einem Karren voller Treibholz, der weiß, wo die besten Funde angespült werden.",
+        "Eine Schar von [[1d4+2]] Möwen, die der Gruppe in der Hoffnung auf Futter folgt, laut.",
+        {"text": "Draußen auf dem Meer blitzt ein schwaches Licht dreimal auf, dann zweimal, dann nichts mehr.", "conditions": {"times": ["night"]}},
+        {"text": "Dichter Seenebel zieht mit der Flut heran und verbirgt die Klippenkante.", "conditions": {"times": ["dawn", "dusk"]}}
+      ]
+    },
+    {
+      "key": "enc-desert",
+      "name": "Begegnung: Wüste",
+      "rows": [
+        "Eine Karawane aus [[1d3+2]] Kamelen und ein Führer, der die Brunnen kennt und dieses Wissen teuer verkauft.",
+        "Ein Staubteufel, der über die Dünen tanzt, harmlos, aber beunruhigend.",
+        "Eine Gruppe von [[1d4+2]] Banditen auf schnellen Pferden, die die Wüste besser kennen als jeder andere.",
+        "Eine halb vergrabene Statue mit abgewetztem Gesicht und einer Inschrift, die niemand lesen kann.",
+        "Ein trockener Brunnen mit einem Seil, das noch hält, und dem Geräusch von Flügeln tief unten.",
+        "Ein einzelner Reisender zu Fuß, der um Wasser bittet und auf jede Frage sehr vage antwortet.",
+        "Ein Schwarm Skorpione in der Farbe des Sandes um einen dürren Busch.",
+        "Ein Karawanenweg, gesäumt von weißen Knochen, die sehr alt und sehr groß aussehen.",
+        "Die Luftspiegelung einer Stadt am Horizont, die nicht verschwindet, wenn die Gruppe blinzelt.",
+        "Ein Sandsturm am Horizont, eine braune Wand, die sich schnell bewegt.",
+        {"text": "Die Wüste wird kalt. Ein klarer Himmel und ein schwaches Leuchten im Sand, unter dem sich etwas verschiebt.", "conditions": {"times": ["night"]}},
+        {"text": "Die Hitze ist brutal. Jedes Wesen liegt im Schatten, und das gilt auch für den, der die Gruppe beobachtet.", "conditions": {"times": ["day"]}}
+      ]
+    }
+  ]
+}

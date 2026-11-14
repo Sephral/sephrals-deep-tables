@@ -1,0 +1,45 @@
+{
+  "group": "rumors",
+  "title": "Rumors",
+  "summary": "Rumors for the tavern, some true and some not. A few only come up when a story tag or the time of day fits.",
+  "tags": [
+    {"id": "war", "name": "War has started"},
+    {"id": "festival", "name": "A festival is on"}
+  ],
+  "tables": [
+    {
+      "key": "rumors-tavern",
+      "name": "Rumor",
+      "description": "Some rows only appear when a story tag is on (war, festival) or at night. Switch the tags in the story tag list.",
+      "rows": [
+        "The miller says his flour sacks are lighter every morning and he blames the owls.",
+        "A chest washed up on the riverbank last week. The bailiff took it and nobody has seen it since.",
+        "The old bridge sings when the wind comes from the east. Some say it is a warning.",
+        "A stranger has been buying every lantern in the market, and paying double.",
+        "The widow at the edge of town talks to someone at night, but she lives alone.",
+        "The baron's youngest son left home without a word and took the good horse.",
+        "Wolves have been seen in daylight, walking in a line, as if someone were leading them.",
+        "The healer in the next village has stopped taking money. People are afraid to ask why.",
+        "Salt prices doubled in a month. Somebody must be sitting on a lot of it.",
+        "The well in the square tastes of copper since the last storm.",
+        "A traveling troupe was turned away at the gate, and one of them was crying.",
+        "The ferryman refuses to cross after dark. He says the other side is closer than it was.",
+        "Someone is leaving small stone cairns along the old road, one more each day.",
+        "The priest burned a stack of papers behind the chapel and then went to bed for two days.",
+        "A farmer found a gold coin in his field, and then another one, and now he digs all day.",
+        "The hunters say the forest is quiet in a way they do not like.",
+        {"text": "Strange lights have been seen on the hill after midnight, moving slowly in a circle.", "conditions": {"times": ["night"]}},
+        {"text": "Soldiers have been seen on the north road, more every day, and they do not stop for the toll.", "conditions": {"tags": {"war": true}}},
+        {"text": "The smith says he has not made a plowshare in a month, only blades and nails.", "conditions": {"tags": {"war": true}}},
+        {"text": "The roads are quiet and the merchants are in a good mood. Strange how nobody complains.", "conditions": {"tags": {"war": false}}},
+        {"text": "The baker has hidden a prize somewhere in this year's festival bread and nobody knows who will find it.", "conditions": {"tags": {"festival": true}}}
+      ]
+    },
+    {
+      "key": "rumor-told",
+      "name": "Rumor with a teller",
+      "description": "A rumor and who tells it, drawn from the table of professions.",
+      "rows": ["{{rumors-tavern}} Told by {{npc-profession}}."]
+    }
+  ]
+}

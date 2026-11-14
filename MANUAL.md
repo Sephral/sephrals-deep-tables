@@ -79,6 +79,57 @@ Under the buttons the card notes where the result went.
 
 Gaps and overlaps in the numbers are listed. *Find items* turns rows whose text is exactly the name of an item of the world, or of any compendium, into real item results. You can change the name and the formula before you create the table.
 
+## Table library
+
+The module ships a library of ready tables, so it is useful from the first minute. Open it with *Table library* in the header of the roll table directory (GM only), or with the macro `openLibrary()`.
+
+The tables come in groups:
+
+* **Names:** first names and family names for five peoples (Northfolk, Sunlanders, Imperials, Silvans, Deep folk), a full name table for each, and *Name: any people*, which picks the people for you.
+* **Taverns and shops:** inn names built from a describing word and a sign, what stands out in an inn, who is in the tavern tonight, shops with their owners and an odd thing in the window.
+* **People:** occupation, looks, quirk and wish, and *Person in one roll*, which draws all of them into one line.
+* **Rumors:** rumors for the tavern, with a teller. A few rows only come up when a story tag or the time of day fits.
+* **Travel events:** the road, the forest, the mountains and the sea, and one table that picks the terrain.
+* **Weather:** the weather of the day for each season, with a temperature that rolls itself.
+* **Encounters by terrain:** short texts for plains and roads, forest, hills and mountains, swamp, coast and desert, with numbers that roll themselves.
+* **Trinkets and small finds:** pocket trinkets, small purses written as coin texts, small finds and hiding places.
+
+The library shows how the module works: tables inside tables with quantity formulas (*Tavern: who is here tonight* draws a number of guests), `@Table` draws inside sentences (a shop and its owner), `[[1d6]]` rolls, coin texts and rows with conditions.
+
+Click a table to see its rows, tick the ones you want and click *Import*. A table with building blocks (the first name and family name tables behind a full name) brings them along, the summary tells how many. The building blocks sit under *Building blocks* in every group and can be imported alone as well.
+
+* **Language:** the window opens in the language of the module, English or German. Both are complete, and a world can have both.
+* **Folder:** the tables go into the folder you name, with a subfolder per group. Empty means no folder. A folder that exists already is reused.
+* **Already imported:** a table is only imported once per language. The window marks the ones that are in the world and does not let you tick them again. When a later import needs a table that is in the world, the new table links to it.
+* **Links:** a link between library tables is a normal `@Table[RollTable.id]{Name}` draw or a result that points to a table. They keep working when you rename a table, and you can edit everything like any other table.
+* **Story tags:** rows that ask for a story tag (*War has started*, *A festival is on*) add the tag to your list, switched off.
+
+The texts are part of the module in `lang/library/<language>/<group>.json`, one file per group and language, readable and without any code. The tables are imported as plain roll tables, so nothing of the library stays active afterwards. The coin rows use the coin keys `gp`, `sp` and `cp`, which every system with a purse of the module understands.
+
+## Rows with conditions
+
+A result row can carry conditions. A row whose conditions do not hold is left out of the draw, as if it were not on the table. The table then rolls its formula again until it lands on a row that is allowed, so the chances of the other rows grow in proportion. A deep roll shows the rows that were left out, each with its reason.
+
+Click *Conditions* next to a row in the edit mode of the table, or in the window of a single result. A row can combine any of these, and all of them have to hold:
+
+* **Scenes:** the scene the person who rolls is looking at, one or more.
+* **Regions:** names of Regions, separated by commas, not case sensitive. It holds when a selected token stands in a Region with one of the names. Without a selected token, the tokens of the player characters on the map count. Without any token the Regions are unknown and the condition fails.
+* **Time of day:** dawn, day, dusk and night, taken from the world time. The hours are world settings (dawn 5, day 8, dusk 18, night 21 by default). With a calendar of another length of day the hours are still the hours of the calendar clock.
+* **Party level:** a range from and to, either end can stay empty. The party level is the average, rounded, of the characters the players are assigned to (else the characters players own). It is read per game system: D&D 5e and PF2e the character level, Crucible the level, SWADE the rank from 1 (Novice) to 5 (Legendary), other systems the usual level fields. The setting *Party level for rows with a level range* switches to a number you type, or off, which ignores level conditions. When the level cannot be read the condition fails and says so.
+* **Story tags:** a small list of names the GM switches on and off, for example *War has started*. A row can ask for a tag to be on or off or not care. Open the list with *Story tags* in the header of the roll table directory, in the module settings, or from the conditions window. Every change is saved at once, rows react at the next draw. A tag keeps its id when you rename it.
+
+In view mode the GM sees a note with the conditions under every row, struck through while the row is left out, and the tooltip names the reason.
+
+### When no row fits
+
+If every row that is left fails its conditions, the table setting *When no row fits* (edit mode, under Deep Tables) decides:
+
+* **Report it** (default): nothing is drawn, the GM gets a notification, and the card or the window says that no row fits.
+* **Ignore the conditions:** the table is drawn from all of its rows and the card says so.
+* **Pick again above:** only for a table inside another table. It hands back to the table it sits in, which picks another row. A table at the top reports instead.
+
+The situation is read on the computer of the person who rolls. A roll a player asks for goes through the GM, so it uses the GM's scene and tokens.
+
 ## Results that act
 
 A result can carry one action that happens when the GM clicks its button on the card, or on its own when the card is shown. In the edit mode of a table every row has an *Action* button next to its quantity (the window of a single result has it too). The window offers:
@@ -119,7 +170,7 @@ With Sephral’s Roll Triggers active, its action *Roll table* uses the Deep Tab
 
 ## The table window
 
-In edit mode, under the table settings, you find *Deep Tables*: the number of draws, *No duplicates*, *Shown to*, *Remember what was drawn* with its counter and *Players may roll*. Next to every result are its quantity and its action. In view mode every row shows its chance, calculated from the table formula (switch it off with *Show chances in tables*), and the GM sees a note with the draws, duplicates and visibility of the table and the quantity of each row.
+In edit mode, under the table settings, you find *Deep Tables*: the number of draws, *No duplicates*, *Shown to*, *Remember what was drawn* with its counter, *Players may roll* and *When no row fits*. Next to every result are its quantity, its action and its conditions. In view mode every row shows its chance, calculated from the table formula (switch it off with *Show chances in tables*), and the GM sees a note with the draws, duplicates and visibility of the table and the quantity of each row.
 
 ## Tables from other modules
 
@@ -134,13 +185,17 @@ Tables set up with an older table module keep working without it. Its quantity o
 | Show chances in tables | This device | The chance of every row in the table window |
 | Depth of tables inside tables | World | How many levels are followed, 1 to 10 |
 | Results may act on their own | World | Lets actions that are set to run on their own do so when the card is shown. Off, every action waits for its button |
+| Dawn, day, dusk, night start at | World | The hour (0 to 23) each part of the day begins, for rows with a time of day |
+| Party level for rows with a level range | World | Auto from the characters, Manual (the number below) or Off, which ignores level conditions |
+| Party level, set by hand | World | Used with Manual |
 | Roll tables of Roll Triggers with Deep Tables | World | Only while Roll Triggers is active. A trigger that rolls a table posts the Deep Tables card |
+| Story tags | GM | Opens the list of story tags |
 | Run self test | GM | See below |
 | Save debug file | GM | See below |
 
 ## Self test
 
-*Run self test* in the module settings checks what the module needs in Foundry: roll tables, the table window, text enrichers, chat, its windows, a test draw, the memory of tables, the actions, the list for players and the module socket, the placing of tokens, statuses and audio, the coins of the game system and, when active, Saved Encounters, the module for loot piles and the Loot Ledger. The result comes as a notification and a chat message only you see, with the Foundry version the module was verified with. After a Foundry update you get a one time notice to run it.
+*Run self test* in the module settings checks what the module needs in Foundry: roll tables, the table window, text enrichers, chat, its windows, a test draw, the memory of tables, the actions, the list for players and the module socket, the placing of tokens, statuses and audio, the situation and the check of rows with conditions, the shipped table library, the coins of the game system and, when active, Saved Encounters, the module for loot piles and the Loot Ledger. The result comes as a notification and a chat message only you see, with the Foundry version the module was verified with. After a Foundry update you get a one time notice to run it.
 
 ## Debug file
 
@@ -178,6 +233,15 @@ The first button in the module settings, *Sephral’s Modules* (GMs only), opens
 | `editAction(result)` | GM: opens the action window of a table result |
 | `openPlayerTables()` / `rollListed(uuid)` | Opens the list of tables players may roll, rolls one of them (a GM at once, a player through the GM) |
 | `syncPlayerTables()` | GM: writes the list for players again |
+| `openLibrary()` | GM: opens the Table library |
+| `importLibrary(keys, options)` | GM: imports tables of the library by key, for example `["name-any", "inn-name"]`, with the building blocks they need. Options: `lang` (`en` or `de`), `folder` (name, empty for none). Returns the new tables and the number skipped because they are in the world already |
+| `library(lang)` | The tables of the library in a language: `[{key, name, group, part}]` |
+| `storyTags()` | The story tags: `[{id, name, on}]` |
+| `setStoryTag(idOrName, on)` | GM: switches a story tag on or off, without `on` it toggles. Returns false when the tag does not exist |
+| `saveStoryTags(tags)` / `openStoryTags()` | GM: replaces the list, opens the window |
+| `editConditions(result)` | GM: opens the conditions window of a table result |
+| `situation()` | What conditions are checked against right now: `{sceneId, regions, period, hour, level, levelOff, tags}` |
+| `checkConditions(conditions)` | `{ok, reasons}` for a conditions object, as stored in the flag `flags.sephrals-deep-tables.conditions` of a result (`scenes`, `regions`, `times`, `level: {min, max}`, `tags: {id: true or false}`) |
 | `runSelfTest()` | Runs the self test (GM) |
 | `saveDebugFile()` | Saves the debug file (GM) |
 
@@ -188,7 +252,7 @@ The module can take part in a small usage report shared by all of Sephral’s mo
 With the GM’s consent only the active GM’s browser counts, and it sends at most one report a day. The counts are kept in a hidden world setting, so all browsers and computers of the GM count together, and turning the statistics off deletes them. A copy of a world gets its own world ID. The question lists everything the report contains, from the Foundry version to a random world ID. For Deep Tables it holds:
 
 * on how many of the last 30 days the module was used
-* how often a deep roll is opened, a table is drawn now, a card is posted, a single row is drawn again, a result is given to a character, left as a loot pile or added to the loot, a table is made from text, a journal button is used, a table is brought back, an action runs or is taken back, a player rolls a table and a trigger rolls one
+* how often a deep roll is opened, a table is drawn now, a card is posted, a single row is drawn again, a result is given to a character, left as a loot pile or added to the loot, a table is made from text, a journal button is used, a table is brought back, an action runs or is taken back, a player rolls a table, a trigger rolls one, the Table library is opened, tables are imported from it, conditions are saved on a row, a draw leaves rows out because of their conditions and a story tag is switched
 * the settings *Look*, *Show chances in tables*, *Depth of tables inside tables*, *Results may act on their own* and *Roll tables of Roll Triggers with Deep Tables* (only the chosen option)
 * where errors occur in the module code: file, line, error type and whether the error arose in the module itself, in Foundry, in the game system or in another module, never the error message or the name of another module
 

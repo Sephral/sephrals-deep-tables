@@ -1,0 +1,79 @@
+{
+  "group": "weather",
+  "title": "Wetter",
+  "summary": "Das Wetter des Tages für jede der vier Jahreszeiten, mit einer Temperatur, die sich selbst würfelt. Manche Zeilen passen nur zum Tag oder zur Nacht.",
+  "tables": [
+    {
+      "key": "weather-spring",
+      "name": "Wetter: Frühling",
+      "rows": [
+        "Mild und hell, etwa [[1d6+10]] Grad, mit einer leichten Brise, die nach feuchter Erde riecht.",
+        "Den ganzen Tag sanfter Regen, etwa [[1d4+7]] Grad. Die Wege werden zu Schlamm.",
+        "Kühl und wolkig, etwa [[1d6+5]] Grad, und die Wolken versprechen Regen, den sie nicht liefern.",
+        "Ein plötzlicher Hagelschauer für eine Viertelstunde, dann klarer Himmel. Etwa [[1d6+6]] Grad.",
+        "Nebel über den Feldern bis zum späten Vormittag, dann warme Sonne. Etwa [[1d6+8]] Grad.",
+        "Starker Wind aus Westen, etwa [[1d6+8]] Grad. Alles, was nicht festgebunden ist, ist unterwegs.",
+        "Ein warmer, windstiller Tag, etwa [[1d6+12]] Grad. Überall Bienen.",
+        "Immer wieder Schauer, etwa jede Stunde mit einem Regenbogen. Etwa [[1d6+8]] Grad.",
+        "Kalter Morgenfrost, der bis zum Mittag schmilzt. Etwa [[1d4+3]] Grad im Morgengrauen, [[1d6+10]] am Mittag.",
+        "Am Nachmittag grollt Donner von den Hügeln heran. Etwa [[1d6+9]] Grad, danach ein schwerer Wolkenbruch.",
+        {"text": "Eine klare Nacht mit schmaler Mondsichel und einem Himmel voller Sterne. Etwa [[1d4+2]] Grad.", "conditions": {"times": ["night"]}},
+        {"text": "Strahlende Sonne und ein tiefblauer Himmel. Etwa [[1d6+13]] Grad am Mittag.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "weather-summer",
+      "name": "Wetter: Sommer",
+      "rows": [
+        "Heiß und trocken, etwa [[1d6+25]] Grad. Schatten ist Gold wert.",
+        "Warm und hell, etwa [[1d6+20]] Grad, mit einer sanften Brise, die erst am Abend kommt.",
+        "Schwül und drückend, etwa [[1d6+23]] Grad. Alle sind verschwitzt und gereizt.",
+        "Am Nachmittag ein Gewitter mit Donner, den man in der Brust spürt. Etwa [[1d6+18]] Grad davor, [[1d6+12]] danach.",
+        "Ein Staubschleier hängt über den Straßen, etwa [[1d6+24]] Grad. Die Sonne ist eine rote Scheibe.",
+        "Ein leichter, erfrischender Regen im Morgengrauen, dann ein warmer klarer Tag. Etwa [[1d6+19]] Grad.",
+        "Mild und angenehm, etwa [[1d6+17]] Grad. Das richtige Wetter für einen langen Spaziergang.",
+        "Rauch am Horizont von einem fernen Feuer, etwa [[1d6+22]] Grad. Das Licht wird bernsteinfarben.",
+        "Dichter Nebel in den Tälern bis zum Mittag, darüber klar und warm. Etwa [[1d6+18]] Grad.",
+        "Wind von der Küste bringt Erleichterung und den Geruch von Salz. Etwa [[1d6+19]] Grad.",
+        {"text": "Eine warme Nacht mit Glühwürmchen im hohen Gras. Etwa [[1d6+14]] Grad.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "Die Sonne steht hoch und die Schatten sind kurz, etwa [[1d6+26]] Grad. Vor dem Abend will sich niemand bewegen.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "weather-autumn",
+      "name": "Wetter: Herbst",
+      "rows": [
+        "Frisch und klar, etwa [[1d6+8]] Grad. Das Laub ist rot und golden, und das Licht ist weich.",
+        "Den ganzen Tag stetiger Nieselregen, etwa [[1d4+6]] Grad. Alles riecht nach nassem Holz.",
+        "Starker Wind mit Böen, die Blätter von den Bäumen reißen, etwa [[1d6+6]] Grad.",
+        "Kalt und grau, etwa [[1d4+4]] Grad, mit tiefen Wolken, die nie ganz regnen.",
+        "Dichter Nebel bis zum Mittag, etwa [[1d4+5]] Grad. Geräusche tragen sich seltsam.",
+        "Ein warmer Tag außerhalb der Jahreszeit, etwa [[1d6+14]] Grad. Die Leute vergessen, dass die Kälte kommt.",
+        "Kalter Regen, am Ende des Tages mit Schneeregen. Etwa [[1d4+2]] Grad.",
+        "Ein klarer, stiller Tag mit scharfer Kälte im Schatten. Etwa [[1d6+7]] Grad.",
+        "Vogelschwärme ziehen in langen Linien nach Süden, etwa [[1d6+8]] Grad. Der Himmel ist voll davon.",
+        "Ein Sturm zieht vom Meer heran, mit Regen, der waagerecht fällt. Etwa [[1d6+7]] Grad.",
+        {"text": "Eine mondhelle Nacht mit kalter Schärfe und einem Hof um den Mond. Etwa [[1d4+1]] Grad.", "conditions": {"times": ["night"]}},
+        {"text": "Ein heller, goldener Nachmittag, bei dem alle stehen bleiben und schauen. Etwa [[1d6+10]] Grad.", "conditions": {"times": ["day", "dusk"]}}
+      ]
+    },
+    {
+      "key": "weather-winter",
+      "name": "Wetter: Winter",
+      "rows": [
+        "Bitterkalt und klar, etwa minus [[1d6+3]] Grad. Der Atem hängt in der Luft.",
+        "Den ganzen Tag dichter Schneefall, etwa minus [[1d4]] Grad. Die Welt wird still und weiß.",
+        "Ein dünner Eisregen, etwa [[1d3-1]] Grad. Jeder Schritt ist ein Risiko.",
+        "Ein Schneesturm mit Wind, der durch Umhänge schneidet, etwa minus [[1d6+5]] Grad. Reisen ist fast unmöglich.",
+        "Grau und rau, etwa [[1d4]] Grad, mit feinem Nieselregen, der in alles hineinzieht.",
+        "Eine blasse Sonne auf einer Schneekruste, etwa minus [[1d4]] Grad. Das Gleißen tut in den Augen weh.",
+        "Strenger Frost nach einer klaren Nacht, etwa minus [[1d6+2]] Grad. Teiche sind mit Eis bedeckt.",
+        "Leichtes Flockentreiben, das nicht liegen bleibt, etwa [[1d3]] Grad. Der Himmel hat die Farbe von Zinn.",
+        "Tauwetter, etwa [[1d4+2]] Grad. Der Schnee wird zu Matsch und die Wege zu Suppe.",
+        "Kalter Nebel, der an jedem Zweig gefriert und den ganzen Wald glitzern lässt. Etwa minus [[1d4]] Grad.",
+        {"text": "Eine klare, bittere Nacht voller Sterne, etwa minus [[1d6+6]] Grad. Irgendwo in der Ferne heult ein Wolf.", "conditions": {"times": ["night"]}},
+        {"text": "Ein kurzer heller Tag mit Sonnenlicht auf dem Schnee, etwa minus [[1d3]] Grad. Am Nachmittag ist die Sonne schon weg.", "conditions": {"times": ["day"]}}
+      ]
+    }
+  ]
+}

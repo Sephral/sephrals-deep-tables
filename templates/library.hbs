@@ -1,0 +1,96 @@
+<div class="sdt-shell">
+  {{#if error}}
+  <p class="sdt-empty"><i class="fa-solid fa-triangle-exclamation" inert></i> {{localize "SDT.Library.error"}}</p>
+  {{else}}
+  <div class="sdt-lib-top">
+    <label class="sdt-field">
+      <span>{{localize "SDT.Library.language"}}</span>
+      <select name="lang">
+        {{#each languages}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
+      </select>
+    </label>
+    <label class="sdt-field">
+      <span>{{localize "SDT.Library.folder"}}</span>
+      <input type="text" name="folder" value="{{folder}}" autocomplete="off" placeholder="{{localize 'SDT.Library.folderPlaceholder'}}">
+    </label>
+    <label class="sdt-field">
+      <span>{{localize "SDT.Library.search"}}</span>
+      <input type="search" name="search" autocomplete="off">
+    </label>
+  </div>
+
+  <div class="sdt-lib-main">
+    <div class="sdt-lib-list">
+      {{#each groups}}
+      <section class="sdt-lib-group">
+        <header>
+          <label class="sdt-lib-group-pick" data-tooltip="{{localize 'SDT.Library.pickGroup'}}">
+            <input type="checkbox" data-group="{{id}}" {{#if allChecked}}checked{{/if}}>
+          </label>
+          <i class="fa-solid {{icon}}" inert></i>
+          <strong>{{title}}</strong>
+          <small>{{count}}</small>
+        </header>
+        <p class="hint">{{summary}}</p>
+        <ul>
+          {{#each mains}}
+          <li class="sdt-lib-item {{#if shown}}sdt-shown{{/if}}" data-name="{{needle}}">
+            <input type="checkbox" data-pick="{{key}}" data-in="{{../id}}" {{#if checked}}checked{{/if}} {{#if imported}}disabled{{/if}} aria-label="{{name}}">
+            <button type="button" class="sdt-lib-name" data-action="show" data-key="{{key}}">{{name}}</button>
+            {{#if conditions}}<i class="fa-solid fa-filter sdt-lib-badge" data-tooltip="{{localize 'SDT.Library.hasConditions'}}" inert></i>{{/if}}
+            {{#if imported}}<small class="sdt-lib-have"><i class="fa-solid fa-check" inert></i> {{localize "SDT.Library.inWorld"}}</small>{{/if}}
+          </li>
+          {{/each}}
+        </ul>
+        {{#if hasParts}}
+        <details class="sdt-lib-parts">
+          <summary>{{localize "SDT.Library.parts"}} ({{partCount}})</summary>
+          <ul>
+            {{#each parts}}
+            <li class="sdt-lib-item {{#if shown}}sdt-shown{{/if}}" data-name="{{needle}}">
+              <input type="checkbox" data-pick="{{key}}" data-in="{{../id}}" {{#if checked}}checked{{/if}} {{#if imported}}disabled{{/if}} aria-label="{{name}}">
+              <button type="button" class="sdt-lib-name" data-action="show" data-key="{{key}}">{{name}}</button>
+              {{#if imported}}<small class="sdt-lib-have"><i class="fa-solid fa-check" inert></i> {{localize "SDT.Library.inWorld"}}</small>{{/if}}
+            </li>
+            {{/each}}
+          </ul>
+        </details>
+        {{/if}}
+      </section>
+      {{/each}}
+    </div>
+
+    <div class="sdt-lib-preview">
+      {{#if preview}}
+      <h3>{{preview.name}}</h3>
+      <p class="hint">{{localize "SDT.Library.rollsOn"}} {{preview.formula}}{{#if preview.description}}. {{preview.description}}{{/if}}</p>
+      {{#if preview.imported}}<p class="sdt-lib-have"><i class="fa-solid fa-check" inert></i> {{localize "SDT.Library.inWorld"}}</p>{{/if}}
+      <table class="sdt-table">
+        <tbody>
+          {{#each preview.rows}}
+          <tr>
+            <td class="sdt-r">{{range}}</td>
+            <td>{{#if table}}<i class="fa-solid fa-dice" inert></i> {{/if}}{{text}}{{#if note}} {{note}}{{/if}}
+              {{#if quantity}}<small class="sdt-lib-qty">{{quantity}}</small>{{/if}}
+              {{#if condition}}<small class="sdt-lib-cond"><i class="fa-solid fa-filter" inert></i> {{condition}}</small>{{/if}}
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      {{else}}
+      <p class="sdt-empty"><i class="fa-solid fa-book-atlas" inert></i> {{localize "SDT.Library.pickOne"}}</p>
+      {{/if}}
+    </div>
+  </div>
+  {{/if}}
+
+  <footer class="sdt-foot">
+    <span class="sdt-summary" data-summary>{{summary}}</span>
+    <span class="sdt-foot-buttons">
+      <button type="button" data-action="all"><i class="fa-solid fa-check-double" inert></i> {{localize "SDT.Library.all"}}</button>
+      <button type="button" data-action="none"><i class="fa-solid fa-xmark" inert></i> {{localize "SDT.Library.none"}}</button>
+      <button type="button" class="sdt-primary" data-action="import" {{#unless canImport}}disabled{{/unless}}><i class="fa-solid fa-file-import" inert></i> {{localize "SDT.Library.import"}}</button>
+    </span>
+  </footer>
+</div>

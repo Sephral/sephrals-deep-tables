@@ -1,0 +1,115 @@
+{
+  "group": "encounters",
+  "title": "Encounters by terrain",
+  "summary": "Random encounters as short text for six kinds of terrain, with numbers that roll themselves. Some only happen at night.",
+  "tables": [
+    {
+      "key": "enc-plains",
+      "name": "Encounter: plains and roads",
+      "rows": [
+        "[[1d4+1]] bandits with a rope across the road, hoping for a quick toll.",
+        "A merchant caravan of [[1d3+1]] wagons, guarded and nervous, glad of company.",
+        "A lone knight on a tired horse, looking for someone to challenge or someone to help.",
+        "[[2d6]] wild dogs trailing the party, slowly closing in.",
+        "A tax collector with two guards, a ledger and no sense of humor.",
+        "A herd of wild horses crosses the road and leaves a cloud of dust.",
+        "A group of [[1d6+2]] farmers with pitchforks, chasing something into the corn.",
+        "A bored patrol of [[1d4+2]] soldiers who check everything twice.",
+        "A traveling healer with a cart of bottles and a bad cough.",
+        "A burned out wagon by the roadside, still warm, with fresh tracks leading away.",
+        {"text": "[[1d4+2]] riders without banners wait in the dark by the road, silent, with no fire.", "conditions": {"times": ["night"]}},
+        {"text": "A bright morning, and a band of [[1d6+2]] pilgrims asks the party to escort them to the next town.", "conditions": {"times": ["dawn", "day"]}}
+      ]
+    },
+    {
+      "key": "enc-forest",
+      "name": "Encounter: forest",
+      "rows": [
+        "A pack of [[1d4+2]] wolves, thin and wary, watching from between the trees.",
+        "A boar with a grudge and a very short temper, between the party and the path.",
+        "[[1d3+1]] poachers with a net, a cart and a story about being lost.",
+        "A hermit who offers tea and warns against going further north.",
+        "A tangle of huge spider webs across the path, and something stirring in the leaves above.",
+        "A druid and [[1d3]] animal companions, studying the party before deciding what to say.",
+        "A lumber crew of [[2d4]] with an overturned wagon and a trapped ox.",
+        "A shy fey creature who offers a bargain that sounds too good.",
+        "A bear cub alone on the path and no sign of its mother. Yet.",
+        "A burned clearing with a ring of stones and fresh footprints leading out.",
+        {"text": "[[1d4+1]] goblins with torches and bad plans, sneaking along the edge of the trail.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "Something very large moves through the trees in the dark, slowly, and then stops to listen.", "conditions": {"times": ["night"]}}
+      ]
+    },
+    {
+      "key": "enc-mountains",
+      "name": "Encounter: hills and mountains",
+      "rows": [
+        "A flock of goats and a shepherd who wants to talk about the weather for a very long time.",
+        "[[1d4+1]] hill raiders who like their ambush spots and know every ledge.",
+        "A lone giant eagle perched on a rock, studying the party.",
+        "A cave mouth with warm air coming out and a bear's footprints going in.",
+        "A band of [[1d6+1]] miners with a stuck cart and a story about what is further down.",
+        "A rockfall of loose stones with the sound of something moving behind it.",
+        "[[1d3]] ogres arguing over a stolen sheep, not yet aware of the party.",
+        "A wandering monk who offers to guide the party across a tricky pass for a small gift.",
+        "A thin trail of smoke from a hidden valley, with the faint sound of a hammer.",
+        "A traveling trader with a mule, overloaded with goods and out of breath.",
+        {"text": "A pair of eyes reflects the light of the fire from above, on a ledge, and does not move.", "conditions": {"times": ["night"]}},
+        {"text": "A cold wind brings the howl of something big, far above. It does not sound like wind.", "conditions": {"times": ["dusk", "night"]}}
+      ]
+    },
+    {
+      "key": "enc-swamp",
+      "name": "Encounter: swamp",
+      "rows": [
+        "A gang of [[1d4+2]] bog bandits poling flat boats through the reeds.",
+        "A giant leech the size of a dog in a pool the party has to cross.",
+        "A witch's hut on stilts with a lantern in the window and a pot on the fire.",
+        "A hunter on a raft who offers to guide the party for a fair price, and means it.",
+        "A pack of [[2d4]] large rats on a floating log, heading the same way.",
+        "A will o' the wisp that dances ahead, always just off the path.",
+        "A drowned wagon, half sunk, with something shiny under the mud.",
+        "A herd of swamp deer startled into flight by something upstream.",
+        "A lone frog the size of a barrel that stares at the party and then goes under.",
+        "A mist that smells of rot, thick enough to lose a companion in.",
+        {"text": "Pale lights drift between the trees and call out in a voice that sounds like a friend.", "conditions": {"times": ["night"]}},
+        {"text": "The air is heavy with insects that bite and do not stop, and the party must rest soon.", "conditions": {"times": ["day", "dusk"]}}
+      ]
+    },
+    {
+      "key": "enc-coast",
+      "name": "Encounter: coast",
+      "rows": [
+        "A smugglers' boat pulled up on a hidden beach, with [[1d4+1]] crew and a lot of crates.",
+        "A shipwreck on the rocks with a handful of survivors waving from the shore.",
+        "A fishing village that does not welcome strangers, with every door closed.",
+        "A tide pool crowded with something that is too big for it.",
+        "A lone lighthouse keeper who has not seen another person in months and cannot stop talking.",
+        "A pirate scout in a small boat who pretends to be a fisherman.",
+        "A sea cave exposed by the low tide, with something glinting at the back.",
+        "A pod of dolphins playing in the shallows, followed by a very large shadow.",
+        "A beachcomber with a cart full of driftwood who knows where the best finds wash ashore.",
+        "A group of [[1d4+2]] gulls following the party in the hope of food, loudly.",
+        {"text": "A faint light flashes out at sea three times, then twice, then nothing.", "conditions": {"times": ["night"]}},
+        {"text": "A thick sea fog rolls in with the tide and hides the cliff edge.", "conditions": {"times": ["dawn", "dusk"]}}
+      ]
+    },
+    {
+      "key": "enc-desert",
+      "name": "Encounter: desert",
+      "rows": [
+        "A caravan of [[1d3+2]] camels and a guide who knows the wells and sells that knowledge dearly.",
+        "A dust devil that dances across the dunes, harmless but unnerving.",
+        "A group of [[1d4+2]] bandits on fast horses who know the desert better than anyone.",
+        "A half buried statue with a worn face and an inscription that nobody can read.",
+        "A dry well with a rope that still holds, and the sound of wings far below.",
+        "A lone traveler on foot who asks for water and gives a very vague answer to every question.",
+        "A swarm of scorpions the color of sand around a dry bush.",
+        "A caravan trail marked with white bones that look very old and very large.",
+        "A mirage of a city on the horizon that does not go away when the party blinks.",
+        "A sandstorm on the horizon, a brown wall that moves fast.",
+        {"text": "The desert grows cold. A clear sky and a faint glow in the sand where something shifts beneath.", "conditions": {"times": ["night"]}},
+        {"text": "The heat is brutal. Every creature is in the shade, and so is whoever is watching the party.", "conditions": {"times": ["day"]}}
+      ]
+    }
+  ]
+}

@@ -31,6 +31,33 @@
       "triggerTables": {
         "name": "Tabellen der Roll Triggers mit Deep Tables würfeln",
         "hint": "Ein Trigger, der eine Tabelle würfelt, zum Beispiel eine natürliche 20 auf der Tabelle für kritische Treffer, zeigt die Deep Tables Karte mit Mengen, Tabellen in Tabellen und Aktionen."
+      },
+      "hourDawn": {
+        "name": "Morgengrauen beginnt um",
+        "hint": "Uhrzeit, 0 bis 23, zu der das Morgengrauen beginnt. Morgengrauen, Tag, Abenddämmerung und Nacht folgen aufeinander, und die Weltzeit entscheidet, welche gerade ist. Zeilen mit Tageszeit nutzen das."
+      },
+      "hourDay": {
+        "name": "Der Tag beginnt um",
+        "hint": "Uhrzeit, 0 bis 23, zu der der Tag beginnt."
+      },
+      "hourDusk": {
+        "name": "Abenddämmerung beginnt um",
+        "hint": "Uhrzeit, 0 bis 23, zu der die Abenddämmerung beginnt."
+      },
+      "hourNight": {
+        "name": "Die Nacht beginnt um",
+        "hint": "Uhrzeit, 0 bis 23, zu der die Nacht beginnt."
+      },
+      "levelSource": {
+        "name": "Gruppenstufe für Zeilen mit Stufenbereich",
+        "hint": "Automatisch liest die Stufe der Spielercharaktere in deinem Spielsystem (D&D 5e, PF2e, SWADE Rang von 1 bis 5, Crucible und Systeme, die eine Stufe an der üblichen Stelle führen). Manuell nimmt die Zahl darunter. Aus ignoriert Stufenbedingungen.",
+        "auto": "Automatisch, aus den Charakteren",
+        "manual": "Manuell",
+        "off": "Aus, Stufenbedingungen ignorieren"
+      },
+      "levelManual": {
+        "name": "Gruppenstufe, von Hand",
+        "hint": "Wird benutzt, wenn die Gruppenstufe oben auf Manuell steht."
       }
     },
     "gear": "Einstellungen",
@@ -61,7 +88,9 @@
       "invalidDraws": "Die Zahl der Würfe ließ sich nicht auswerten, es wird einmal gewürfelt.",
       "invalidQuantity": "Die Menge ließ sich nicht auswerten, es gilt 1",
       "summary": "Items: {items}, Zeilen: {lines}",
-      "post": "Im Chat zeigen"
+      "post": "Im Chat zeigen",
+      "left": "Ausgelassen",
+      "leftNow": "Lage jetzt:"
     },
     "Card": {
       "draws": "{count} Würfe",
@@ -78,14 +107,17 @@
       "empty": "{table} hat keine Ergebnisse mehr.",
       "impossible": "{table} hat kein Ergebnis für ihre Formel.",
       "invalid": "Die Formel von {table} lässt sich nicht auswerten.",
-      "ranOut": "{table} war leer, bevor alle Würfe gemacht waren."
+      "ranOut": "{table} war leer, bevor alle Würfe gemacht waren.",
+      "conditions": "In {table} passt gerade keine Zeile zur Lage.",
+      "conditionsIgnored": "In {table} passte keine Zeile zur Lage, deshalb wurden die Bedingungen übergangen."
     },
     "Draw": {
       "empty": "Alle Ergebnisse von {name} sind gezogen.",
       "emptyTitle": "Tabelle ist leer",
       "emptyAsk": "Alle Ergebnisse von {name} sind gezogen. Alle zurücklegen?",
       "reset": "{name} ist wieder voll.",
-      "nothing": "{name} hat nichts ergeben."
+      "nothing": "{name} hat nichts ergeben.",
+      "conditions": "In {name} passt gerade nichts zur Lage."
     },
     "Give": {
       "title": "An Figur geben",
@@ -134,7 +166,12 @@
       "memoryHint": "Was gewürfelt wurde, kommt nicht wieder, bis du die Tabelle zurücksetzt, auch nach einem Neustart. Es zählen nur Würfe von Deep Tables.",
       "memoryHintNoReplacement": "Diese Tabelle würfelt ohne Zurücklegen, Foundry markiert also schon, was gekommen ist. Das Merken ändert hier nichts, Zähler und Zurücksetzen funktionieren trotzdem.",
       "players": "Spieler dürfen würfeln",
-      "playersHint": "Die Tabelle erscheint in der Liste, aus der Spieler würfeln können, mit der oben gewählten Sichtbarkeit. Der Spielleiter würfelt für sie, die Spieler brauchen also kein Recht an der Tabelle."
+      "playersHint": "Die Tabelle erscheint in der Liste, aus der Spieler würfeln können, mit der oben gewählten Sichtbarkeit. Der Spielleiter würfelt für sie, die Spieler brauchen also kein Recht an der Tabelle.",
+      "onEmpty": "Wenn keine Zeile passt",
+      "onEmptyHint": "Was passiert, wenn bei allen übrigen Zeilen die Bedingungen nicht erfüllt sind. Melden zieht nichts und sagt es. Bedingungen übergehen zieht aus allen Zeilen. Darüber neu wählen gibt an die Tabelle zurück, in der diese steht, und die wählt eine andere Zeile (allein wird nur gemeldet).",
+      "onEmpty_report": "Melden",
+      "onEmpty_ignore": "Bedingungen übergehen",
+      "onEmpty_reroll": "Darüber neu wählen"
     },
     "Import": {
       "button": "Tabelle aus Text",
@@ -197,7 +234,9 @@
       "Actions": "Die Aktionen der Ergebnisse funktionieren nicht wie erwartet.",
       "Players": "Die Liste der Tabellen für Spieler oder der Modul Socket fehlt.",
       "Placing": "Foundrys Spielfiguren, Zustände oder Audio funktionieren anders als erwartet.",
-      "Encounters": "Saved Encounters bietet nicht, was das Modul braucht."
+      "Encounters": "Saved Encounters bietet nicht, was das Modul braucht.",
+      "Conditions": "Die Lage oder die Prüfung für Zeilen mit Bedingungen funktioniert nicht wie erwartet.",
+      "Library": "Die Tabellenbibliothek hat ein Problem: {problems}"
     },
     "DEBUG": {
       "Title": "Debug-Datei",
@@ -319,6 +358,102 @@
         "missing": "Die Tabelle gibt es nicht.",
         "invalid": "Dieser Wurf hat nicht geklappt."
       }
+    },
+    "Tags": {
+      "menu": "Ereignisse in der Welt",
+      "open": "Ereignisse bearbeiten",
+      "menuHint": "Ereignisse, die du aktiv und inaktiv schaltest, zum Beispiel Der Krieg hat begonnen. Zeilen einer Tabelle können verlangen, dass ein Ereignis aktiv oder nicht aktiv ist.",
+      "title": "Ereignisse in der Welt",
+      "hint": "Schalte ein Ereignis aktiv, wenn es in deiner Geschichte passiert ist. Dann kommen Zeilen vor, die es verlangen, und Zeilen, die es nicht wollen, werden ausgelassen.",
+      "none": "Noch keine Ereignisse. Lege unten das erste an.",
+      "onHint": "Ereignis aktiv",
+      "name": "Name",
+      "remove": "Ereignis entfernen",
+      "newPlaceholder": "Neues Ereignis, zum Beispiel Der Hafen ist gesperrt",
+      "add": "Hinzufügen",
+      "button": "Ereignisse",
+      "buttonHint": "Die Ereignisse der Welt aktiv und inaktiv schalten"
+    },
+    "Cond": {
+      "title": "Bedingungen: {name}",
+      "hint": "Die Zeile wird nur gezogen, wenn alle Bedingungen erfüllt sind, die du setzt. Ein leeres Feld wird ignoriert. Ausgelassene Zeilen erscheinen mit dem Grund im Fenster des tiefen Wurfs.",
+      "scenes": "Szenen",
+      "missingScenes": "Einige der gewählten Szenen gibt es in dieser Welt nicht. Sie bleiben erhalten.",
+      "regions": "Regionen",
+      "regionsPlaceholder": "Wald, Marktplatz",
+      "regionsHint": "Namen von Regionen, durch Kommas getrennt. Gilt, wenn ein gewähltes Token, sonst ein Spielercharakter auf der Karte, in einer Region mit diesem Namen steht.",
+      "time": "Tageszeit",
+      "timeHint": "Aus der Weltzeit. Die Uhrzeiten stellst du in den Moduleinstellungen ein.",
+      "hoursRange": "{from} bis {to}",
+      "level": "Gruppenstufe",
+      "levelFrom": "von",
+      "levelTo": "bis",
+      "levelHint": "Wird aus den Spielercharakteren gelesen oder in den Moduleinstellungen von Hand gesetzt.",
+      "tags": "Ereignisse",
+      "noTags": "Noch keine Ereignisse. Öffne die Liste, um welche anzulegen.",
+      "tagAny": "Egal",
+      "tagOn": "Muss aktiv sein",
+      "tagOff": "Muss nicht aktiv sein",
+      "tagIsOn": "aktiv",
+      "remove": "Bedingungen entfernen",
+      "save": "Speichern",
+      "add": "Bedingungen",
+      "addHint": "Diese Zeile nur ziehen, wenn Szene, Region, Tageszeit, Gruppenstufe oder Ereignisse passen",
+      "setShort": "Bedingungen gesetzt",
+      "edit": "Bedingungen bearbeiten",
+      "label": "Bedingungen",
+      "now": "Jetzt: {period} ({hour}:00 Uhr).",
+      "holds": "Die Bedingungen sind gerade erfüllt",
+      "leftOut": "Gerade ausgelassen",
+      "levelShort": "Stufe {range}",
+      "levelNone": "Stufe unbekannt",
+      "notTag": "nicht {name}",
+      "range": {
+        "both": "{min} bis {max}",
+        "min": "ab {min}",
+        "max": "bis {max}"
+      },
+      "period": {
+        "dawn": "Morgengrauen",
+        "day": "Tag",
+        "dusk": "Abenddämmerung",
+        "night": "Nacht"
+      },
+      "reason": {
+        "scene": "Nur in der Szene: {names}",
+        "region": "Nur in der Region: {names}",
+        "regionUnknown": "Nur in der Region: {names} (kein Token gewählt und kein Gruppentoken auf der Karte)",
+        "time": "Nur bei: {periods} (jetzt: {now})",
+        "level": "Gruppenstufe {range} (jetzt: {level})",
+        "levelUnknown": "Gruppenstufe {range} (die Stufe ist unbekannt, stelle sie in den Einstellungen ein)",
+        "tagOn": "Ereignis aktiv: {name}",
+        "tagOff": "Ereignis nicht aktiv: {name}"
+      }
+    },
+    "Library": {
+      "button": "Tabellenbibliothek",
+      "buttonHint": "Fertige Tabellen für Namen, Wirtshäuser, Gerüchte, Reisen, Wetter, Begegnungen, Beute und Personen",
+      "title": "Tabellenbibliothek",
+      "folderDefault": "Tabellenbibliothek",
+      "language": "Sprache der Tabellen",
+      "folder": "Ordner in der Welt",
+      "folderPlaceholder": "Kein Ordner",
+      "search": "Suchen",
+      "pickGroup": "Die ganze Gruppe anhaken",
+      "hasConditions": "Manche Zeilen haben Bedingungen",
+      "inWorld": "In der Welt",
+      "parts": "Bausteine",
+      "rollsOn": "Würfelt mit",
+      "range": "{from} bis {to}",
+      "pickOne": "Klicke eine Tabelle an, um ihre Zeilen zu sehen. Hake die gewünschten an und importiere sie.",
+      "all": "Alle anhaken",
+      "none": "Alle abhaken",
+      "import": "Importieren",
+      "summary": "{count} Tabellen werden angelegt, davon {extra} Bausteine, die die angehakten brauchen.",
+      "nothingTicked": "Noch nichts angehakt.",
+      "done": "{count} Tabellen importiert, {skipped} übersprungen, weil sie schon in der Welt sind.",
+      "failed": "Der Import ist fehlgeschlagen. Details stehen in der Konsole.",
+      "error": "Die Tabellenbibliothek konnte nicht geladen werden."
     }
   }
 }

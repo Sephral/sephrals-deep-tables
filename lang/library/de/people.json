@@ -1,0 +1,92 @@
+{
+  "group": "people",
+  "title": "Personen",
+  "summary": "Berufe, Aussehen, Eigenheiten und Wünsche für die Leute, denen die Gruppe begegnet, und eine Tabelle, die alles zu einem Satz würfelt.",
+  "tables": [
+    {
+      "key": "npc-quick",
+      "name": "Person mit einem Wurf",
+      "description": "Name, Beruf, Aussehen, eine Eigenheit und ein Wunsch, aus den anderen Tabellen in eine Zeile gezogen.",
+      "rows": ["{{name-any}}, {{npc-profession}}. {{npc-appearance}} {{npc-quirk}} Möchte {{npc-motive}}."]
+    },
+    {
+      "key": "npc-profession",
+      "name": "Beruf",
+      "rows": [
+        "Bäcker", "Fährmann", "Kerzenzieher", "Nachtwächter", "Schäfer", "Gerber", "Schreiber",
+        "Stallbursche", "Koch", "Brunnenbauer", "Imker", "Rattenfänger", "Spielmann", "Soldat im Ruhestand",
+        "Töpferwarenhändler", "Fischhändler", "Kesselflicker", "Totengräber", "Kräutersammler", "Zollschreiber"
+      ]
+    },
+    {
+      "key": "npc-appearance",
+      "name": "Aussehen",
+      "rows": [
+        "Groß und dünn, mit einem Buckel vom Ducken unter niedrigen Türen.",
+        "Klein und kräftig, mit Händen wie Schaufeln.",
+        "Ein Gesicht, das immer sonnenverbrannt ist, und ein Hut, der es nie ist.",
+        "Trägt einen sehr langen Schal, auch im Sommer.",
+        "Es fehlt ein Schneidezahn, und die Person ist stolz auf das Pfeifen, das dadurch entsteht.",
+        "Makellos ordentlich, mit Tinte an einem Finger.",
+        "Ein großer grauer Bart mit Krümeln darin.",
+        "Helle, unruhige Augen, die ständig den Raum absuchen.",
+        "Eine Narbe über einer Augenbraue, die dauerhaft überrascht aussehen lässt.",
+        "Kleidung, die viele Male geflickt wurde, jedes Mal mit einer anderen Farbe.",
+        "Ein schwerer Umhang, der nach Holzrauch und Regen riecht.",
+        "Ein fröhliches rundes Gesicht und eine sehr leise Stimme.",
+        "Hinkt, geht am Stock und hat einen überraschend schnellen Schritt.",
+        "Ringe an jedem Finger, alle davon billig.",
+        "Das Haar mit einem Stück Angelschnur zusammengebunden.",
+        "Sommersprossen, ein breites Grinsen und Dreck unter jedem Nagel.",
+        "Ein hoher Hut mit einer Feder, die schon bessere Tage gesehen hat.",
+        "Ganz in Grau gekleidet, vom Hut bis zu den Stiefeln.",
+        "Riecht stark nach Zwiebeln und versucht, das zu verbergen.",
+        "Ein Gesicht, das man sich schlecht merken kann, und die Person weiß das."
+      ]
+    },
+    {
+      "key": "npc-quirk",
+      "name": "Eigenheit",
+      "rows": [
+        "Summt ständig dieselben drei Töne.",
+        "Antwortet nie direkt auf eine Frage, sondern immer mit einer Geschichte.",
+        "Zählt alles: Schritte, Fenster, Leute.",
+        "Redet mit Tieren und wartet höflich auf die Antwort.",
+        "Lacht im falschen Moment.",
+        "Sammelt seltsame Knöpfe und bittet jeden Fremden um einen.",
+        "Klopft vor jeder wichtigen Aussage zweimal auf den Tisch.",
+        "Isst immer beim Reden und redet deshalb lauter.",
+        "Weigert sich, eine Schwelle mit dem linken Fuß zuerst zu übertreten.",
+        "Hängt an jeden Satz eine höfliche Entschuldigung an, auch an Beleidigungen.",
+        "Gibt jedem innerhalb einer Minute einen Spitznamen.",
+        "Flüstert bei Aufregung und brüllt bei Langeweile.",
+        "Sitzt nie mit dem Rücken zur Tür.",
+        "Führt ein winziges Notizbuch und schreibt jedes Versprechen auf.",
+        "Nennt jeden Vetter.",
+        "Erzählt jedes Mal denselben Witz und freut sich jedes Mal neu.",
+        "Kann nicht aufhören, irgendetwas Kleines zu polieren.",
+        "Hält jeden Traum für eine Prophezeiung und teilt sie freigiebig.",
+        "Macht vor jeder Antwort eine lange Pause und antwortet dann kurz.",
+        "Trägt immer einen einzelnen Handschuh und sagt nicht, warum."
+      ]
+    },
+    {
+      "key": "npc-motive",
+      "name": "Wunsch",
+      "rows": [
+        "eine alte Schuld vor dem nächsten Vollmond begleichen",
+        "einen verlorenen Bruder finden, der in die Stadt gegangen ist",
+        "für einmal ernst genommen werden",
+        "das Meer sehen, bevor es zu spät ist",
+        "ein Geheimnis bewahren, das immer schwerer wird",
+        "endlich den Kochwettbewerb des Festes gewinnen",
+        "herausfinden, wer die Grenzsteine verschiebt",
+        "die Stadt verlassen und nie wiederkommen",
+        "in Ruhe gelassen werden, vollständig und für immer",
+        "ein Kind beschützen, das nicht das eigene ist",
+        "mit sehr wenig Arbeit sehr viel Geld verdienen",
+        "sich an einem früheren Freund rächen, aber sanft"
+      ]
+    }
+  ]
+}

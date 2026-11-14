@@ -1,0 +1,81 @@
+{
+  "group": "loot",
+  "title": "Krimskrams und kleine Funde",
+  "summary": "Krimskrams für die Taschen, kleine Börsen als Münztexte und die kleinen Funde einer Durchsuchung. Münzzeilen würfeln ihre Beträge selbst.",
+  "tables": [
+    {
+      "key": "trinkets",
+      "name": "Krimskrams",
+      "description": "Kleine Dinge mit einer Geschichte, für die Taschen und für den Boden alter Truhen.",
+      "rows": [
+        "Ein Messingknopf mit einer Krone darauf, an dem noch ein Stück roter Faden hängt.",
+        "Ein Zahn an einem Lederband, zu groß, um zu irgendetwas Einheimischem zu gehören.",
+        "Ein winziges Glasfläschchen mit Korken, leer, mit einem schwachen Lavendelduft.",
+        "Eine gefaltete Hafenkarte, auf der ein Anleger zweimal eingekreist ist.",
+        "Ein Holzlöffel, in den die Initialen dreier verschiedener Menschen geschnitzt sind.",
+        "Ein Würfel aus Knochen mit einer Sechs auf jeder Seite.",
+        "Ein silberner Fingerhut, in den ein sehr kleiner Vogel graviert ist.",
+        "Ein Schlüssel ohne Schloss, blank poliert von Jahren in einer fremden Tasche.",
+        "Eine Handvoll getrockneter Blumen, gepresst in ein Stück Samt.",
+        "Ein Kerzenstummel in einer Dose mit der Aufschrift Zünde nie allein an.",
+        "Ein Brief in einer Sprache, die niemand in der Gruppe liest, unterschrieben mit der kleinen Zeichnung eines Fisches.",
+        "Ein Taschenspiegel mit einem Sprung, der genau durch die Mitte des Spiegelbilds läuft.",
+        "Ein kleiner geschnitzter Fuchs, der immer etwas wärmer ist als die Hand, die ihn hält.",
+        "Ein Band mit sechs Knoten, geknüpft von jemandem, der damit eindeutig etwas gemeint hat.",
+        "Eine Münze aus einem Land, das niemand einordnen kann, mit einem Loch in der Mitte.",
+        "Eine Pfeife, die keinen Ton macht, den Menschen hören, aber Hunde werden unruhig.",
+        "Ein Angelhaken aus Knochen, eingewickelt in einen Zettel mit dem Wort Glück.",
+        "Ein Kieselstein mit einem perfekten Loch, glatt vom Tragen.",
+        "Eine bemalte Holzperle mit einem Gesicht darauf, das jedes Mal ein wenig anders aussieht.",
+        "Ein kleiner Lederbeutel mit farbigem Sand, jede Farbe in einem eigenen verknoteten Zipfel."
+      ]
+    },
+    {
+      "key": "coins-small",
+      "name": "Kleine Börse",
+      "description": "Münztexte: Die Beträge würfeln sich selbst und landen als Münzen auf der Karte.",
+      "part": true,
+      "rows": [
+        {"text": "3d6 cp", "weight": 2},
+        {"text": "2d6 sp", "weight": 2},
+        "1d6 gp",
+        "4d6 cp, 1d4 sp",
+        "2d4 sp, 1d4 cp",
+        "1d4 gp, 2d6 sp",
+        "5d6 sp",
+        "1d8 gp"
+      ]
+    },
+    {
+      "key": "finds-small",
+      "name": "Kleiner Fund",
+      "description": "Was eine kurze Durchsuchung ergibt. Tabellen in Tabellen mit Mengen: Manchmal ist es mehr als eine Börse.",
+      "rows": [
+        {"table": "coins-small", "weight": 3},
+        {"table": "coins-small", "quantity": "1d2+1", "weight": 2},
+        {"table": "trinkets", "weight": 2},
+        {"text": "Eine Börse und etwas Seltsames: {{coins-small}} und {{trinkets}}", "weight": 2},
+        "Nichts als Fussel, ein krummer Nagel und ein übler Geruch."
+      ]
+    },
+    {
+      "key": "hiding-places",
+      "name": "Wo ist es versteckt",
+      "description": "Ein Versteck für einen kleinen Schatz oder eine Nachricht.",
+      "rows": [
+        "Unter einer losen Diele unter dem Bett, sorgfältig mit einem Teppich abgedeckt.",
+        "In einem ausgehöhlten Buch im Regal, zwischen zwei dicken Bänden über Steuerrecht.",
+        "In einem doppelten Boden eines Fasses, das nach alten sauren Gurken riecht.",
+        "Hinter einem losen Stein im Kamin, in Ölzeug gewickelt.",
+        "Vergraben unter dem dritten Apfelbaum vom Tor aus.",
+        "In den Saum eines alten Umhangs genäht, der an der Tür hängt.",
+        "In einem Blumentopf mit einer Pflanze, die seit Jahren nicht gegossen wurde.",
+        "Unter der Sitzfläche des unbequemsten Stuhls im Haus festgeklebt.",
+        "Im hohlen Stiel eines Besens, den nie jemand benutzt.",
+        "Unter den Steinen des Brunnens, in einer Kiste an einem Haken.",
+        "In einem versiegelten Glas auf dem Boden eines Mehlsacks.",
+        "Im Inneren der Glocke der kleinen Kapelle an einem Haken, in einen Lappen gewickelt."
+      ]
+    }
+  ]
+}

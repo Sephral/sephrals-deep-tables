@@ -1,0 +1,98 @@
+{
+  "group": "travel",
+  "title": "Reiseereignisse",
+  "summary": "Kleine Dinge, die unterwegs passieren, auf der Straße, im Wald, in den Bergen und auf dem Meer. Manche Zeilen passen nur zum Tag oder zur Nacht.",
+  "tables": [
+    {
+      "key": "travel-any",
+      "name": "Reiseereignis: beliebiges Gelände",
+      "description": "Wählt ein Gelände und zieht daraus ein Ereignis. Die Straße kommt am häufigsten vor.",
+      "rows": [
+        {"table": "travel-road", "weight": 3},
+        {"table": "travel-forest", "weight": 2},
+        {"table": "travel-mountains", "weight": 2},
+        {"table": "travel-sea", "weight": 1}
+      ]
+    },
+    {
+      "key": "travel-road",
+      "name": "Reiseereignis: Straße",
+      "rows": [
+        "Ein Zollhäuschen steht dort, wo letztes Jahr noch keins war. Der Wärter hat einen neuen Hut und schlechte Laune.",
+        "Dem Karren eines Bauern ist ein Rad abgefallen. Wer hilft, bekommt eine Mahlzeit und einen Schlafplatz in der Scheune.",
+        "Eine Reihe Pilger geht barfuß am Wegrand und singt schief.",
+        "Ein Meilenstein wurde herumgedreht, und die Entfernungen darauf stimmen jetzt auf hilfreiche Weise nicht mehr.",
+        "Ein fahrender Händler will Geschichten gegen Neuigkeiten tauschen. Seine letzte Geschichte handelte von einem sehr großen Schwein.",
+        "Die Straße ist von einer Schafherde und einem sehr selbstbewussten Hund versperrt.",
+        "Eine Streife reitet vorbei, mustert die Gruppe lange und hält nicht an.",
+        "Ein Wegweiser wurde frisch bemalt, mit neuen, fröhlichen Lügen.",
+        "Jemand hat neben einem Meilenstein ein Bündel zurückgelassen: Verpflegung für [[1d4+1]] Tage und ein Zettel mit einem Dankeschön.",
+        "Eine Hochzeitsgesellschaft auf dem Weg ins nächste Dorf lädt alle ein mitzukommen, und sie meint es ernst.",
+        "Ein Reiter mit Kapuze fragt nach dem Weg und bedankt sich viel zu überschwänglich.",
+        "An einer alten Eiche gabelt sich die Straße. Jemand hat einen sehr ausführlichen Streit in die Rinde geschnitzt.",
+        {"text": "Weit abseits der Straße glimmen im Dunkeln Lagerfeuer. Eins nach dem anderen erlischt, je näher die Gruppe kommt.", "conditions": {"times": ["night"]}},
+        {"text": "Ein Bauer steht im Morgengrauen auf dem Feld und winkt. Er scheint mit seiner Vogelscheuche zu reden.", "conditions": {"times": ["dawn"]}}
+      ]
+    },
+    {
+      "key": "travel-forest",
+      "name": "Reiseereignis: Wald",
+      "rows": [
+        "Der Pfad endet an einem umgestürzten Baum, so breit wie ein Haus. Außenherum dauert es eine Stunde.",
+        "Ein Bach hat ein Stück des Weges überflutet, knöcheltief und sehr kalt.",
+        "Quer über dem Pfad liegt eine Schlinge, gelegt für etwas viel Kleineres als einen Menschen.",
+        "Alle Vögel verstummen auf einmal und fangen einen Augenblick später wieder an.",
+        "Halb vergraben neben dem Pfad liegt etwas Kleines: {{trinkets}}",
+        "Ein Ring aus Pilzen glimmt schwach. Niemand will hineintreten.",
+        "Das leere Lager eines Holzfällers, das Feuer noch warm und eine Axt im Baumstumpf.",
+        "Ein Fuchs folgt der Gruppe eine Stunde lang in höflichem Abstand.",
+        "Auf einem alten Schrein für einen vergessenen Geist liegen frische Blumen.",
+        "Ein Schwarm harmloser, aber extrem lauter Insekten übertönt eine Weile jedes Gespräch.",
+        "Es beginnt zu regnen, aber unter dem dichten Blätterdach kommen nur wenige Tropfen an, einer nach dem anderen und sehr kalt.",
+        "Eine Seilbrücke über eine Schlucht sieht alt aus, hält aber. Jemand hat sie vor Kurzem ausgebessert.",
+        {"text": "Zwischen den Bäumen schimmern blasse Augen im Dunkeln und halten mit der Gruppe Schritt, bis das Licht zurückkehrt.", "conditions": {"times": ["night"]}},
+        {"text": "Sonnenstrahlen fallen in langen goldenen Balken durch die Zweige. Der Wald wirkt beinahe freundlich.", "conditions": {"times": ["day"]}}
+      ]
+    },
+    {
+      "key": "travel-mountains",
+      "name": "Reiseereignis: Gebirge",
+      "rows": [
+        "Ein Felssturz hat den Pfad verschüttet. Hinüberklettern dauert [[1d3]] Stunden und viel Geduld.",
+        "Ein schmaler Sims verlangt ein Seil und ruhige Nerven. Eine Ziege schaut zu und wirkt unbeeindruckt.",
+        "Der Wind frischt auf und trägt den Geruch von Schnee heran, obwohl der Himmel klar ist.",
+        "Eine verlassene Schäferhütte bietet Unterschlupf, mit einem Stapel trockenem Holz an der Tür.",
+        "Ein Pass ist mit einem Steinhaufen markiert, in jeden Stein ist ein Name geritzt.",
+        "Ein dünner Wasserfall stürzt über den Pfad. Dahinter liegt ein trockener Vorsprung, auf dem ein Lager Platz hätte.",
+        "Ein Adler kreist lange über der Gruppe und fliegt dann nach Norden davon.",
+        "Ein durch den Fels getriebener Tunnel spart einen Tag Weg, riecht aber stark nach altem Rauch.",
+        "Über einer Rinne hat sich über Nacht eine Eisbrücke gebildet, die in der Sonne nicht lange hält.",
+        "Das Echo der Stimmen kommt verändert zurück, als antworte jemand aus weiter Ferne.",
+        "Ein einzelner Reisender kommt den Pass von der anderen Seite herab und warnt vor Nebel weiter oben.",
+        "In einer Mulde dampft eine heiße Quelle. Das Wasser ist genau richtig, und die Aussicht ist sehr gut.",
+        {"text": "Nach der Dämmerung rollt ein dünner Nebel ins Tal und macht es schwer zu erkennen, wo der Pfad endet.", "conditions": {"times": ["dusk", "night"]}},
+        {"text": "Der Sonnenaufgang färbt die höchsten Gipfel golden und rosa. Einen Augenblick lang bleiben alle stehen.", "conditions": {"times": ["dawn"]}}
+      ]
+    },
+    {
+      "key": "travel-sea",
+      "name": "Reiseereignis: Meer",
+      "rows": [
+        "Der Wind schläft ein, und die Segel hängen schlaff. Die Mannschaft beginnt zu singen und rät allen zur Geduld.",
+        "Ein Schwarm silberner Fische springt eine Stunde lang neben dem Schiff. Der Koch freut sich.",
+        "Eine treibende Kiste schaukelt in der Dünung. Darin sind nur nasses Stroh und eine sehr wütende Krabbe.",
+        "Eine Nebelbank zieht auf, und der Ausguck fängt an, mit sich selbst zu reden.",
+        "In der Ferne zieht ein Schiff vorbei und antwortet nicht auf die Signalflaggen.",
+        "Am Horizont braut sich ein Sturm zusammen, schwarz und weit weg, und der Kapitän steuert mit finsterer Miene darum herum.",
+        "Ein Seevogel landet an der Reling und weigert sich zu gehen, wie oft man ihn auch darum bittet.",
+        "Die Schiffskatze hat in irgendjemandes Koje Junge bekommen. Niemand wagt es, sie zu bewegen.",
+        "Eine Untiefe taucht auf, die in keiner Karte steht, und der Rudergänger schwört, gestern sei sie nicht da gewesen.",
+        "Backbord taucht ein Wal auf, und alle an Deck sagen eine Minute lang gar nichts.",
+        "Das Wasser färbt sich eine Meile lang seltsam grün und wird dann wieder klar.",
+        "Ein müder Botenvogel landet an Deck, mit einer Nachrichtenhülse für ein anderes Schiff.",
+        {"text": "Das Meer leuchtet in blassem Blau um den Rumpf, und das Kielwasser sieht aus wie eine Spur aus Sternen.", "conditions": {"times": ["night"]}},
+        {"text": "Ein strahlender Morgen mit perfektem Wind. Die Stimmung an Bord ist gut, und die Mannschaft ist großzügig.", "conditions": {"times": ["dawn", "day"]}}
+      ]
+    }
+  ]
+}

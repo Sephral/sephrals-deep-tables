@@ -2,6 +2,8 @@ import {MODULE_ID, TESTED_VERSIONS, setting} from "./config.mjs";
 import {registerDebug} from "./debug.mjs";
 import {saveDebugFile} from "./debug-file.mjs";
 import {ActionEditor, openActionEditor} from "./action-app.mjs";
+import {ConditionsEditor, openConditionsEditor} from "./conditions-app.mjs";
+import {check} from "./conditions.mjs";
 import {DeepRoll, openDeepRoll} from "./deep-app.mjs";
 import {registerEnrichers} from "./enrichers.mjs";
 import {countersOf, putBack, resetTable, resolveTable, rollTable, snapshotTable} from "./engine.mjs";
@@ -11,11 +13,14 @@ import {registerHubModule} from "./hub.mjs";
 import {PlayerTablesApp, openPlayerTables, readyPlayerTables, refreshPlayerTables, rollListed,
   syncPlayerTables} from "./player-tables.mjs";
 import {ImportApp, openImport} from "./import-app.mjs";
+import {LibraryApp, importLibrary, loadLibrary, openLibrary} from "./library-app.mjs";
 import {applyModuleLanguage} from "./language.mjs";
 import {mergeLines} from "./merge.mjs";
 import {parseTableText} from "./parse-text.mjs";
 import {noticeNewVersions, runSelfTest} from "./selftest.mjs";
 import {changeLanguage, registerSettings} from "./settings.mjs";
+import {currentSituation, saveStoryTags, setStoryTag, storyTags} from "./situation.mjs";
+import {StoryTagsApp, openStoryTags} from "./tags-app.mjs";
 import {onGetHeaderControls, onGetRollTableContextOptions, onRenderRollTableDirectory, onRenderRollTableSheet,
   onRenderTableResultActions, onRenderTableResultConfig} from "./sheet.mjs";
 import {onRenderChatMessage} from "./toolbar.mjs";
@@ -26,7 +31,8 @@ function redraw() {
   for ( const app of foundry.applications.instances.values() ) {
     if ( !app.rendered ) continue;
     if ( (app instanceof DeepRoll) || (app instanceof ImportApp) || (app instanceof ActionEditor)
-      || (app instanceof PlayerTablesApp) || (app.document instanceof RollTable) ) app.render();
+      || (app instanceof PlayerTablesApp) || (app instanceof LibraryApp) || (app instanceof StoryTagsApp)
+      || (app instanceof ConditionsEditor) || (app.document instanceof RollTable) ) app.render();
   }
 }
 
@@ -63,7 +69,7 @@ Hooks.once("init", () => {
   // Counted only on the active GM's client, like every Sephral module
   registerUsage(MODULE_ID, {
     features: ["deepRoll", "drawNow", "cardPosted", "lineRerolled", "givenToActor", "pileCreated", "ledgerAdded",
-      "tableImported", "journalRoll", "tableReset", "actionRun", "actionUndo", "playerRoll", "triggerRoll"],
+      "tableImported", "journalRoll", "tableReset", "actionRun", "actionUndo", "playerRoll", "triggerRoll", "libraryOpen", "libraryImport", "conditionsSet", "conditionsApplied", "storyTagSet"],
     settings: ["theme", "showChances", "maxDepth", "autoActions", "triggerTables"]
   });
   registerDebug();
@@ -122,6 +128,29 @@ Hooks.once("init", () => {
     rollListed,
     /** GM: write the list of tables players may roll again. */
     syncPlayerTables,
+    /** Open the Table library: ready tables to import (GM). */
+    openLibrary,
+    /** GM: import tables of the library by key, for example ["name-any", "inn-name"]. Options: lang, folder. */
+    importLibrary: (keys, options = {}) => importLibrary({...options, keys}),
+    /** The tables of the library in a language: [{key, name, group, part}]. */
+    library: async lang => {
+      const {tables} = await loadLibrary(lang ?? "en");
+      return [...tables.values()].map(table => ({key: table.key, name: table.name, group: table.group, part: !!table.part}));
+    },
+    /** The story tags of the world: [{id, name, on}]. */
+    storyTags,
+    /** GM: switch a story tag (by id or name) on or off. Without a second argument it toggles. */
+    setStoryTag,
+    /** GM: replace the list of story tags. */
+    saveStoryTags,
+    /** GM: open the window of story tags. */
+    openStoryTags,
+    /** GM: open the conditions window of a table result. */
+    editConditions: openConditionsEditor,
+    /** The situation conditions are checked against right now: scene, regions, time of day, party level, tags. */
+    situation: currentSituation,
+    /** Do the conditions of a row hold right now? Returns {ok, reasons}. */
+    checkConditions: conditions => check(conditions, currentSituation()),
     /** Check the module (GM). */
     runSelfTest,
     /** Save the debug file of Sephral's modules (GM). */

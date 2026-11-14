@@ -5,11 +5,14 @@
 
 import {MODULE_ID, setting} from "./config.mjs";
 import {actionOf, isComplete} from "./actions.mjs";
+import {conditionsOf, onEmptyOf} from "./conditions.mjs";
 import {denominations, coinLabel} from "./coins.mjs";
 import {drawTable, drawnMarks, excludeFromLines, newState, parseCoinText, resolveQuantity} from "./draw.mjs";
 import {resultQuantity, tableSettings} from "./flags.mjs";
 import {addUsed, applyMemory, hasMemory, memoryMarks, memoryOf, nestedCounters, removeUsed} from "./memory.mjs";
 import {trace} from "./debug.mjs";
+import {currentSituation} from "./situation.mjs";
+import {countFeature} from "./usage.mjs";
 
 /**
  * The settings of a table (draws, no duplicates, visibility), with an older table module's flags as a fallback.
@@ -43,6 +46,25 @@ export function actionOfResult(result) {
 }
 
 /**
+ * The conditions of a result, or null.
+ * @param {TableResult} result
+ * @returns {object|null}
+ */
+export function conditionsOfResult(result) {
+  const flags = result.flags ?? {};
+  return conditionsOf(path => foundry.utils.getProperty(flags, path));
+}
+
+/**
+ * What a table does when only rows with failing conditions are left.
+ * @param {RollTable} table
+ * @returns {"report"|"ignore"|"reroll"}
+ */
+export function onEmptyOfTable(table) {
+  return onEmptyOf(foundry.utils.getProperty(table.flags ?? {}, `${MODULE_ID}.onEmpty`));
+}
+
+/**
  * What the table remembers: the option and the ids of the results.
  * @param {RollTable} table
  * @returns {{memory: boolean, used: string[]}}
@@ -73,7 +95,8 @@ export function snapshotTable(table, overrides = {}) {
     weight: result.weight ?? 1,
     drawn: !!result.drawn,
     quantity: quantityOf(result),
-    action: actionOfResult(result)
+    action: actionOfResult(result),
+    conditions: conditionsOfResult(result)
   }));
   return {
     uuid: table.uuid,
@@ -85,6 +108,7 @@ export function snapshotTable(table, overrides = {}) {
     distinct: overrides.distinct ?? saved.distinct,
     draws: overrides.draws ?? saved.draws,
     mode: overrides.mode ?? saved.mode,
+    onEmpty: onEmptyOfTable(table),
     results: applyMemory(list, remembered)
   };
 }
@@ -157,7 +181,8 @@ export function makeDeps() {
 export async function rollTable(table, options = {}) {
   const snapshot = snapshotTable(table, {draws: options.draws, distinct: options.distinct});
   const deps = makeDeps();
-  const state = newState({exclude: options.exclude, maxDepth: setting("maxDepth")});
+  const state = newState({exclude: options.exclude, maxDepth: setting("maxDepth"),
+    situation: options.situation ?? currentSituation()});
   const rolls = [];
   const draws = await resolveQuantity(snapshot.draws, async formula => {
     const rolled = await deps.evaluate(formula);
@@ -167,8 +192,9 @@ export async function rollTable(table, options = {}) {
   const times = draws ?? 1;
   const lines = await drawTable(snapshot, deps, {times, state});
   if ( state.ranOut ) state.problems.push({kind: "ranOut", table: table.name});
+  if ( state.left.length ) countFeature(MODULE_ID, "conditionsApplied");
   trace.add("roll", {table: table.name, draws: times, lines: lines.length, problems: state.problems.map(p => p.kind),
-    ranOut: state.ranOut, invalidDraws: draws === null});
+    ranOut: state.ranOut, invalidDraws: draws === null, leftOut: state.left.length});
   return {lines, state, rolls, draws: times, invalidDraws: draws === null};
 }
 
@@ -184,10 +210,13 @@ export async function rerollLine(line, others, state) {
   if ( !(table instanceof RollTable) ) return [];
   const index = line.picks.findIndex(p => (p.t === line.tableUuid) && (p.r === line.resultId));
   const prefix = index > 0 ? line.picks.slice(0, index) : [];
-  const fresh = newState({exclude: excludeFromLines(others), maxDepth: state.maxDepth});
+  const fresh = newState({exclude: excludeFromLines(others), maxDepth: state.maxDepth, situation: state.situation});
   const lines = await drawTable(snapshotTable(table), makeDeps(), {times: 1, state: fresh, depth: line.depth,
     chain: prefix.map(p => p.t), path: line.path.slice(0, -1), picks: prefix});
   state.problems.push(...fresh.problems);
+  for ( const entry of fresh.left ) {
+    if ( !state.left.some(l => (l.tableUuid === entry.tableUuid) && (l.resultId === entry.resultId)) ) state.left.push(entry);
+  }
   return lines;
 }
 

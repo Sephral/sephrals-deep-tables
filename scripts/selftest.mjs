@@ -9,6 +9,9 @@ import {makeDeps} from "./engine.mjs";
 import {ACTION_TYPES, isComplete, normalizeAction, spreadCells} from "./actions.mjs";
 import {applyMemory, counter} from "./memory.mjs";
 import {checkRequest} from "./players.mjs";
+import {PERIODS, check as checkConditions, periodOf, readLevel} from "./conditions.mjs";
+import {checkLibrary} from "./library-app.mjs";
+import {currentSituation} from "./situation.mjs";
 
 /**
  * Run all checks.
@@ -30,7 +33,7 @@ async function checkAll() {
   check(typeof ChatMessage.implementation?.create === "function" && typeof Roll === "function", "SDT.SELFTEST.Chat");
   let templates = true;
   try {
-    await Promise.all(["deep-roll", "import", "action", "players"].map(name => foundry.applications.handlebars.getTemplate(`${TEMPLATES}/${name}.hbs`)));
+    await Promise.all(["deep-roll", "import", "action", "players", "conditions", "tags", "library"].map(name => foundry.applications.handlebars.getTemplate(`${TEMPLATES}/${name}.hbs`)));
   } catch {
     templates = false;
   }
@@ -55,6 +58,21 @@ async function checkAll() {
   check(checkRequest({uuid: "x"}, {players: true, pack: false, mode: "gm"}).mode === "gm"
     && !!game.socket && (typeof game.socket.emit === "function") && Array.isArray(game.settings.get(MODULE_ID, "playerTables")),
     "SDT.SELFTEST.Players");
+  // Rows with conditions: the situation of the world and the check
+  let conditions = false;
+  try {
+    const now = currentSituation();
+    conditions = (typeof now.period === "string") && (typeof now.tags === "object") && (typeof game.time?.worldTime === "number")
+      && checkConditions({times: [now.period]}, now).ok
+      && !checkConditions({times: [PERIODS.find(period => period !== now.period)]}, now).ok
+      && (periodOf(12) === "day") && (readLevel("dnd5e", {details: {level: 3}}) === 3)
+      && Array.isArray(game.settings.get(MODULE_ID, "storyTags"));
+  } catch {
+    conditions = false;
+  }
+  check(conditions, "SDT.SELFTEST.Conditions");
+  const libraryProblems = await checkLibrary();
+  check(!libraryProblems.length, "SDT.SELFTEST.Library", {problems: libraryProblems.slice(0, 3).join(", ")});
   check((typeof Actor.prototype.getTokenDocument === "function") && (typeof Actor.prototype.toggleStatusEffect === "function")
     && (typeof foundry.audio?.AudioHelper?.play === "function"), "SDT.SELFTEST.Placing");
   if ( isActive("sephrals-saved-encounters") ) {

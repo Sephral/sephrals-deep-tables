@@ -1,0 +1,109 @@
+{
+  "group": "names",
+  "title": "Names",
+  "summary": "First names and family names for five peoples, each with a full name table, and one table that picks the people for you.",
+  "tables": [
+    {
+      "key": "name-any",
+      "name": "Name: any people",
+      "description": "Picks one of the five peoples and draws a full name from it.",
+      "rows": [
+        {"table": "name-northern"},
+        {"table": "name-southern"},
+        {"table": "name-imperial"},
+        {"table": "name-silvan"},
+        {"table": "name-deep"}
+      ]
+    },
+    {
+      "key": "name-northern",
+      "name": "Name: Northfolk",
+      "description": "A first name and a family name of the cold coast and the fjords.",
+      "rows": ["{{name-northern-first}} {{name-northern-family}}"]
+    },
+    {
+      "key": "name-northern-first",
+      "name": "Northfolk first names",
+      "part": true,
+      "rows": ["Astrid", "Bjarn", "Sigrun", "Torvald", "Ingrid", "Haldor", "Runa", "Eirik", "Solveig", "Gunnar", "Ragna", "Leif"]
+    },
+    {
+      "key": "name-northern-family",
+      "name": "Northfolk family names",
+      "part": true,
+      "rows": ["Stormhand", "Oakbreaker", "Coldwater", "Redfjord", "Ironvale", "Longshield", "Frostmane", "Ashbourne", "Tidecaller", "Wolfsong"]
+    },
+    {
+      "key": "name-southern",
+      "name": "Name: Sunlanders",
+      "description": "A first name and a family name from the dry lands and the caravan roads.",
+      "rows": ["{{name-southern-first}} {{name-southern-family}}"]
+    },
+    {
+      "key": "name-southern-first",
+      "name": "Sunlander first names",
+      "part": true,
+      "rows": ["Zahir", "Amira", "Tariq", "Samira", "Idris", "Layla", "Karim", "Nadira", "Farid", "Soraya", "Malik", "Yasmin"]
+    },
+    {
+      "key": "name-southern-family",
+      "name": "Sunlander family names",
+      "part": true,
+      "rows": ["Rashani", "Tessim", "Almaren", "Dhurah", "Qaris", "Vessari", "Hadran", "Nuraq", "Sahlen", "Yorrim"]
+    },
+    {
+      "key": "name-imperial",
+      "name": "Name: Imperials",
+      "description": "A first name and a family name of the old cities with their marble and their paperwork.",
+      "rows": ["{{name-imperial-first}} {{name-imperial-family}}"]
+    },
+    {
+      "key": "name-imperial-first",
+      "name": "Imperial first names",
+      "part": true,
+      "rows": ["Aurelio", "Cassia", "Lucan", "Valeria", "Tiberon", "Livia", "Cornelan", "Maxima", "Decian", "Flavia", "Severin", "Octavia"]
+    },
+    {
+      "key": "name-imperial-family",
+      "name": "Imperial family names",
+      "part": true,
+      "rows": ["Valerran", "Corvinus", "Aurelian", "Tarquin", "Marcellan", "Lucretian", "Pomponi", "Vitellar", "Sabinus", "Caldoran"]
+    },
+    {
+      "key": "name-silvan",
+      "name": "Name: Silvans",
+      "description": "A first name and a house name of the forest folk.",
+      "rows": ["{{name-silvan-first}} {{name-silvan-family}}"]
+    },
+    {
+      "key": "name-silvan-first",
+      "name": "Silvan first names",
+      "part": true,
+      "rows": ["Ilvaren", "Mirelle", "Caelith", "Sylvaen", "Orianth", "Eluvia", "Faelan", "Naerith", "Taeriel", "Veyrin", "Quillara", "Sorelle"]
+    },
+    {
+      "key": "name-silvan-family",
+      "name": "Silvan house names",
+      "part": true,
+      "rows": ["Moonwhisper", "Starbough", "Dewfall", "Silverleaf", "Nightbloom", "Thornsinger", "Mistwalker", "Brightwater", "Windglade", "Amberroot"]
+    },
+    {
+      "key": "name-deep",
+      "name": "Name: Deep folk",
+      "description": "A first name and a clan name of the people under the mountains.",
+      "rows": ["{{name-deep-first}} {{name-deep-family}}"]
+    },
+    {
+      "key": "name-deep-first",
+      "name": "Deep folk first names",
+      "part": true,
+      "rows": ["Durgan", "Brunhild", "Gorm", "Magda", "Balgrim", "Hargild", "Orsik", "Dagna", "Korgrim", "Vella", "Thorgil", "Yrsa"]
+    },
+    {
+      "key": "name-deep-family",
+      "name": "Deep folk clan names",
+      "part": true,
+      "rows": ["Ironbrow", "Deepdelver", "Anvilborn", "Stonebeard", "Coalheart", "Gemhammer", "Granitefist", "Forgeborn", "Rubyvein", "Tunnelwise"]
+    }
+  ]
+}

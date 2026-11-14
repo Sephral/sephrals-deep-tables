@@ -6,6 +6,7 @@
 import {MODULE_ID, isShown} from "./config.mjs";
 import {FOLLOW_FOUNDRY, applyModuleLanguage} from "./language.mjs";
 import {runSelfTest} from "./selftest.mjs";
+import {StoryTagsApp} from "./tags-app.mjs";
 
 /**
  * The settings of the module, in the order they appear in the settings dialog.
@@ -19,6 +20,13 @@ export const SETTINGS = {
   showChances: {type: Boolean, default: true, scope: "client", onChange: "redraw"},
   maxDepth: {type: Number, default: 5, scope: "world", range: {min: 1, max: 10, step: 1}},
   autoActions: {type: Boolean, default: true, scope: "world"},
+  hourDawn: {type: Number, default: 5, scope: "world", range: {min: 0, max: 23, step: 1}},
+  hourDay: {type: Number, default: 8, scope: "world", range: {min: 0, max: 23, step: 1}},
+  hourDusk: {type: Number, default: 18, scope: "world", range: {min: 0, max: 23, step: 1}},
+  hourNight: {type: Number, default: 21, scope: "world", range: {min: 0, max: 23, step: 1}},
+  levelSource: {type: String, default: "auto", scope: "world", choices: {
+    auto: "SDT.SETTINGS.levelSource.auto", manual: "SDT.SETTINGS.levelSource.manual", off: "SDT.SETTINGS.levelSource.off"}},
+  levelManual: {type: Number, default: 1, scope: "world", range: {min: 1, max: 30, step: 1}},
   // Only offered while Roll Triggers is active
   triggerTables: {type: Boolean, default: true, scope: "world", needs: "sephrals-roll-triggers"}
 };
@@ -44,7 +52,18 @@ export function registerSettings(handlers) {
   // The list of tables players may roll, kept by the GM
   game.settings.register(MODULE_ID, "playerTables", {scope: "world", config: false, type: Array, default: [],
     onChange: () => handlers.players?.()});
+  // The story tags the GM switches on and off: [{id, name, on}]
+  game.settings.register(MODULE_ID, "storyTags", {scope: "world", config: false, type: Array, default: [],
+    onChange: () => handlers.redraw?.()});
   game.settings.register(MODULE_ID, "acknowledgedVersions", {scope: "client", config: false, type: String, default: ""});
+  game.settings.registerMenu(MODULE_ID, "storyTags", {
+    name: "SDT.Tags.menu",
+    label: "SDT.Tags.open",
+    hint: "SDT.Tags.menuHint",
+    icon: "fa-solid fa-tags",
+    type: StoryTagsApp,
+    restricted: true
+  });
   game.settings.registerMenu(MODULE_ID, "selfTest", {
     name: "SDT.SELFTEST.Title",
     label: "SDT.SELFTEST.Run",

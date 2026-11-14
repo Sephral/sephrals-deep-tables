@@ -1,0 +1,24 @@
+<div class="sdt-shell">
+  <div class="sdt-tags-body">
+    <p class="hint">{{localize "SDT.Tags.hint"}}</p>
+    {{#if empty}}
+    <p class="sdt-empty"><i class="fa-solid fa-tags" inert></i> {{localize "SDT.Tags.none"}}</p>
+    {{else}}
+    <ul class="sdt-tag-list">
+      {{#each tags}}
+      <li class="sdt-tag-row" data-tag="{{id}}">
+        <label class="sdt-tag-on" data-tooltip="{{localize 'SDT.Tags.onHint'}}">
+          <input type="checkbox" name="on" {{#if on}}checked{{/if}}>
+        </label>
+        <input type="text" name="name" value="{{name}}" maxlength="60" autocomplete="off" aria-label="{{localize 'SDT.Tags.name'}}">
+        <button type="button" class="sdt-icon" data-action="remove" data-tooltip="{{localize 'SDT.Tags.remove'}}" aria-label="{{localize 'SDT.Tags.remove'}}"><i class="fa-solid fa-trash" inert></i></button>
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
+  </div>
+  <footer class="sdt-foot sdt-tags-add">
+    <input type="text" name="newName" maxlength="60" autocomplete="off" placeholder="{{localize 'SDT.Tags.newPlaceholder'}}" {{#if full}}disabled{{/if}}>
+    <button type="button" class="sdt-primary" data-action="add" {{#if full}}disabled{{/if}}><i class="fa-solid fa-plus" inert></i> {{localize "SDT.Tags.add"}}</button>
+  </footer>
+</div>

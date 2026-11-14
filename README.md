@@ -10,17 +10,17 @@
 
 ## Highlights
 
-* **Results that act:** a result can place a saved group of monsters with its ghost preview, put tokens on the map, play a sound, show a handout, give a condition or run a macro. A button on the card, or automatic. Placed tokens go away again with one click.
-* **Tables with a memory:** a table remembers what it gave, even after a restart. A counter shows 3 of 12 used, one click puts a result back or resets the table.
-* **Tables for your players:** release a table and your players roll it from a small list in their chat.
-* **A natural 20 that rolls a table:** with Roll Triggers by Sephral the critical hit table rolls by itself and shows one clear card.
-* **Deep roll:** look at the result before anybody sees it. Untick rows, change a quantity, draw one row again, then show it in chat.
+* **Table library:** 36 ready tables for names, inns, rumors, travel, weather, encounters and loot, in English and German. Preview, then import a group.
+* **Rows with conditions:** a row only comes up at night, in the right scene or Region, for the right level or when a story tag is on. The deep roll window says why a row was left out.
+* **Results that act:** a result can place a saved group of monsters, put tokens on the map, play a sound, show a handout or run a macro, with undo.
+* **Tables with a memory:** a table remembers what it gave, even after a restart.
+* **Tables for your players:** release a table and they roll it from their chat.
+* **A natural 20 that rolls a table:** with Roll Triggers by Sephral, a critical hit table rolls by itself.
+* **Deep roll:** look at the result before anybody sees it. Untick rows, change a quantity, draw one row again.
 * **Tables inside tables:** a result that points to another table is rolled on, as often as its quantity says.
-* **Quantities and several draws:** results carry formulas like 2d4+1, tables a number of draws, with an option for no duplicates.
-* **Living texts:** `[[1d6]]` becomes a number, `@Table[Names]` draws a name into the sentence.
-* **One clear card:** a single chat message, and a click gives the result to a character, leaves it as a loot pile or adds it to the Loot Ledger.
-* **Table from text:** paste a list and get a roll table, with ranges, weights and items found by name.
-* **Your tables keep working:** settings of older table modules are read.
+* **Quantities and draws:** formulas like 2d4+1, several draws, no duplicates, and dice or tables rolled right inside a sentence.
+* **One clear card:** a click gives it to a character, a loot pile or the Loot Ledger.
+* **Table from text:** paste a list and get a roll table.
 
 ## How it works
 
@@ -30,7 +30,7 @@
 
 ## Good to know
 
-Saved Encounters and Roll Triggers by Sephral add the encounter placing and the triggers. Everything else works without them. Only the GM runs actions.
+Saved Encounters and Roll Triggers by Sephral add encounter placing and triggers. The rest works without them. Only the GM runs actions.
 
 ## Install
 

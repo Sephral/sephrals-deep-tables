@@ -116,3 +116,16 @@ export function removeKey(parent, key) {
   const Forced = foundry.data?.operators?.ForcedDeletion;
   return Forced ? {[`${parent}.${key}`]: new Forced()} : {[`${parent}.-=${key}`]: null};
 }
+
+/**
+ * An update that replaces a whole object instead of merging into it: Foundry 14 wants a ForcedReplacement operator,
+ * 13 the "==" syntax.
+ * @param {string} parent   The path of the object holding the key
+ * @param {string} key
+ * @param {object} value
+ * @returns {object}
+ */
+export function replaceKey(parent, key, value) {
+  const Forced = foundry.data?.operators?.ForcedReplacement;
+  return Forced ? {[`${parent}.${key}`]: Forced.create(value)} : {[`${parent}.==${key}`]: value};
+}

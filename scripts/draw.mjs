@@ -9,6 +9,7 @@
  */
 
 import {lineAction} from "./actions.mjs";
+import {check, onEmptyOf} from "./conditions.mjs";
 
 /** The default depth nested tables are followed. */
 export const MAX_DEPTH = 5;
@@ -33,8 +34,10 @@ const MAX_TRIES = 500;
  * @property {boolean} [memory]      The table remembers what was drawn (the results it remembers come as drawn)
  * @property {string} draws          Formula of the number of draws
  * @property {string} mode           Visibility, "foundry" follows the chat setting
+ * @property {string} [onEmpty]      What to do when only rows with failing conditions are left: report, ignore, reroll
  * @property {{id: string, type: string, name: string, img: string, description: string, documentUuid: string|null,
- *   range: number[], weight: number, drawn: boolean, quantity: string, action?: object|null}[]} results
+ *   range: number[], weight: number, drawn: boolean, quantity: string, action?: object|null,
+ *   conditions?: object|null}[]} results
  */
 
 /**
@@ -81,6 +84,11 @@ const MAX_TRIES = 500;
  * @property {boolean} ranOut                      A table had no more results before all draws were made
  * @property {number} count
  * @property {number} maxDepth
+ * @property {import("./conditions.mjs").Situation|null} situation   What conditions are checked against, null checks none
+ * @property {{tableUuid: string, tableName: string, resultId: string, name: string, reasons: object[]}[]} left
+ *   The rows left out because their conditions fail
+ * @property {Map<string, Set<string>>} blocked   Rows given up because the table inside them had nothing to give
+ * @property {boolean} handBack                    A table inside another had nothing to give and asks for another pick
  */
 
 /**
@@ -88,10 +96,37 @@ const MAX_TRIES = 500;
  * @param {object} [options]
  * @param {Map<string, Set<string>>} [options.exclude]
  * @param {number} [options.maxDepth]
+ * @param {import("./conditions.mjs").Situation|null} [options.situation]
  * @returns {DrawState}
  */
-export function newState({exclude, maxDepth=MAX_DEPTH}={}) {
-  return {exclude: exclude ?? new Map(), problems: [], ranOut: false, count: 0, maxDepth};
+export function newState({exclude, maxDepth=MAX_DEPTH, situation=null}={}) {
+  return {exclude: exclude ?? new Map(), problems: [], ranOut: false, count: 0, maxDepth, situation, left: [],
+    blocked: new Map(), handBack: false};
+}
+
+/**
+ * Add a problem once per kind and table.
+ * @param {DrawState} state
+ * @param {object} problem
+ */
+function addProblem(state, problem) {
+  if ( state.problems.some(p => (p.kind === problem.kind) && (p.uuid === problem.uuid) && (p.table === problem.table)) ) return;
+  state.problems.push(problem);
+}
+
+/**
+ * Remember the rows of a table that were left out.
+ * @param {DrawState} state
+ * @param {TableSnapshot} table
+ * @param {{entry: object, reasons: object[]}[]} left
+ */
+function recordLeft(state, table, left) {
+  for ( const {entry, reasons} of left ?? [] ) {
+    if ( state.left.some(l => (l.tableUuid === table.uuid) && (l.resultId === entry.id)) ) continue;
+    const name = entry.name || plainText(entry.description);
+    state.left.push({tableUuid: table.uuid, tableName: table.name, resultId: entry.id,
+      name: String(name || "–").slice(0, 80), reasons});
+  }
 }
 
 /* -------------------------------------------- */
@@ -224,27 +259,49 @@ export function layout(table) {
 }
 
 /**
- * Roll a table once, without nested tables.
+ * Roll a table once, without nested tables. Rows whose conditions fail are left out (with the situation of the state).
  * @param {TableSnapshot} table
  * @param {DrawDeps} deps
  * @param {Set<string>} [excluded]
- * @returns {Promise<{results: object[], roll?: object, reason?: "empty"|"impossible"|"invalid"}>}
+ * @param {DrawState} [state]
+ * @returns {Promise<{results: object[], roll?: object, reason?: "empty"|"impossible"|"invalid"|"conditions",
+ *   left?: {entry: object, reasons: object[]}[], ignored?: boolean}>}
  */
-export async function pick(table, deps, excluded) {
+export async function pick(table, deps, excluded, state) {
   const {formula, entries} = layout(table);
-  const available = entries.filter(entry => !entry.drawn && !excluded?.has(entry.id));
-  if ( !available.length ) return {results: [], reason: "empty"};
+  const base = entries.filter(entry => !entry.drawn && !excluded?.has(entry.id));
+  if ( !base.length ) return {results: [], reason: "empty"};
+  const blocked = state?.blocked?.get(table.uuid);
+  const open = base.filter(entry => !blocked?.has(entry.id));
+  let available = open;
+  const left = [];
+  if ( state?.situation ) {
+    available = [];
+    for ( const entry of open ) {
+      const verdict = check(entry.conditions, state.situation);
+      if ( verdict.ok ) available.push(entry);
+      else left.push({entry, reasons: verdict.reasons});
+    }
+  }
+  let ignored = false;
+  if ( !available.length ) {
+    if ( left.length && (onEmptyOf(table.onEmpty) === "ignore") ) {
+      available = open;
+      ignored = true;
+    }
+    else return {results: [], reason: (left.length || blocked?.size) ? "conditions" : "empty", left};
+  }
   for ( let i = 0; i < MAX_TRIES; i++ ) {
     let rolled;
     try {
       rolled = await deps.roll(formula);
     } catch {
-      return {results: [], reason: "invalid"};
+      return {results: [], reason: "invalid", left};
     }
     const hits = available.filter(entry => (rolled.total >= entry.range[0]) && (rolled.total <= entry.range[1]));
-    if ( hits.length ) return {results: hits, roll: rolled.roll};
+    if ( hits.length ) return {results: hits, roll: rolled.roll, left, ignored};
   }
-  return {results: [], reason: "impossible"};
+  return {results: [], reason: "impossible", left};
 }
 
 /* -------------------------------------------- */
@@ -304,18 +361,42 @@ async function drawOnce(table, deps, ctx, lines) {
   const {state} = ctx;
   if ( !state.exclude.has(table.uuid) ) state.exclude.set(table.uuid, new Set());
   const exclude = state.exclude.get(table.uuid);
-  const {results, roll, reason} = await pick(table, deps, exclude);
-  if ( reason ) {
-    state.problems.push({kind: reason, table: table.name, uuid: table.uuid});
-    return true;
-  }
-  if ( roll ) ctx.bag.push(roll);
   const exclusive = !!(table.distinct || !table.replacement || table.memory);
-  for ( const result of results ) {
-    if ( exclusive ) exclude.add(result.id);
-    const picks = [...ctx.picks, {t: table.uuid, r: result.id, x: exclusive, m: !table.replacement && !table.pack,
-      k: !!table.memory && !table.pack}];
-    lines.push(...await linesFor(result, table, deps, {...ctx, picks}));
+  for ( let attempt = 0; attempt < MAX_TRIES; attempt++ ) {
+    const {results, roll, reason, left, ignored} = await pick(table, deps, exclude, state);
+    recordLeft(state, table, left);
+    if ( ignored ) addProblem(state, {kind: "conditionsIgnored", table: table.name, uuid: table.uuid});
+    if ( reason === "conditions" ) {
+      // A table inside another one hands back, the table above picks another row
+      if ( (onEmptyOf(table.onEmpty) === "reroll") && (ctx.depth > 0) ) state.handBack = true;
+      else addProblem(state, {kind: "conditions", table: table.name, uuid: table.uuid});
+      return true;
+    }
+    if ( reason ) {
+      state.problems.push({kind: reason, table: table.name, uuid: table.uuid});
+      return true;
+    }
+    if ( roll ) ctx.bag.push(roll);
+    let retry = false;
+    let gave = false;
+    for ( const result of results ) {
+      if ( exclusive ) exclude.add(result.id);
+      const picks = [...ctx.picks, {t: table.uuid, r: result.id, x: exclusive, m: !table.replacement && !table.pack,
+        k: !!table.memory && !table.pack}];
+      const got = await linesFor(result, table, deps, {...ctx, picks});
+      if ( state.handBack ) {
+        state.handBack = false;
+        if ( !got.length ) {
+          if ( !state.blocked.has(table.uuid) ) state.blocked.set(table.uuid, new Set());
+          state.blocked.get(table.uuid).add(result.id);
+          retry = true;
+          continue;
+        }
+      }
+      if ( got.length ) gave = true;
+      lines.push(...got);
+    }
+    if ( gave || !retry ) return false;
   }
   return false;
 }
@@ -447,6 +528,10 @@ async function expandText(source, deps, ctx) {
     }
     const drawn = await drawTable(inner, deps, {times: 1, state: ctx.state, depth: ctx.depth + 1, chain: ctx.chain,
       path: ctx.path, picks: [], bag: ctx.bag});
+    if ( ctx.state.handBack ) {
+      ctx.state.handBack = false;
+      addProblem(ctx.state, {kind: "conditions", table: inner.name, uuid: inner.uuid});
+    }
     ctx.extra?.push(drawn.flatMap(line => line.picks));
     return drawn.map(line => lineText(line, deps)).join(", ");
   });

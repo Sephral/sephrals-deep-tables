@@ -1,0 +1,56 @@
+<div class="sdt-shell">
+  <div class="sdt-cond-body">
+    <p class="hint">{{localize "SDT.Cond.hint"}}</p>
+
+    <fieldset class="sdt-cond-group">
+      <legend>{{localize "SDT.Cond.scenes"}}</legend>
+      <div class="sdt-cond-scenes">
+        {{#each scenes}}
+        <label class="sdt-cond-check"><input type="checkbox" name="scene" value="{{id}}" {{#if checked}}checked{{/if}}> <span>{{name}}</span></label>
+        {{/each}}
+      </div>
+      {{#if missingScenes}}<p class="hint">{{localize "SDT.Cond.missingScenes"}}</p>{{/if}}
+    </fieldset>
+
+    <fieldset class="sdt-cond-group">
+      <legend>{{localize "SDT.Cond.regions"}}</legend>
+      <input type="text" name="regions" value="{{regions}}" list="sdt-regions" autocomplete="off" placeholder="{{localize 'SDT.Cond.regionsPlaceholder'}}">
+      <datalist id="sdt-regions">{{#each regionNames}}<option value="{{this}}"></option>{{/each}}</datalist>
+      <p class="hint">{{localize "SDT.Cond.regionsHint"}}</p>
+    </fieldset>
+
+    <fieldset class="sdt-cond-group">
+      <legend>{{localize "SDT.Cond.time"}}</legend>
+      <div class="sdt-cond-times">
+        {{#each times}}
+        <label class="sdt-cond-check"><input type="checkbox" name="time" value="{{period}}" {{#if checked}}checked{{/if}}> <span>{{label}} <small>{{hours}}</small></span></label>
+        {{/each}}
+      </div>
+      <p class="hint">{{localize "SDT.Cond.timeHint"}} {{now}}</p>
+    </fieldset>
+
+    <fieldset class="sdt-cond-group">
+      <legend>{{localize "SDT.Cond.level"}}</legend>
+      <div class="sdt-cond-level">
+        <label>{{localize "SDT.Cond.levelFrom"}} <input type="number" name="levelMin" min="0" step="1" value="{{levelMin}}"></label>
+        <label>{{localize "SDT.Cond.levelTo"}} <input type="number" name="levelMax" min="0" step="1" value="{{levelMax}}"></label>
+      </div>
+      <p class="hint">{{localize "SDT.Cond.levelHint"}}</p>
+    </fieldset>
+
+    <fieldset class="sdt-cond-group">
+      <legend>{{localize "SDT.Cond.tags"}}</legend>
+      {{#if noTags}}<p class="hint">{{localize "SDT.Cond.noTags"}}</p>{{/if}}
+      {{#each tags}}
+      <label class="sdt-cond-tag"><span>{{name}}{{#if on}} <small>({{localize "SDT.Cond.tagIsOn"}})</small>{{/if}}</span>
+        <select name="tag" data-id="{{id}}">{{#each options}}<option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select>
+      </label>
+      {{/each}}
+      <button type="button" data-action="editTags"><i class="fa-solid fa-tags" inert></i> {{localize "SDT.Tags.open"}}</button>
+    </fieldset>
+  </div>
+  <footer class="sdt-foot">
+    {{#if canRemove}}<button type="button" data-action="remove"><i class="fa-solid fa-trash" inert></i> {{localize "SDT.Cond.remove"}}</button>{{else}}<span></span>{{/if}}
+    <button type="button" class="sdt-primary" data-action="save"><i class="fa-solid fa-check" inert></i> {{localize "SDT.Cond.save"}}</button>
+  </footer>
+</div>

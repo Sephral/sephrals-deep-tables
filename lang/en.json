@@ -31,6 +31,33 @@
       "triggerTables": {
         "name": "Roll tables of Roll Triggers with Deep Tables",
         "hint": "A trigger that rolls a table, for example a natural 20 on the critical hit table, shows the Deep Tables card with quantities, nested tables and actions."
+      },
+      "hourDawn": {
+        "name": "Dawn starts at",
+        "hint": "Hour of the day, 0 to 23, when dawn begins. Dawn, day, dusk and night follow each other, and the world time decides which one it is now. Rows with a time of day use this."
+      },
+      "hourDay": {
+        "name": "Day starts at",
+        "hint": "Hour of the day, 0 to 23, when the day begins."
+      },
+      "hourDusk": {
+        "name": "Dusk starts at",
+        "hint": "Hour of the day, 0 to 23, when dusk begins."
+      },
+      "hourNight": {
+        "name": "Night starts at",
+        "hint": "Hour of the day, 0 to 23, when the night begins."
+      },
+      "levelSource": {
+        "name": "Party level for rows with a level range",
+        "hint": "Auto reads the level of the player characters in your game system (D&D 5e, PF2e, SWADE rank from 1 to 5, Crucible, and systems that keep a level in the usual place). Manual uses the number below. Off ignores level conditions.",
+        "auto": "Auto, from the characters",
+        "manual": "Manual",
+        "off": "Off, ignore level conditions"
+      },
+      "levelManual": {
+        "name": "Party level, set by hand",
+        "hint": "Used when the party level above is set to Manual."
       }
     },
     "gear": "Settings",
@@ -61,7 +88,9 @@
       "invalidDraws": "The number of draws could not be rolled, one draw is used.",
       "invalidQuantity": "Quantity could not be rolled, 1 is used",
       "summary": "Items: {items}, lines: {lines}",
-      "post": "Show in chat"
+      "post": "Show in chat",
+      "left": "Left out",
+      "leftNow": "Situation now:"
     },
     "Card": {
       "draws": "{count} draws",
@@ -78,14 +107,17 @@
       "empty": "{table} has no results left.",
       "impossible": "{table} has no result for its formula.",
       "invalid": "The formula of {table} cannot be rolled.",
-      "ranOut": "{table} ran out before all draws were made."
+      "ranOut": "{table} ran out before all draws were made.",
+      "conditions": "No row of {table} fits the situation right now.",
+      "conditionsIgnored": "No row of {table} fit the situation, so its conditions were ignored."
     },
     "Draw": {
       "empty": "All results of {name} are drawn.",
       "emptyTitle": "Table is empty",
       "emptyAsk": "All results of {name} are drawn. Bring them all back?",
       "reset": "{name} is full again.",
-      "nothing": "{name} gave nothing."
+      "nothing": "{name} gave nothing.",
+      "conditions": "Nothing in {name} fits the situation right now."
     },
     "Give": {
       "title": "Give to character",
@@ -134,7 +166,12 @@
       "memoryHint": "Results that came up are not drawn again until you reset the table, even after a restart. Only rolls of Deep Tables count.",
       "memoryHintNoReplacement": "This table draws without replacement, so Foundry already marks what came up. Remembering adds nothing here, the counter and the reset work anyway.",
       "players": "Players may roll",
-      "playersHint": "The table shows up in the list of tables players can roll, with the visibility set above. The GM rolls it for them, so players need no permission on the table."
+      "playersHint": "The table shows up in the list of tables players can roll, with the visibility set above. The GM rolls it for them, so players need no permission on the table.",
+      "onEmpty": "When no row fits",
+      "onEmptyHint": "What happens when every row that is left fails its conditions. Report draws nothing and says so. Ignore the conditions draws from all rows. Pick again above hands back to the table this one sits in, which picks another row (on its own it reports).",
+      "onEmpty_report": "Report it",
+      "onEmpty_ignore": "Ignore the conditions",
+      "onEmpty_reroll": "Pick again above"
     },
     "Import": {
       "button": "Table from text",
@@ -197,7 +234,9 @@
       "Actions": "The actions of results do not work as expected.",
       "Players": "The list of tables for players or the module socket is missing.",
       "Placing": "Foundry's tokens, statuses or audio work differently than expected.",
-      "Encounters": "Saved Encounters does not offer what the module needs."
+      "Encounters": "Saved Encounters does not offer what the module needs.",
+      "Conditions": "The situation or the check for rows with conditions does not work as expected.",
+      "Library": "The table library has a problem: {problems}"
     },
     "DEBUG": {
       "Title": "Debug file",
@@ -319,6 +358,102 @@
         "missing": "The table was not found.",
         "invalid": "That roll did not work."
       }
+    },
+    "Tags": {
+      "menu": "Story tags",
+      "open": "Edit story tags",
+      "menuHint": "Names you switch on and off, for example War has started. Rows of a table can ask for a tag to be on or off.",
+      "title": "Story tags",
+      "hint": "Switch a tag on when it is true in your story. Rows that ask for it then come up, and rows that ask for it to be off are left out.",
+      "none": "No story tags yet. Add the first one below.",
+      "onHint": "On",
+      "name": "Name",
+      "remove": "Remove tag",
+      "newPlaceholder": "New tag, for example The harbor is closed",
+      "add": "Add",
+      "button": "Story tags",
+      "buttonHint": "Switch the story tags of the world on and off"
+    },
+    "Cond": {
+      "title": "Conditions: {name}",
+      "hint": "The row is only drawn when every condition you set holds. Leave a field empty to ignore it. Rows that are left out show up with the reason in the deep roll window.",
+      "scenes": "Scenes",
+      "missingScenes": "Some of the chosen scenes are not in this world. They are kept.",
+      "regions": "Regions",
+      "regionsPlaceholder": "Forest, Market square",
+      "regionsHint": "Region names, separated by commas. Holds when a selected token, or else a player character on the map, stands in a Region with that name.",
+      "time": "Time of day",
+      "timeHint": "Taken from the world time. The hours are set in the module settings.",
+      "hoursRange": "{from} to {to}",
+      "level": "Party level",
+      "levelFrom": "from",
+      "levelTo": "to",
+      "levelHint": "Read from the player characters, or set by hand in the module settings.",
+      "tags": "Story tags",
+      "noTags": "No story tags yet. Open the list to add some.",
+      "tagAny": "Does not matter",
+      "tagOn": "Must be on",
+      "tagOff": "Must be off",
+      "tagIsOn": "on",
+      "remove": "Remove conditions",
+      "save": "Save",
+      "add": "Conditions",
+      "addHint": "Only draw this row when the scene, Region, time of day, party level or story tags fit",
+      "setShort": "Conditions set",
+      "edit": "Edit conditions",
+      "label": "Conditions",
+      "now": "Now: {period} ({hour}:00).",
+      "holds": "The conditions hold right now",
+      "leftOut": "Left out right now",
+      "levelShort": "Level {range}",
+      "levelNone": "Level unknown",
+      "notTag": "not {name}",
+      "range": {
+        "both": "{min} to {max}",
+        "min": "{min} or more",
+        "max": "up to {max}"
+      },
+      "period": {
+        "dawn": "Dawn",
+        "day": "Day",
+        "dusk": "Dusk",
+        "night": "Night"
+      },
+      "reason": {
+        "scene": "Only in the scene: {names}",
+        "region": "Only in the Region: {names}",
+        "regionUnknown": "Only in the Region: {names} (no token selected and no party token on the map)",
+        "time": "Only at: {periods} (now: {now})",
+        "level": "Party level {range} (now: {level})",
+        "levelUnknown": "Party level {range} (the level is not known, set it in the settings)",
+        "tagOn": "Story tag on: {name}",
+        "tagOff": "Story tag off: {name}"
+      }
+    },
+    "Library": {
+      "button": "Table library",
+      "buttonHint": "Ready tables for names, taverns, rumors, travel, weather, encounters, loot and people",
+      "title": "Table library",
+      "folderDefault": "Table library",
+      "language": "Language of the tables",
+      "folder": "Folder in the world",
+      "folderPlaceholder": "No folder",
+      "search": "Search",
+      "pickGroup": "Tick the whole group",
+      "hasConditions": "Some rows have conditions",
+      "inWorld": "In the world",
+      "parts": "Building blocks",
+      "rollsOn": "Rolls on",
+      "range": "{from} to {to}",
+      "pickOne": "Click a table to see its rows. Tick the ones you want and import them.",
+      "all": "Tick all",
+      "none": "Untick all",
+      "import": "Import",
+      "summary": "{count} tables will be made, {extra} of them building blocks that the ticked ones use.",
+      "nothingTicked": "Nothing ticked yet.",
+      "done": "{count} tables imported, {skipped} skipped because they are in the world already.",
+      "failed": "The import failed. See the console for details.",
+      "error": "The table library could not be loaded."
     }
   }
 }
