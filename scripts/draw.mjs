@@ -49,6 +49,7 @@ const MAX_TRIES = 500;
  * @property {string} [text]          The same as plain text
  * @property {string} img
  * @property {string} [uuid]          The item or document
+ * @property {string} [enchantment]   Id of an enchantment of the item (a template item of the game system) that the row names
  * @property {number} quantity        Units of an item or link
  * @property {Record<string, number>} coins
  * @property {string} formula         The quantity formula of the result
@@ -69,7 +70,8 @@ const MAX_TRIES = 500;
  * @typedef DrawDeps
  * @property {(formula: string) => Promise<{total: number, roll: object}>} roll       Roll a table formula
  * @property {(formula: string) => Promise<{total: number, roll: object}>} evaluate   Roll any formula
- * @property {(uuid: string) => Promise<{uuid: string, documentName: string, name: string, img: string}|null>} loadDoc
+ * @property {(uuid: string) => Promise<{uuid: string, documentName: string, name: string, img: string,
+ *   item?: {uuid: string, name: string, img: string}, enchantment?: boolean}|null>} loadDoc   An effect of an item names its item
  * @property {(uuid: string) => Promise<TableSnapshot|null>} loadTable
  * @property {(ref: string) => Promise<TableSnapshot|null>} findTable          By UUID, id or name
  * @property {(text: string) => {formula: string, key: string}[]|null} coinParts
@@ -494,6 +496,14 @@ async function linesFor(result, table, deps, ctx) {
       state.count++;
       return [{...base(), kind: "item", uuid: doc.uuid, name: linked.label || doc.name, img: doc.img || result.img || "",
         quantity: amount, include: amount > 0}];
+    }
+    // A link to an enchantment of an item: the item with that enchantment (the magic item templates of D&D 5e)
+    if ( (doc?.documentName === "ActiveEffect") && doc.enchantment && doc.item ) {
+      const amount = quantity ?? 1;
+      state.count++;
+      return [{...base(), kind: "item", uuid: doc.item.uuid, enchantment: doc.uuid.split(".").pop(),
+        name: linked.label || doc.name || doc.item.name, img: doc.item.img || result.img || "", quantity: amount,
+        include: amount > 0}];
     }
   }
 

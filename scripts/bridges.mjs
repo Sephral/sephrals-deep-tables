@@ -5,7 +5,7 @@
 
 import {isActive, t} from "./config.mjs";
 import {coinString} from "./coins.mjs";
-import {itemData} from "./give.mjs";
+import {rowItemData} from "./give.mjs";
 import {trace} from "./debug.mjs";
 
 /**
@@ -113,7 +113,7 @@ export async function placePile(lines, name) {
     try {
       const item = await fromUuid(line.uuid);
       if ( !item ) continue;
-      const data = itemData(item);
+      const {data} = rowItemData(item, line);
       if ( foundry.utils.hasProperty(data, "system.quantity") ) foundry.utils.setProperty(data, "system.quantity", 1);
       await api.addItems(pile, [{item: data, quantity: Math.max(Math.floor(line.quantity) || 1, 1)}]);
       added++;

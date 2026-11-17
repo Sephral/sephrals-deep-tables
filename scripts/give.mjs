@@ -69,7 +69,7 @@ export async function giveToActor(actor, lines) {
       try {
         const item = await fromUuid(line.uuid);
         if ( !item || (item.documentName !== "Item") ) throw new Error("not an item");
-        await addItem(actor, item, Math.max(Math.floor(line.quantity) || 1, 1));
+        await addItem(actor, item, Math.max(Math.floor(line.quantity) || 1, 1), line);
         result.items++;
       } catch(err) {
         console.warn("sephrals-deep-tables | could not give", line.name, err);
@@ -88,13 +88,60 @@ export async function giveToActor(actor, lines) {
 }
 
 /**
+ * The enchant activity of an item that holds an enchantment, for the magic item templates of D&D 5e.
+ * @param {Item} item
+ * @param {string} enchantment   Id of the enchantment
+ * @returns {object|null}
+ */
+function enchantActivity(item, enchantment) {
+  const activities = item.system?.activities;
+  if ( !enchantment || !activities?.find ) return null;
+  return activities.find(a => (a.type === "enchant") && (a.effects ?? []).some(p => p._id === enchantment)) ?? null;
+}
+
+/**
+ * Plain data of the item a row gives. A row that names an enchantment of a template item (D&D 5e):
+ * an enchantment made for another item (it names that item, "{} +1") leaves the template as it is, named like the row,
+ * and the player puts it on a weapon or armor of their choice with its Enchant activity. Any other enchantment (a wand,
+ * rod or staff that is the magic item itself) is put on the copy once it is made.
+ * @param {Item} item
+ * @param {{name?: string, enchantment?: string}} [line]
+ * @returns {{data: object, enchant: {activityId: string, enchantment: string}|null}}
+ */
+export function rowItemData(item, line = {}) {
+  const data = itemData(item);
+  const activity = enchantActivity(item, line.enchantment);
+  if ( !activity ) return {data, enchant: null};
+  const effect = item.effects?.get?.(line.enchantment);
+  const changes = effect?.system?.changes ?? effect?.changes ?? [];
+  const renames = changes.some(c => c.key === "name");
+  const forOther = !activity.enchant?.self && changes.some(c => (c.key === "name") && String(c.value).includes("{}"));
+  if ( line.name && !(renames && !forOther) ) data.name = line.name;
+  if ( forOther ) return {data, enchant: null};
+  return {data, enchant: {activityId: activity.id, enchantment: line.enchantment}};
+}
+
+/**
  * Put copies of an item on an actor: one stack when the item has a quantity, else single copies.
  * @param {Actor} actor
  * @param {Item} item
  * @param {number} quantity
+ * @param {{name?: string, enchantment?: string}} [line]   The row, for template items with an enchantment
  */
-export async function addItem(actor, item, quantity) {
-  const data = itemData(item);
+export async function addItem(actor, item, quantity, line = {}) {
+  const {data, enchant} = rowItemData(item, line);
+  if ( enchant ) {
+    // Not stacked: the copies only differ by their enchantment
+    const single = hasQuantity(data);
+    if ( single ) foundry.utils.setProperty(data, "system.quantity", quantity);
+    const made = await actor.createEmbeddedDocuments("Item",
+      Array.from({length: single ? 1 : Math.min(quantity, 50)}, () => foundry.utils.deepClone(data)));
+    for ( const copy of made ) {
+      const activity = copy.system?.activities?.get?.(enchant.activityId);
+      await activity?.applyEnchantment?.(enchant.enchantment, copy, {strict: false});
+    }
+    return;
+  }
   if ( (item.type === "container") && (typeof Item.implementation.createWithContents === "function") ) {
     for ( let i = 0; i < Math.min(quantity, 20); i++ ) {
       await Item.implementation.createWithContents([item], {parent: actor});

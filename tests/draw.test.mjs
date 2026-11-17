@@ -270,3 +270,20 @@ test("a text result that is only an item link counts as that item", async () => 
   const [four] = await drawTable(t, d);
   assert.equal(four.kind, "text");
 });
+
+test("a text result that links to an enchantment of a template item gives that item with the enchantment", async () => {
+  const docs = {"C.Item.w.ActiveEffect.p2": {uuid: "C.Item.w.ActiveEffect.p2", documentName: "ActiveEffect", name: "Weapon +2",
+    enchantment: true, item: {uuid: "C.Item.w", name: "Weapon, +1, +2, or +3", img: "w.webp"}},
+  "C.Item.w.ActiveEffect.b": {uuid: "C.Item.w.ActiveEffect.b", documentName: "ActiveEffect", name: "Base",
+    enchantment: false, item: {uuid: "C.Item.w", name: "Weapon, +1, +2, or +3", img: "w.webp"}}};
+  const t = table("T", [{description: "@UUID[C.Item.w.ActiveEffect.p2]{Weapon, +2}"}, {description: "@UUID[C.Item.w.ActiveEffect.b]"}]);
+  const d = deps([t], {docs, rolls: [1, 2]});
+  const [one] = await drawTable(t, d);
+  assert.equal(one.kind, "item");
+  assert.equal(one.uuid, "C.Item.w");
+  assert.equal(one.enchantment, "p2");
+  assert.equal(one.name, "Weapon, +2");
+  assert.equal(one.img, "w.webp");
+  const [two] = await drawTable(t, d);
+  assert.equal(two.kind, "text");
+});

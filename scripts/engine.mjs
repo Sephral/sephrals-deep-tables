@@ -152,7 +152,13 @@ export function makeDeps() {
     loadDoc: async uuid => {
       const doc = await fromUuid(uuid).catch(() => null);
       if ( !doc ) return null;
-      return {uuid: doc.uuid, documentName: doc.documentName, name: doc.name ?? "", img: doc.img ?? ""};
+      const out = {uuid: doc.uuid, documentName: doc.documentName, name: doc.name ?? "", img: doc.img ?? ""};
+      const parent = doc.parent;
+      if ( (doc.documentName === "ActiveEffect") && (parent?.documentName === "Item") ) {
+        out.item = {uuid: parent.uuid, name: parent.name ?? "", img: parent.img ?? ""};
+        out.enchantment = doc.type === "enchantment";
+      }
+      return out;
     },
     loadTable: async uuid => {
       const table = await fromUuid(uuid).catch(() => null);

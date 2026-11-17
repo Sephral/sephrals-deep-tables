@@ -61,7 +61,7 @@ The GM sees buttons below the card, and they work after a reload as well:
 
 | Button | Does |
 | --- | --- |
-| Give to character | Asks for a character (the selected tokens first) and the rows to give. Items are rows that link to an item, also text rows that hold nothing but one item link (the tables of D&D 5e are built this way). They are added with their quantity, and when the character already has the same item the quantity grows. Coins go into the purse on D&D 5e and Crucible. In other systems coins stay text and you are told. |
+| Give to character | Asks for a character (the selected tokens first) and the rows to give. Items are rows that link to an item, also text rows that hold nothing but one item link (the tables of D&D 5e are built this way). A row that links to one choice of a magic item template of D&D 5e (*Weapon, +1, +2, or +3*, *Armor of Resistance*) gives the template named like the row, and the player puts it on a weapon or armor of their choice with its Enchant activity. A template that is the magic item itself gets the choice put on. They are added with their quantity, and when the character already has the same item the quantity grows. Coins go into the purse on D&D 5e and Crucible. In other systems coins stay text and you are told. |
 | Leave as loot pile | Only with a module for loot piles active. Click on the map where the pile goes, Escape cancels. The items and coins end up in a new pile. |
 | Add to loot | Only with Sephral’s Loot Ledger active. The items and coins go into the party's loot. |
 | Roll again | Rolls the same table again and posts a new card. |
