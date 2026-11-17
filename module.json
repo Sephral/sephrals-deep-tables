@@ -2,7 +2,7 @@
   "id": "sephrals-deep-tables",
   "title": "Sephral’s Deep Tables",
   "description": "Roll tables for every system with tables inside tables, quantities like 2d4+1, several draws with one click, one clear result card, and results that go straight to a character, a loot pile or the Loot Ledger.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "compatibility": {
     "minimum": 13,
     "verified": "14.370"

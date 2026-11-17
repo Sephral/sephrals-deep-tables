@@ -1162,6 +1162,16 @@ a.sdt-roll.sdt-disabled {
   gap: 6px;
 }
 
+/* Deep roll: hand over buttons beside Show in chat, they wrap under the summary when the window is narrow */
+.sdt-deep .sdt-foot {
+  flex-wrap: wrap;
+}
+
+.sdt-deep .sdt-foot-buttons {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
 .sdt-app .sdt-lib-preview h3 {
   color: var(--sdt-ink);
 }

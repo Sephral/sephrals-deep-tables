@@ -89,6 +89,7 @@
       "invalidQuantity": "Quantity could not be rolled, 1 is used",
       "summary": "Items: {items}, lines: {lines}",
       "post": "Show in chat",
+      "handHint": "Hands the ticked results over at once, without a chat card",
       "left": "Left out",
       "leftNow": "Situation now:"
     },

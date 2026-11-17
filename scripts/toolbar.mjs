@@ -26,12 +26,7 @@ export function onRenderChatMessage(message, html) {
   if ( !root ) return;
   root.dataset.sdtTheme = setting("theme");
   if ( !game.user.isGM || root.querySelector(".sdt-toolbar") ) return;
-  const buttons = [
-    {action: "give", icon: "fa-hand-holding-hand", label: t("SDT.Card.give")},
-    pilesApi() ? {action: "pile", icon: "fa-box-open", label: t("SDT.Card.pile")} : null,
-    ledgerApi() ? {action: "ledger", icon: "fa-sack", label: t("SDT.Card.ledger")} : null,
-    {action: "again", icon: "fa-dice", label: t("SDT.Card.again")}
-  ].filter(Boolean);
+  const buttons = [...handOverButtons(), {action: "again", icon: "fa-dice", label: t("SDT.Card.again")}];
   const bar = document.createElement("div");
   bar.className = "sdt-toolbar";
   bar.innerHTML = buttons.map(b => `<button type="button" data-sdt-action="${b.action}" data-tooltip="${esc(b.label)}"`
@@ -123,6 +118,55 @@ async function noteGiven(message, text) {
 }
 
 /**
+ * The ways to hand results over that this world offers: give to a character, Item Pile, Loot Ledger.
+ * @returns {{action: string, icon: string, label: string}[]}
+ */
+export function handOverButtons() {
+  return [
+    {action: "give", icon: "fa-hand-holding-hand", label: t("SDT.Card.give")},
+    pilesApi() ? {action: "pile", icon: "fa-box-open", label: t("SDT.Card.pile")} : null,
+    ledgerApi() ? {action: "ledger", icon: "fa-sack", label: t("SDT.Card.ledger")} : null
+  ].filter(Boolean);
+}
+
+/**
+ * Hand rows over: give them to a character, leave them as an Item Pile or add them to the Loot Ledger.
+ * @param {"give"|"pile"|"ledger"} action
+ * @param {import("./merge.mjs").CardLine[]} lines
+ * @param {string} tableName
+ * @returns {Promise<string|null>}   What happened, for the card, or null when nothing was handed over
+ */
+export async function handOver(action, lines, tableName) {
+  if ( action === "give" ) {
+    const choice = await askGive(lines);
+    if ( !choice ) return null;
+    const result = await giveToActor(choice.actor, choice.lines);
+    countFeature(MODULE_ID, "givenToActor");
+    const parts = [];
+    if ( result.items ) parts.push(t("SDT.Give.items", {count: result.items}));
+    if ( Object.keys(result.coins).length ) parts.push(coinsText(result.coins, coinLabel));
+    const text = t("SDT.Give.done", {name: choice.actor.name, what: parts.join(", ") || "–"});
+    ui.notifications.info(text);
+    if ( Object.keys(result.skippedCoins).length ) {
+      ui.notifications.warn(t("SDT.Give.coinsSkipped", {coins: coinsText(result.skippedCoins, coinLabel)}));
+    }
+    if ( result.failed.length ) ui.notifications.warn(t("SDT.Give.failed", {names: result.failed.join(", ")}));
+    return parts.length ? text : null;
+  }
+  if ( action === "pile" ) {
+    if ( !await placePile(lines, tableName) ) return null;
+    countFeature(MODULE_ID, "pileCreated");
+    return t("SDT.Pile.note");
+  }
+  if ( action === "ledger" ) {
+    if ( !await addToLedger(lines, tableName) ) return null;
+    countFeature(MODULE_ID, "ledgerAdded");
+    return t("SDT.Ledger.note");
+  }
+  return null;
+}
+
+/**
  * Run a button of the toolbar.
  * @param {ChatMessage} message
  * @param {string} action
@@ -136,33 +180,9 @@ async function run(message, action, button) {
     if ( action === "again" ) {
       await drawNow(card.table.uuid, {mode: card.mode});
     }
-    else if ( action === "give" ) {
-      const choice = await askGive(card.lines);
-      if ( !choice ) return;
-      const result = await giveToActor(choice.actor, choice.lines);
-      countFeature(MODULE_ID, "givenToActor");
-      const parts = [];
-      if ( result.items ) parts.push(t("SDT.Give.items", {count: result.items}));
-      if ( Object.keys(result.coins).length ) parts.push(coinsText(result.coins, coinLabel));
-      const text = t("SDT.Give.done", {name: choice.actor.name, what: parts.join(", ") || "–"});
-      ui.notifications.info(text);
-      if ( Object.keys(result.skippedCoins).length ) {
-        ui.notifications.warn(t("SDT.Give.coinsSkipped", {coins: coinsText(result.skippedCoins, coinLabel)}));
-      }
-      if ( result.failed.length ) ui.notifications.warn(t("SDT.Give.failed", {names: result.failed.join(", ")}));
-      if ( parts.length ) await noteGiven(message, text);
-    }
-    else if ( action === "pile" ) {
-      if ( await placePile(card.lines, card.table.name) ) {
-        countFeature(MODULE_ID, "pileCreated");
-        await noteGiven(message, t("SDT.Pile.note"));
-      }
-    }
-    else if ( action === "ledger" ) {
-      if ( await addToLedger(card.lines, card.table.name) ) {
-        countFeature(MODULE_ID, "ledgerAdded");
-        await noteGiven(message, t("SDT.Ledger.note"));
-      }
+    else {
+      const text = await handOver(action, card.lines, card.table.name);
+      if ( text ) await noteGiven(message, text);
     }
   } catch(err) {
     console.error(`${MODULE_ID} |`, err);

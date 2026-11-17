@@ -1,7 +1,7 @@
 /**
  * The deep roll window: the results of a roll before anybody sees them. Lines can be unticked, quantities changed,
  * single lines drawn again, everything drawn again, the number of draws and the visibility set. "Show in chat"
- * posts the card.
+ * posts the card. The GM can also hand the results over at once, without a card.
  */
 
 import {MODULE_ID, TEMPLATES, addSettingsGear, imageOr, setting, t} from "./config.mjs";
@@ -10,6 +10,9 @@ import {coinsText, summarize} from "./draw.mjs";
 import {countersOf, offerReset, putBack, resetTable, resolveTable, rerollLine, rollTable, settingsOf,
   showsCounter} from "./engine.mjs";
 import {canRoll, postRoll} from "./flow.mjs";
+import {markDrawn} from "./engine.mjs";
+import {mergeLines} from "./merge.mjs";
+import {handOver, handOverButtons} from "./toolbar.mjs";
 import {problemText} from "./card.mjs";
 import {MODES} from "./modes.mjs";
 import {trace} from "./debug.mjs";
@@ -63,7 +66,8 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
       resetTable: DeepRoll.#onResetTable,
       resetMemory: DeepRoll.#onResetMemory,
       putBackOne: DeepRoll.#onPutBack,
-      post: DeepRoll.#onPost
+      post: DeepRoll.#onPost,
+      handOver: DeepRoll.#onHandOver
     }
   };
 
@@ -143,6 +147,9 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     if ( coins ) parts.push(coins);
     context.summary = parts.join(" · ");
     context.canPost = lines.some(l => l.include && ((l.kind !== "item") || (l.quantity > 0)));
+    context.handOver = game.user.isGM ? handOverButtons() : [];
+    context.handHint = t("SDT.Deep.handHint");
+    context.canHand = lines.some(l => l.include && (((l.kind === "item") && (l.quantity > 0)) || (l.kind === "coins")));
     return context;
   }
 
@@ -278,5 +285,28 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     } finally {
       for ( const button of this.element?.querySelectorAll("button") ?? [] ) button.disabled = false;
     }
+  }
+
+  /** GM: give the ticked rows to a character, or leave them as loot, without a card. @this {DeepRoll} */
+  static async #onHandOver(event, target) {
+    const shown = this.lines.filter(line => line.include);
+    if ( !shown.length ) return;
+    for ( const button of this.element.querySelectorAll("button") ) button.disabled = true;
+    let done = null;
+    try {
+      done = await handOver(target.dataset.to, mergeLines(this.lines), this.table.name);
+      if ( done ) {
+        // The roll counts as made: the table remembers what came up, as after Show in chat
+        await markDrawn(shown);
+        countFeature(MODULE_ID, "deepHandOver");
+        trace.add("deep roll handed over", {table: this.table.name, to: target.dataset.to});
+      }
+    } catch(err) {
+      console.error(`${MODULE_ID} |`, err);
+      ui.notifications.error(t("SDT.Error.action"));
+    } finally {
+      for ( const button of this.element?.querySelectorAll("button") ?? [] ) button.disabled = false;
+    }
+    if ( done ) await this.close();
   }
 }

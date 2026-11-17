@@ -6,7 +6,7 @@ Deep Tables works with every roll table of Foundry. Nothing has to be set up: a 
 
 Right click a table in the sidebar or in a compendium, or open the menu of the table's own window (the three dots), and choose:
 
-* **Deep roll** opens a window with the result before anybody sees it. You can untick rows, change the quantity of an item, draw a single row again with the round arrow, draw everything again, change the number of draws, switch *No duplicates* and choose who sees the card. *Show in chat* posts the card with the rows that are ticked.
+* **Deep roll** opens a window with the result before anybody sees it. You can untick rows, change the quantity of an item, draw a single row again with the round arrow, draw everything again, change the number of draws, switch *No duplicates* and choose who sees the card. *Show in chat* posts the card with the rows that are ticked. The GM also finds *Give to character*, *Leave as loot pile* and *Add to loot* there: they hand the ticked rows over at once, without a card, and the table remembers the results as after *Show in chat*.
 * **Draw now** posts the card at once, with the settings of the table.
 
 The same two entries exist for tables in compendiums. A table in a compendium can be rolled as often as you like, nothing is marked there.

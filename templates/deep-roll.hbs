@@ -97,7 +97,13 @@
 
   <footer class="sdt-foot">
     <span class="sdt-summary">{{summary}}</span>
-    <button type="button" class="sdt-primary" data-action="post" {{#unless canPost}}disabled{{/unless}}>
-      <i class="fa-solid fa-comment-dots" inert></i> {{localize "SDT.Deep.post"}}</button>
+    <div class="sdt-foot-buttons">
+      {{#each handOver}}
+      <button type="button" data-action="handOver" data-to="{{action}}" data-tooltip="{{../handHint}}"
+        {{#unless ../canHand}}disabled{{/unless}}><i class="fa-solid {{icon}}" inert></i> {{label}}</button>
+      {{/each}}
+      <button type="button" class="sdt-primary" data-action="post" {{#unless canPost}}disabled{{/unless}}>
+        <i class="fa-solid fa-comment-dots" inert></i> {{localize "SDT.Deep.post"}}</button>
+    </div>
   </footer>
 </div>

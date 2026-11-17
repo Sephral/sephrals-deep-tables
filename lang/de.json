@@ -89,6 +89,7 @@
       "invalidQuantity": "Die Menge ließ sich nicht auswerten, es gilt 1",
       "summary": "Items: {items}, Zeilen: {lines}",
       "post": "Im Chat zeigen",
+      "handHint": "Gibt die angehakten Ergebnisse sofort weiter, ohne Chatkarte",
       "left": "Ausgelassen",
       "leftNow": "Lage jetzt:"
     },
