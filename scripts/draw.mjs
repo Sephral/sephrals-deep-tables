@@ -152,6 +152,31 @@ export function plainText(html) {
     .replace(/&gt;/g, ">").replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
 }
 
+/** A whole text that is one content link. */
+const ONLY_LINK = /^@UUID\[([^\]\s]+)\](?:\{([^}]*)\})?$/;
+
+/**
+ * The link of a text result that holds nothing but one link, in its name or its description.
+ * A name next to a linked description must be empty or the link's own label.
+ * @param {{name?: string, description?: string}} result
+ * @returns {{uuid: string, label: string}|null}
+ */
+export function itemLinkOf(result) {
+  const read = source => {
+    const match = ONLY_LINK.exec(plainText(source));
+    return match ? {uuid: match[1], label: (match[2] ?? "").trim()} : null;
+  };
+  const name = plainText(result.name);
+  const description = plainText(result.description);
+  const inName = read(name);
+  if ( inName ) return description ? null : inName;
+  const inDescription = read(description);
+  if ( !inDescription ) return null;
+  if ( !name ) return inDescription;
+  if ( name === inDescription.label ) return inDescription;
+  return (inDescription.label ? null : {uuid: inDescription.uuid, label: name});
+}
+
 /** One amount of a coin text: a dice or number expression, then the coin. */
 const COIN_PART = /\s*((?:\d*d\d+|\d+)(?:\s*[-+*/]\s*(?:\d*d\d+|\d+))*)\s*([a-zäöüß.]+)\s*(?:,|\+|&|\band\b|\bund\b)?/iy;
 
@@ -458,6 +483,18 @@ async function linesFor(result, table, deps, ctx) {
     }
     // A broken link stays visible as text
     state.problems.push({kind: "missing", ref: result.documentUuid ?? result.name});
+  }
+
+  // A text result that is only a link to an item counts as that item (tables of the game systems are built this way)
+  if ( result.type !== "document" ) {
+    const linked = itemLinkOf(result);
+    const doc = linked ? await deps.loadDoc(linked.uuid) : null;
+    if ( doc?.documentName === "Item" ) {
+      const amount = quantity ?? 1;
+      state.count++;
+      return [{...base(), kind: "item", uuid: doc.uuid, name: linked.label || doc.name, img: doc.img || result.img || "",
+        quantity: amount, include: amount > 0}];
+    }
   }
 
   // Text results: each repeat is expanded on its own, coin texts are summed

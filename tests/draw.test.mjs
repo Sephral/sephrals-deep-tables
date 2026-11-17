@@ -246,3 +246,27 @@ test("a table without a formula draws by weight", async () => {
   const lines = await drawTable(t, deps([t], {rolls: [10]}));
   assert.equal(lines[0].text, "b");
 });
+
+test("a text result that is only an item link counts as that item", async () => {
+  const docs = {"Compendium.x.Item.a": {uuid: "Compendium.x.Item.a", documentName: "Item", name: "Adamantine Weapon", img: "a.webp"},
+    "Compendium.x.Item.a.ActiveEffect.e": {uuid: "Compendium.x.Item.a.ActiveEffect.e", documentName: "ActiveEffect", name: "Fire"}};
+  const t = table("T", [
+    {description: "<p>@UUID[Compendium.x.Item.a]{Adamantine Weapon}</p>", quantity: "2"},
+    {name: "Shiny", description: "@UUID[Compendium.x.Item.a]"},
+    {description: "@UUID[Compendium.x.Item.a.ActiveEffect.e]"},
+    {description: "You find @UUID[Compendium.x.Item.a]{a blade} in the mud"}
+  ]);
+  const d = deps([t], {docs, rolls: [1, 2, 3, 4]});
+  const [one] = await drawTable(t, d);
+  assert.equal(one.kind, "item");
+  assert.equal(one.uuid, "Compendium.x.Item.a");
+  assert.equal(one.name, "Adamantine Weapon");
+  assert.equal(one.quantity, 2);
+  const [two] = await drawTable(t, d);
+  assert.equal(two.kind, "item");
+  assert.equal(two.name, "Shiny");
+  const [three] = await drawTable(t, d);
+  assert.equal(three.kind, "text");
+  const [four] = await drawTable(t, d);
+  assert.equal(four.kind, "text");
+});
