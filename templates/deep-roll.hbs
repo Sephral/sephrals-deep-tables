@@ -98,6 +98,7 @@
   <footer class="sdt-foot">
     <span class="sdt-summary">{{summary}}</span>
     <div class="sdt-foot-buttons">
+      {{{ledgerHint}}}
       {{#each handOver}}
       <button type="button" data-action="handOver" data-to="{{action}}" data-tooltip="{{../handHint}}"
         {{#unless ../canHand}}disabled{{/unless}}><i class="fa-solid {{icon}}" inert></i> {{label}}</button>

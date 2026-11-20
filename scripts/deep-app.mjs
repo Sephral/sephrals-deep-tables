@@ -18,6 +18,7 @@ import {MODES} from "./modes.mjs";
 import {trace} from "./debug.mjs";
 import {reasonText, situationText} from "./situation.mjs";
 import {countFeature} from "./usage.mjs";
+import {partnerHint} from "./hub.mjs";
 
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
 
@@ -148,6 +149,8 @@ export class DeepRoll extends HandlebarsApplicationMixin(ApplicationV2) {
     context.summary = parts.join(" · ");
     context.canPost = lines.some(l => l.include && ((l.kind !== "item") || (l.quantity > 0)));
     context.handOver = game.user.isGM ? handOverButtons() : [];
+    // GM only and only while the Loot Ledger is off: a small info icon next to the hand over buttons
+    context.ledgerHint = partnerHint(MODULE_ID, "sephrals-loot-ledger");
     context.handHint = t("SDT.Deep.handHint");
     context.canHand = lines.some(l => l.include && (((l.kind === "item") && (l.quantity > 0)) || (l.kind === "coins")));
     return context;
