@@ -19,7 +19,7 @@
 * **Deep roll:** look at the result before anybody sees it. Untick rows, change a quantity, draw one row again.
 * **Tables inside tables:** a result that points to another table is rolled on, as often as its quantity says.
 * **Quantities and draws:** formulas like 2d4+1, several draws, no duplicates, and dice or tables rolled right inside a sentence.
-* **One clear card:** a click gives it to a character, a loot pile or the Loot Ledger.
+* **One clear card:** a click gives it to a character, a loot pile or the Loot Ledger, and a small hint tells you where the Loot Ledger would add a button.
 * **Table from text:** paste a list and get a roll table.
 
 ## How it works
