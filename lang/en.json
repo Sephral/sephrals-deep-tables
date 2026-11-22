@@ -267,7 +267,7 @@
       "autoShort": "runs by itself",
       "auto": "Run on its own when the card is shown",
       "autoHint": "Only the GM runs actions. The setting for results acting on their own in the module settings can switch this off for all.",
-      "linkedHint": "This result links to a document, an empty field below uses that document.",
+      "linkedHint": "This result links to a document. An empty field below uses that document.",
       "ownLink": "The document of the result",
       "encounter": "Saved encounter",
       "combat": "Start a fight with the placed tokens",

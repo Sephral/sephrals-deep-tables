@@ -15,7 +15,7 @@
       "rows": [
         "Bäcker", "Fährmann", "Kerzenzieher", "Nachtwächter", "Schäfer", "Gerber", "Schreiber",
         "Stallbursche", "Koch", "Brunnenbauer", "Imker", "Rattenfänger", "Spielmann", "Soldat im Ruhestand",
-        "Töpferwarenhändler", "Fischhändler", "Kesselflicker", "Totengräber", "Kräutersammler", "Zollschreiber"
+        "Töpfer", "Fischhändler", "Kesselflicker", "Totengräber", "Kräutersammler", "Zollschreiber"
       ]
     },
     {
@@ -35,7 +35,7 @@
         "Ein schwerer Umhang, der nach Holzrauch und Regen riecht.",
         "Ein fröhliches rundes Gesicht und eine sehr leise Stimme.",
         "Hinkt, geht am Stock und hat einen überraschend schnellen Schritt.",
-        "Ringe an jedem Finger, alle davon billig.",
+        "Ringe an jedem Finger, alle billig.",
         "Das Haar mit einem Stück Angelschnur zusammengebunden.",
         "Sommersprossen, ein breites Grinsen und Dreck unter jedem Nagel.",
         "Ein hoher Hut mit einer Feder, die schon bessere Tage gesehen hat.",
@@ -76,9 +76,9 @@
       "rows": [
         "eine alte Schuld vor dem nächsten Vollmond begleichen",
         "einen verlorenen Bruder finden, der in die Stadt gegangen ist",
-        "für einmal ernst genommen werden",
+        "endlich einmal ernst genommen werden",
         "das Meer sehen, bevor es zu spät ist",
-        "ein Geheimnis bewahren, das immer schwerer wird",
+        "ein Geheimnis bewahren, das immer schwerer wiegt",
         "endlich den Kochwettbewerb des Festes gewinnen",
         "herausfinden, wer die Grenzsteine verschiebt",
         "die Stadt verlassen und nie wiederkommen",

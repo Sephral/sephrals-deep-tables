@@ -103,7 +103,7 @@
       "key": "name-deep-family",
       "name": "Sippennamen des Tiefenvolks",
       "part": true,
-      "rows": ["Eisenbraue", "Tiefenschürfer", "Ambossgeboren", "Steinbart", "Kohlenherz", "Edelsteinhammer", "Granitfaust", "Schmiedegeboren", "Rubinader", "Stollenweise"]
+      "rows": ["Eisenbraue", "Tiefenschürfer", "Ambossgeboren", "Steinbart", "Kohlenherz", "Edelsteinhammer", "Granitfaust", "Schmiedefeuer", "Rubinader", "Stollenhüter"]
     }
   ]
 }
