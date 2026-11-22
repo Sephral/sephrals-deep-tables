@@ -235,7 +235,7 @@ export async function openPlayerTables() {
 export class PlayerTablesApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   constructor(options = {}) {
-    super({...options, id: "sdt-player-tables"});
+    super({id: "sdt-player-tables", ...options});
   }
 
   /** @override */

@@ -71,7 +71,7 @@ export class ImportApp extends HandlebarsApplicationMixin(ApplicationV2) {
    * @param {string} [options.text]
    */
   constructor({text = "", ...options} = {}) {
-    super({...options, id: "sdt-import"});
+    super({id: "sdt-import", ...options});
     this.inputs = {text, name: "", formula: "", items: "off"};
     this.index = new Map();
     this.indexMode = "off";

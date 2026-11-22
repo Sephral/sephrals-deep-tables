@@ -24,6 +24,7 @@ import {StoryTagsApp, openStoryTags} from "./tags-app.mjs";
 import {onGetHeaderControls, onGetRollTableContextOptions, onRenderRollTableDirectory, onRenderRollTableSheet,
   onRenderTableResultActions, onRenderTableResultConfig} from "./sheet.mjs";
 import {onRenderChatMessage} from "./toolbar.mjs";
+import {sampleWindows} from "./sample-windows.mjs";
 import {registerUsage} from "./usage.mjs";
 
 /** Redraw what the module shows after a language or look change. */
@@ -151,6 +152,8 @@ Hooks.once("init", () => {
     situation: currentSituation,
     /** Do the conditions of a row hold right now? Returns {ok, reasons}. */
     checkConditions: conditions => check(conditions, currentSituation()),
+    /** The windows, cards and questions filled with a made-up table, nothing saved (translators, testing). */
+    samples: () => sampleWindows(),
     /** Check the module (GM). */
     runSelfTest,
     /** Save the debug file of Sephral's modules (GM). */

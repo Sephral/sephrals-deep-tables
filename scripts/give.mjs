@@ -192,6 +192,23 @@ export function lineLabel(line) {
 }
 
 /**
+ * The form of the question: the character to choose and the lines to give.
+ * @param {{label: string, actors: {id: string, name: string}[]}[]} groups
+ * @param {import("./merge.mjs").CardLine[]} giveable
+ * @param {boolean} noPurse   Say that coins have no place on a character in this system
+ * @returns {string}
+ */
+export function giveFormHtml(groups, giveable, noPurse) {
+  const options = groups.map(group => `<optgroup label="${esc(group.label)}">${group.actors
+    .map(a => `<option value="${esc(a.id)}">${esc(a.name)}</option>`).join("")}</optgroup>`).join("");
+  const rows = giveable.map((line, i) => `<label class="sdt-check"><input type="checkbox" name="pick" value="${i}" checked>`
+    + `${line.img ? `<img src="${esc(line.img)}" alt="">` : `<i class="fa-solid fa-coins" inert></i>`} ${esc(lineLabel(line))}</label>`).join("");
+  return `<div class="sdt-give"><div class="form-group"><label>${esc(t("SDT.Give.to"))}</label>`
+    + `<select name="actorId">${options}</select></div><div class="sdt-give-list">${rows}</div>`
+    + (noPurse ? `<p class="hint">${esc(t("SDT.Give.noPurse"))}</p>` : "") + `</div>`;
+}
+
+/**
  * Ask the GM which character gets which lines.
  * @param {import("./merge.mjs").CardLine[]} lines
  * @returns {Promise<{actor: Actor, lines: import("./merge.mjs").CardLine[]}|null>}
@@ -207,14 +224,8 @@ export async function askGive(lines) {
     ui.notifications.info(t("SDT.Give.noActors"));
     return null;
   }
-  const options = groups.map(group => `<optgroup label="${esc(group.label)}">${group.actors
-    .map(a => `<option value="${esc(a.id)}">${esc(a.name)}</option>`).join("")}</optgroup>`).join("");
-  const rows = giveable.map((line, i) => `<label class="sdt-check"><input type="checkbox" name="pick" value="${i}" checked>`
-    + `${line.img ? `<img src="${esc(line.img)}" alt="">` : `<i class="fa-solid fa-coins" inert></i>`} ${esc(lineLabel(line))}</label>`).join("");
   const noPurse = !purseKind() && giveable.some(line => line.kind === "coins");
-  const content = `<div class="sdt-give"><div class="form-group"><label>${esc(t("SDT.Give.to"))}</label>`
-    + `<select name="actorId">${options}</select></div><div class="sdt-give-list">${rows}</div>`
-    + (noPurse ? `<p class="hint">${esc(t("SDT.Give.noPurse"))}</p>` : "") + `</div>`;
+  const content = giveFormHtml(groups, giveable, noPurse);
   const result = await foundry.applications.api.DialogV2.prompt({
     window: {title: t("SDT.Give.title"), icon: "fa-solid fa-hand-holding-hand"},
     position: {width: 420},

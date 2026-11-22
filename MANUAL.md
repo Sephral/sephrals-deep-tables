@@ -244,6 +244,7 @@ The first button in the module settings, *Sephral’s Modules* (GMs only), opens
 | `checkConditions(conditions)` | `{ok, reasons}` for a conditions object, as stored in the flag `flags.sephrals-deep-tables.conditions` of a result (`scenes`, `regions`, `times`, `level: {min, max}`, `tags: {id: true or false}`) |
 | `runSelfTest()` | Runs the self test (GM) |
 | `saveDebugFile()` | Saves the debug file (GM) |
+| `samples()` | The list of sample windows, cards and questions with a made-up table, `[{id, label, group, open()}]`. `open()` shows one; nothing is saved, buttons that would change something only say that they do nothing. For translators and testing |
 
 ## Usage statistics
 

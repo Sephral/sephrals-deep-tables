@@ -455,6 +455,56 @@
       "done": "{count} Tabellen importiert, {skipped} übersprungen, weil sie schon in der Welt sind.",
       "failed": "Der Import ist fehlgeschlagen. Details stehen in der Konsole.",
       "error": "Die Tabellenbibliothek konnte nicht geladen werden."
+    },
+    "Sample": {
+      "group": {
+        "roll": "Wurffenster",
+        "card": "Ergebniskarten",
+        "results": "Ergebnisse mit Aktion",
+        "tables": "Tabellen und Journale"
+      },
+      "label": {
+        "deep": "Wurf mit Vorschau",
+        "deepEmpty": "Wurf mit Vorschau: Tabelle ist leer",
+        "card": "Ergebniskarte mit Knöpfen",
+        "cardNotes": "Ergebniskarte: Hinweise und Auslöser",
+        "action": "Aktion eines Ergebnisses: {type}",
+        "conditions": "Bedingungen einer Zeile",
+        "library": "Tabellenbibliothek",
+        "import": "Tabelle aus Text",
+        "tags": "Ereignisse in der Welt",
+        "players": "Tabellen für Spieler",
+        "give": "Rückfrage: an Figur geben",
+        "emptyAsk": "Rückfrage: Tabelle ist leer",
+        "journal": "Knöpfe im Journal",
+        "sheetEdit": "Tabellenfenster: bearbeiten",
+        "sheetView": "Tabellenfenster: ansehen",
+        "resultConfig": "Fenster eines Tabellenergebnisses"
+      },
+      "table": {
+        "name": "Beute der Banditen",
+        "potions": "Tränke",
+        "healing": "Heiltrank",
+        "gem": "Rätselhafter Edelstein",
+        "map": "Eine Karte mit rotem Kreuz",
+        "pelt": "Wolfsfell",
+        "cart": "Ein Karren versperrt den Weg: Banditen greifen an!",
+        "howl": "Ein Heulen in der Ferne",
+        "wolves": "Drei Wölfe umkreisen das Lager",
+        "mapLink": "Karte der alten Mühle",
+        "rumors": "Gerüchte in der Taverne",
+        "weather": "Wetter heute",
+        "war": "Der Krieg hat begonnen",
+        "festival": "Erntefest",
+        "importName": "Beute der Banditen",
+        "dagger": "Rostiger Dolch",
+        "coins": "2d6 GM",
+        "intro": "Die Banditen haben eine Truhe zurückgelassen. Würfle ihre Beute:",
+        "introMissing": "Diese Tabelle gibt es nicht mehr:",
+        "missingName": "Alte Schatztabelle",
+        "cyclePart": "Gerüchte"
+      },
+      "trigger": "Natürliche 20 beim Angriff"
     }
   }
 }

@@ -34,7 +34,17 @@ function lookup(ref) {
 async function enrich(match) {
   const ref = match[1].trim();
   const label = (match[2] || "").trim();
-  const found = lookup(ref);
+  return tableLink(lookup(ref), ref, label);
+}
+
+/**
+ * The link of a table: working when the table is found and the user may see it, else a disabled one.
+ * @param {RollTable|object|null} found
+ * @param {string} ref
+ * @param {string} [label]
+ * @returns {HTMLElement}
+ */
+export function tableLink(found, ref, label = "") {
   const name = label || found?.name || ref;
   const span = document.createElement("a");
   const visible = found && (game.user.isGM || found.pack || found.testUserPermission?.(game.user, "OBSERVER")

@@ -7,6 +7,7 @@ import {MODULE_ID, TEMPLATES, addSettingsGear, setting, t} from "./config.mjs";
 import {MAX_TAGS, tagId} from "./conditions.mjs";
 import {saveStoryTags, storyTags} from "./situation.mjs";
 import {countFeature} from "./usage.mjs";
+import {sampleBlocked} from "./samples.mjs";
 
 const {ApplicationV2, HandlebarsApplicationMixin} = foundry.applications.api;
 
@@ -30,7 +31,7 @@ export class StoryTagsApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** @param {object} [options] */
   constructor(options = {}) {
-    super({...options, id: "sdt-tags"});
+    super({id: "sdt-tags", ...options});
   }
 
   /** @override */
@@ -73,6 +74,7 @@ export class StoryTagsApp extends HandlebarsApplicationMixin(ApplicationV2) {
     for ( const row of this.element.querySelectorAll("[data-tag]") ) {
       const id = row.dataset.tag;
       row.querySelector("input[name=on]")?.addEventListener("change", async event => {
+        if ( this.isSample ) return sampleBlocked();
         const tags = storyTags();
         const tag = tags.find(entry => entry.id === id);
         if ( !tag ) return;
@@ -81,6 +83,7 @@ export class StoryTagsApp extends HandlebarsApplicationMixin(ApplicationV2) {
         countFeature(MODULE_ID, "storyTagSet");
       });
       row.querySelector("input[name=name]")?.addEventListener("change", async event => {
+        if ( this.isSample ) return sampleBlocked();
         const tags = storyTags();
         const tag = tags.find(entry => entry.id === id);
         const name = event.currentTarget.value.trim();
@@ -92,6 +95,7 @@ export class StoryTagsApp extends HandlebarsApplicationMixin(ApplicationV2) {
     this.element.querySelector("input[name=newName]")?.addEventListener("keydown", event => {
       if ( event.key !== "Enter" ) return;
       event.preventDefault();
+      if ( this.isSample ) return sampleBlocked();
       StoryTagsApp.#onAdd.call(this);
     });
   }

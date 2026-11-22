@@ -149,7 +149,7 @@ export class LibraryApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
   /** @param {object} [options] */
   constructor(options = {}) {
-    super({...options, id: "sdt-library"});
+    super({id: "sdt-library", ...options});
     this.lang = libraryLanguage();
     this.folder = t("SDT.Library.folderDefault");
     this.selected = new Set();

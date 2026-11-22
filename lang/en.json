@@ -455,6 +455,56 @@
       "done": "{count} tables imported, {skipped} skipped because they are in the world already.",
       "failed": "The import failed. See the console for details.",
       "error": "The table library could not be loaded."
+    },
+    "Sample": {
+      "group": {
+        "roll": "Roll window",
+        "card": "Result cards",
+        "results": "Results with an action",
+        "tables": "Tables and journals"
+      },
+      "label": {
+        "deep": "Deep roll window",
+        "deepEmpty": "Deep roll: table out of results",
+        "card": "Result card with buttons",
+        "cardNotes": "Result card: notes and trigger",
+        "action": "Result action: {type}",
+        "conditions": "Conditions of a row",
+        "library": "Table library",
+        "import": "Table from text",
+        "tags": "Story tags",
+        "players": "Tables for players",
+        "give": "Question: give to a character",
+        "emptyAsk": "Question: table is empty",
+        "journal": "Journal buttons",
+        "sheetEdit": "Table sheet: editing",
+        "sheetView": "Table sheet: looking",
+        "resultConfig": "Window of a table result"
+      },
+      "table": {
+        "name": "Bandit loot",
+        "potions": "Potions",
+        "healing": "Healing potion",
+        "gem": "Mystery gem",
+        "map": "A map with a red cross",
+        "pelt": "Wolf pelt",
+        "cart": "A cart blocks the road: bandits attack!",
+        "howl": "A howl in the distance",
+        "wolves": "Three wolves circle the camp",
+        "mapLink": "Map of the old mill",
+        "rumors": "Rumors in the tavern",
+        "weather": "Weather today",
+        "war": "War has started",
+        "festival": "Harvest festival",
+        "importName": "Bandit loot",
+        "dagger": "Rusty dagger",
+        "coins": "2d6 gp",
+        "intro": "The bandits left a chest behind. Roll their loot:",
+        "introMissing": "This table is gone:",
+        "missingName": "Old treasure table",
+        "cyclePart": "Rumors"
+      },
+      "trigger": "Natural 20 on the attack"
     }
   }
 }
